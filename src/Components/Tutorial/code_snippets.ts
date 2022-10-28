@@ -1,73 +1,152 @@
-import { format } from "path";
-
-function formatQueryCode(query: string, variables: object): string {
-  return `
-const variables = ${JSON.stringify(variables, null, 2)};
-const query = gql\`${query}\`;
-const data = await client.request(query, variables, headers)
-console.log(JSON.stringify(data, undefined, 2))`;
+const indent = (code: string) => {
+  const split = code.split('\n')
+  // no need to indent single line code
+  if(split.length === 1) return code;
+  return split[0] + '\n' + split.slice(1, split.length).map(line => `  ${line}`).join('\n');
 }
 
-export const initializeClientSnippet = (RYE_API_TOKEN: string) => `import { GraphQLClient, gql } from 'graphql-request'
+const formatQueryCode = (fnName: string, query: string, variables: object) => {
+  return (
+`function ${fnName}() {
+  const variables = ${indent(JSON.stringify(variables, null, 2))};
+  const query = gql\`${indent(query)}\`;
+  const data = await client.request(query, variables, headers)
+  console.log(JSON.stringify(data, undefined, 2))
+}
+${fnName}();`
+  );
+}
 
+export const initializeClientSnippet = (RYE_API_TOKEN: string) =>
+  `import { GraphQLClient, gql } from 'graphql-request'
 const API_KEY = '${RYE_API_TOKEN || "<YOUR RYE API KEY>"}'
 
-const endpoint = 'https://graphql.api.rye.com/v1/query'
+const endpoint = 'https://graphql.api.rye.com/v1/query'B000NQ10FK
 const client = new GraphQLClient(endpoint)
 const headers = {
   'Authorization': 'Basic ' + Buffer.from(API_KEY + ':').toString('base64'),
-}`
+}`;
 
-export const requestProductSnippet = (productURL: string, marketplace: string) => {
-  const query = `mutation RequestProductByURL(
+
+export const requestProductQuery = `mutation RequestProductByURL(
   $input: RequestProductByURLInput!
 ) {
   requestProductByURL(input: $input) {
-    id
+    productID
   }
-}`
+}`;
+export const requestProductSnippet = (productURL: string, marketplace: string) => {
   const variables = {
-      "input": {
-        "url": productURL,
-        "marketplace": marketplace,
-      }
-  }
-  return formatQueryCode(query, variables)
-}
+    input: {
+      url: productURL,
+      marketplace: marketplace,
+    },
+  };
+  return formatQueryCode("requestProduct", requestProductQuery, variables);
+};
 
-export const amazonProductFetchSnippet = (productID: string) => `
-const query = gql\`query DemoAmazonShopifyProductFetch($input: ProductByIDInput!) {
+export const amazonProductFetchQuery = `query DemoAmazonProductFetch($input: ProductByIDInput!) {
   amazonItem: productByID(input: $input) {
     title
-    description
     vendor
     url
     isAvailable
     images {
       url
     }
-    variants {
-      title
-    }
     price {
       displayValue
     }
     ... on AmazonProduct {
       ASIN
-      titleExcludingVariantName
     }
   }
-}\`
+}`
 
-const variables = {
-  "input": {
-    "id": "${productID || "<YOUR AMAZON PRODUCT ID>"}",
-    "marketplace": "AMAZON"
-  }
+export const amazonProductFetchSnippet = (productID: string) => {
+  const variables = {
+    input: {
+      id: productID || "<YOUR AMAZON PRODUCT ID>",
+      marketplace: "AMAZON",
+    },
+  };
+  return formatQueryCode("fetchProduct", amazonProductFetchQuery, variables);
 }
 
-const data = await client.request(query, variables, headers)
-console.log(JSON.stringify(data, undefined, 2))
-`
+
+export const shopifyProductFetchQuery = `query DemoShopifyProductByID($input: ProductByIDInput!) {
+  shopifyProduct: productByID(input: $input) {
+    title
+    vendor
+    url
+    isAvailable
+    images {
+      url
+    }
+    price {
+      displayValue
+    }
+    ... on ShopifyProduct {
+      tags
+    }
+  }
+}`
+
+export const shopifyProductFetchSnippet = (productID: string) => {
+  const variables = {
+    input: {
+      id: productID || "<YOUR SHOPIFY PRODUCT ID>",
+      marketplace: "SHOPIFY",
+    },
+  };
+  return formatQueryCode("fetchProduct", shopifyProductFetchQuery, variables);
+}
+
+export const shopifyProductOfferQuery = `query ShopifyOffer($input: ShopifyOfferInput!) {
+  shopifyOffer(input: $input) {
+    offer {
+      storeURL
+      variantID
+      subtotal {
+        value
+        currency
+        displayValue
+      }
+      digitalItemTaxes {
+        value
+        currency
+        displayValue
+      }
+      isDigitalItem
+      shippingMethods {
+        id
+        label
+        price {
+          value
+          currency
+          displayValue
+        }
+        taxes {
+          value
+          currency
+          displayValue
+        }
+      }
+    }
+  }
+}`
 
 
+export const shopifyProductOfferSnippet = (productID: string, { city, stateCode}: {city: string, stateCode: string}) => {
+  const variables = {
+    "input": {
+      "productID": productID || "<YOUR SHOPIFY PRODUCT ID>",
+      "location": {
+        "city": city,
+        "stateCode": stateCode,
+        "countryCode": "US"
+      }
+    }
+  };
+  return formatQueryCode("fetchProductOffer", shopifyProductOfferQuery, variables);
+}
