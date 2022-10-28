@@ -26,7 +26,7 @@ enum Marketplace {
 }
 
 type Store = {
-  theme: string;
+  appTheme: string;
   apiConfig: APIConfiguration;
   requestedProduct: {
     productURL: string;
@@ -41,17 +41,17 @@ type Store = {
 };
 
 function detectThemePreference(): string {
-  const setTheme = window.localStorage?.getItem("theme");
+  const setTheme = window.localStorage?.getItem("appTheme");
   if (setTheme) {
     return JSON.parse(setTheme);
   }
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  return JSON.stringify(prefersDark ? Theme.Dark.valueOf() : Theme.Light.valueOf());
+  return prefersDark ? Theme.Dark.valueOf() : Theme.Light.valueOf();
 }
 
 const defaultStore: Store = {
   apiConfig: JSON.parse(window.localStorage?.getItem("apiConfig") || "{}"),
-  theme: detectThemePreference(),
+  appTheme: detectThemePreference(),
   requestedProduct: JSON.parse(
     window.localStorage?.getItem("requestedProduct") ||
       JSON.stringify({
@@ -127,7 +127,7 @@ export default function Index() {
   const [isValidAPIKey, setIsValidAPIKey] = useState<boolean>(false);
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(data?.apiConfig.key?.length !== 0 || false);
 
-  const currentTheme = data.theme === Theme.Dark.valueOf() ? Theme.Dark : Theme.Light;
+  const currentTheme = data.appTheme === Theme.Dark.valueOf() ? Theme.Dark : Theme.Light;
 
   const makeGQLRequest = (query: string, variables: any) => {
     const client = new GraphQLClient('https://graphql.api.rye.com/v1/query');
@@ -169,7 +169,7 @@ export default function Index() {
 
   const onChangeTheme = (checked: boolean) => {
     const theme = checked ? Theme.Dark : Theme.Light;
-    updateData({ theme });
+    updateData({ appTheme: theme });
   };
 
   const trackProduct = () => {
@@ -238,7 +238,6 @@ export default function Index() {
   };
 
   const onMarketplaceChange = (e: any) => {
-    // console.log(Object.keys(Marketplace));
     const marketplace =
       e.target.innerText.toUpperCase() === Marketplace.Amazon.valueOf().toUpperCase()
         ? Marketplace.Amazon
@@ -313,6 +312,7 @@ export default function Index() {
     >
       <Flowbite
         theme={{
+          usePreferences: false,
           theme: {
             card: {
               base: "flex rounded-lg border border-gray-200 text-slate-800 bg-white shadow-md dark:border-gray-700 dark:bg-neutral-900 flex-col",
@@ -645,12 +645,12 @@ export default function Index() {
                           </div>
                           <div className="ml-3">
                             <Label className="mt-3" htmlFor="product_id_offers" value="State" />
-                            <Select className="mt-3 w-24">
+                            <Select defaultValue={"CA"} className="mt-3 w-24">
                               <option value="AL">AL</option>
                               <option value="AK">AK</option>
                               <option value="AR">AR</option>
                               <option value="AZ">AZ</option>
-                              <option selected value="CA">CA</option>
+                              <option value="CA">CA</option>
                               <option value="CO">CO</option>
                               <option value="CT">CT</option>
                               <option value="DE">DE</option>
