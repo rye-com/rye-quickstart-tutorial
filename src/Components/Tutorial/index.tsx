@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import ApiKeyDarkImage from "./rye-api-key-dark.png";
 import ApiKeyLightImage from "./rye-api-key-light.png";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
@@ -7,7 +7,7 @@ import { KeyIcon, AtSymbolIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { amazonProductFetchQuery, amazonProductFetchSnippet, initializeClientSnippet, requestProductQuery, requestProductSnippet, shopifyProductFetchQuery, shopifyProductFetchSnippet, shopifyProductOfferSnippet } from "./code_snippets";
 import { atomOneDark, atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { cloneDeep, debounce, merge, update } from "lodash";
+import { cloneDeep, merge } from "lodash";
 import { GraphQLClient } from 'graphql-request';
 
 type APIConfiguration = {
@@ -118,9 +118,11 @@ export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
   const [isTrackingProduct, setIsTrackingProduct] = useState<boolean>(false);
   const [isFetchingProduct, setIsFetchingProduct] = useState<boolean>(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isFetchingProductOffers, setIsFetchingProductOffers] = useState<boolean>(false);
   const [trackProductResponse, setTrackProductResponse] = useState<object | null>(null);
   const [fetchProductResponse, setFetchProductResponse] = useState<object | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<object | null>(null);
   const [isValidAPIKey, setIsValidAPIKey] = useState<boolean>(false);
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(data?.apiConfig.key?.length !== 0 || false);
@@ -211,21 +213,21 @@ export default function Index() {
     });
   };
 
-  const fetchProductOffers = () => {
-    setIsFetchingProductOffers(true);
-    const variables = {
-      input: {
-          id: data.requestedProduct.selectedMarketplace === Marketplace.Shopify ? data.requestedProduct.shopifyProductID : data.requestedProduct.amazonProductID,
-          marketplace: data.requestedProduct.selectedMarketplace.valueOf().toUpperCase(),
-      }
-    };
-    makeGQLRequest(amazonProductFetchQuery, variables).then((res) => {
-      setFetchProductResponse(res);
-    }).catch((error) => {
-    }).finally(() => {
-      setIsFetchingProductOffers(false);
-    });
-  };
+  // const fetchProductOffers = () => {
+  //   setIsFetchingProductOffers(true);
+  //   const variables = {
+  //     input: {
+  //         id: data.requestedProduct.selectedMarketplace === Marketplace.Shopify ? data.requestedProduct.shopifyProductID : data.requestedProduct.amazonProductID,
+  //         marketplace: data.requestedProduct.selectedMarketplace.valueOf().toUpperCase(),
+  //     }
+  //   };
+  //   makeGQLRequest(amazonProductFetchQuery, variables).then((res) => {
+  //     setFetchProductResponse(res);
+  //   }).catch((error) => {
+  //   }).finally(() => {
+  //     setIsFetchingProductOffers(false);
+  //   });
+  // };
 
   const onAPIKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateData({ apiConfig: { key: e.target.value } }, )
