@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, ReactElement, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import ApiKeyDarkImage from "./rye-api-key-dark.png";
 import ApiKeyLightImage from "./rye-api-key-light.png";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
@@ -24,7 +24,6 @@ import {
 import { atomOneDark, atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { cloneDeep, merge } from "lodash";
 import { GraphQLClient } from "graphql-request";
-import { type } from "os";
 
 type APIConfiguration = {
   key: string;
