@@ -19,6 +19,7 @@ import {
   shopifyProductOfferVariables,
   amazonProductOfferVariables,
   amazonProductOfferQuery,
+  productFetchVariables,
 } from "./code_snippets";
 import { atomOneDark, atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { cloneDeep, merge } from "lodash";
@@ -256,13 +257,9 @@ export default function Index() {
   };
 
   const fetchProduct = () => {
+    if(!selectedProductID) { return }
     setIsFetchingProduct(true);
-    const variables = {
-      input: {
-        id: selectedProductID,
-        marketplace: data.requestedProduct.selectedMarketplace.valueOf().toUpperCase(),
-      },
-    };
+    const variables =  productFetchVariables(selectedProductID, data.requestedProduct.selectedMarketplace.valueOf().toUpperCase())
     makeGQLRequest(marketPlaceSelector(shopifyProductFetchQuery, amazonProductFetchQuery), variables)
       .then((res) => {
         setFetchProductResponse(res);
@@ -404,8 +401,8 @@ export default function Index() {
 
   const productOfferSnippet = marketPlaceSelector(
     shopifyProductOfferSnippet(
-      shopifyStoreCanonicalURL || "<SHOPIFY STORE CANONICAL URL>",
-      selectedShopifyProductVariant || "<SHOPIFY PRODUCT VARIANT ID>",
+      shopifyStoreCanonicalURL,
+      selectedShopifyProductVariant,
       {
         city: "San Francisco",
         stateCode: "CA",

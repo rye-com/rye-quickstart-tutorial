@@ -75,13 +75,7 @@ export const productFetchVariables = (productID: string, marketplace: string) =>
 }
 
 export const amazonProductFetchSnippet = (productID: string) => {
-  const variables = {
-    input: {
-      id: productID || "<YOUR AMAZON PRODUCT ID>",
-      marketplace: "AMAZON",
-    },
-  };
-  return formatQueryCode("fetchProduct", amazonProductFetchQuery, variables);
+  return formatQueryCode("fetchProduct", amazonProductOfferQuery, productFetchVariables(productID || "<AMAZON_PRODUCT_ID>", "AMAZON"));
 }
 
 
@@ -111,13 +105,7 @@ export const shopifyProductFetchQuery = `query DemoShopifyProductByID($input: Pr
 }`
 
 export const shopifyProductFetchSnippet = (productID: string) => {
-  const variables = {
-    input: {
-      id: productID || "<YOUR SHOPIFY PRODUCT ID>",
-      marketplace: "SHOPIFY",
-    },
-  };
-  return formatQueryCode("fetchProduct", shopifyProductFetchQuery, variables);
+  return formatQueryCode("fetchProduct", shopifyProductFetchQuery, productFetchVariables(productID || "<SHOPIFY_PRODUCT_ID>", "SHOPIFY"));
 }
 
 export const shopifyProductOfferQuery = `query ShopifyOffer($input: ShopifyOfferInput!) {
@@ -169,7 +157,7 @@ export const shopifyProductOfferVariables = (storeCanonicalURL: string, productV
   }
 };
 export const shopifyProductOfferSnippet = (storeCanonicalURL: string, productVariantID: string, { city, stateCode }: {city: string, stateCode: string}) => {
-  return formatQueryCode("fetchProductOffer", shopifyProductOfferQuery, shopifyProductOfferVariables(storeCanonicalURL, productVariantID, { city, stateCode }));
+  return formatQueryCode("fetchProductOffer", shopifyProductOfferQuery, shopifyProductOfferVariables(storeCanonicalURL || "<SHOPIFY_STORE_CANONICAL_URL>", productVariantID || "<SHOPIFY_PRODUCT_VARIANT_ID>", { city, stateCode }));
 }
 
 
