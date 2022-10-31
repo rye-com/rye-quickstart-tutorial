@@ -1094,7 +1094,7 @@ export default function Index() {
                               icon={AtSymbolIcon}
                               className="w-64 mt-3"
                               id="city"
-                              onChange={onProductIDChange}
+                              onChange={onCityChange}
                               value={data.address.city}
                               placeholder="San Francisco"
                             ></TextInput>
