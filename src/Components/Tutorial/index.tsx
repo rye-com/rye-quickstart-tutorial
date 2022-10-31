@@ -338,7 +338,7 @@ export default function Index() {
   };
 
   const fetchPaymentIntent = () => {
-    if(!data.requestedProduct.amazonProductID && !data.requestedProduct.shopifyProductID) {
+    if(!data.requestedProduct.amazonProductID && !selectedShopifyProductVariant) {
       console.log("No product ID"); // TODO: show error message
       return
     }
@@ -364,7 +364,7 @@ export default function Index() {
         "",
       ),
       amazonPaymentIntentVariables(
-        data.requestedProduct.amazonProductID,
+        data.requestedProduct.amazonProductID!,
         {
           firstName: data.address.firstName,
           lastName: data.address.lastName,
