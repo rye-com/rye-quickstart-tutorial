@@ -51,7 +51,7 @@ export const CheckoutForm = () => {
   return (
     <form className='mt-3 flex flex-col' onSubmit={handleSubmit}>
       <PaymentElement/>
-      <Button className="mt-3 px-3 self-center" disabled={!stripe || paymentInProgress}>
+      <Button type='submit' className="mt-3 px-3 self-center" disabled={!stripe || paymentInProgress}>
         {paymentInProgress ? <Spinner/ > : null}
         {paymentInProgress ? <span className='mx-3'>Paying...</span> : <span>Pay</span>}
       </Button>
