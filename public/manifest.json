@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Rye Tutorial",
+  "name": "Tutorial for building with the Rye API",
   "icons": [
     {
       "src": "favicon.ico",
