@@ -68,14 +68,14 @@ export const amazonProductFetchQuery = `query DemoAmazonProductFetch($input: Pro
 export const productFetchVariables = (productID: string, marketplace: string) => {
   return {
     input: {
-      productID: productID,
+      id: productID,
       marketplace: marketplace,
     },
   }
 }
 
-export const amazonProductFetchSnippet = (productID: string) => {
-  return formatQueryCode("fetchProduct", amazonProductOfferQuery, productFetchVariables(productID || "<AMAZON_PRODUCT_ID>", "AMAZON"));
+export const amazonProductFetchSnippet = (productID?: string) => {
+  return formatQueryCode("fetchProduct", amazonProductFetchQuery, productFetchVariables(productID || "<AMAZON_PRODUCT_ID>", "AMAZON"));
 }
 
 
@@ -104,7 +104,7 @@ export const shopifyProductFetchQuery = `query DemoShopifyProductByID($input: Pr
   }
 }`
 
-export const shopifyProductFetchSnippet = (productID: string) => {
+export const shopifyProductFetchSnippet = (productID?: string) => {
   return formatQueryCode("fetchProduct", shopifyProductFetchQuery, productFetchVariables(productID || "<SHOPIFY_PRODUCT_ID>", "SHOPIFY"));
 }
 
@@ -160,10 +160,6 @@ export const shopifyProductOfferSnippet = (storeCanonicalURL: string, productVar
   return formatQueryCode("fetchProductOffer", shopifyProductOfferQuery, shopifyProductOfferVariables(storeCanonicalURL || "<SHOPIFY_STORE_CANONICAL_URL>", productVariantID || "<SHOPIFY_PRODUCT_VARIANT_ID>", { city, stateCode }));
 }
 
-
-
-
-
 export const amazonProductOfferQuery = `query AmazonOffer {
   amazonOffer(input: {
     productID: "B08C1W5N87",
@@ -199,7 +195,7 @@ export const amazonProductOfferQuery = `query AmazonOffer {
   }
 }`
 
-export const amazonProductOfferVariables = (productID: string, { city, stateCode}: {city: string, stateCode: string}) => {
+export const amazonProductOfferVariables = ({ city, stateCode}: {city: string, stateCode: string}, productID: string) => {
   return {
     "input": {
       "productID": productID,
@@ -211,6 +207,151 @@ export const amazonProductOfferVariables = (productID: string, { city, stateCode
     }
   }
 };
-export const amazonProductOfferSnippet = (productID: string, { city, stateCode}: {city: string, stateCode: string}) => {
-  return formatQueryCode("fetchProductOffer", amazonProductOfferQuery, amazonProductOfferVariables(productID, { city, stateCode }));
+export const amazonProductOfferSnippet = ({ city, stateCode}: {city: string, stateCode: string}, productID?: string) => {
+  return formatQueryCode("fetchProductOffer", amazonProductOfferQuery, amazonProductOfferVariables({ city, stateCode }, productID || "<AMAZON_PRODUCT_ID>"));
 }
+
+export const shopifyPaymentIntentVariables = (
+  storeCanonicalURL: string,
+  productVariantID: string,
+  {
+    firstName,
+    lastName,
+    email,
+    phone,
+    address1,
+    address2,
+    city,
+    stateCode,
+    zipCode,
+  }: Address,
+  promoCode?: string,
+  shippingID?: string,
+  ) => {
+  return {
+    "input": {
+      "storeURL": storeCanonicalURL,
+      "variantID": productVariantID,
+      "address": {
+        "firstName": firstName,
+        "lastName": lastName,
+        "email": email,
+        "phone": phone,
+        "address1": address1,
+        "address2": address2,
+        "city": city,
+        "stateCode": stateCode,
+        "countryCode": "US",
+        "zip": zipCode,
+      },
+      "shippingID": shippingID,
+      "promoCode": promoCode,
+    }
+  }
+}
+export const shopifyPaymentIntentQuery = `mutation DemoShopifyPaymentIntent(
+  $input: CreateShopifyPaymentIntentInput!
+  ) {
+  createShopifyPaymentIntent(input: $input) {
+    clientSecret
+    publishableAPIKey
+  }
+}`
+
+export const shopifyPaymentIntentSnippet = (storeCanonicalURL: string, productVariantID: string, { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address, promoCode?: string, shippingID?: string) => {
+  return formatQueryCode("createPaymentIntent", shopifyPaymentIntentQuery, shopifyPaymentIntentVariables(storeCanonicalURL || "<SHOPIFY_STORE_CANONICAL_URL>", productVariantID || "<SHOPIFY_PRODUCT_VARIANT_ID>", { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode}, promoCode, shippingID));
+}
+
+
+export const amazonPaymentIntentVariables = (productID: string, { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address) => {
+  return {
+    "input": {
+      "productID": productID,
+      "address": {
+        "firstName": firstName,
+        "lastName": lastName,
+        "email": email,
+        "phone": phone,
+        "address1": address1,
+        "address2": address2,
+        "city": city,
+        "stateCode": stateCode,
+        "countryCode": "US",
+        "zip": zipCode,
+      },
+    }
+  }
+}
+export const amazonPaymentIntentQuery = `mutation DemoAmazonPaymentIntent(
+  $input: CreateAmazonPaymentIntentInput!
+  ) {
+  createAmazonPaymentIntent(input: $input) {
+    clientSecret
+    publishableAPIKey
+  }
+}`;
+
+export const amazonPaymentIntentSnippet = ({ firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode}: Address, productID?: string) => {
+  return formatQueryCode("createPaymentIntent", amazonPaymentIntentQuery, amazonPaymentIntentVariables(productID || "<AMAZON_PRODUCT_ID>", { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }));
+}
+
+export const checkoutFormCode = `import {Elements, useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js/pure';
+import {useState, useMemo} from 'react';
+
+export const App = () => {
+  const clientSecret = fetchPaymentIntentResponse?.createShopifyPaymentIntent?.clientSecret || fetchPaymentIntentResponse?.createAmazonPaymentIntent?.clientSecret;
+  const stripeAPIKey = fetchPaymentIntentResponse?.createShopifyPaymentIntent?.publishableAPIKey || fetchPaymentIntentResponse?.createAmazonPaymentIntent?.publishableAPIKey;
+
+  const stripePromise = useMemo(() => {
+    if(stripeAPIKey) {
+      return loadStripe(stripeAPIKey);
+    }
+
+  }, [stripeAPIKey])
+
+  return (
+    {stripePromise && clientSecret ?
+      <Elements  stripe={stripePromise} options={{clientSecret: clientSecret}}>
+        <CheckoutForm />
+      </Elements>
+    : <></>}
+  )
+}
+
+const CheckoutForm = () => {
+  const [paymentSucceeded, setPaymentSucceeded] = useState<boolean>(false)
+  const [paymentInProgress, setPaymentInProgress] = useState<boolean>(false)
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    setPaymentInProgress(true);
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return;
+    }
+
+    const result = await stripe.confirmPayment({
+      //Elements instance that was used to create the Payment Element
+      elements,
+      redirect: "if_required",
+    });
+
+    if (result.error) {
+      // Show error to your customer (for example, payment details incomplete)
+    } else {
+      setPaymentSucceeded(true);
+    }
+    setPaymentInProgress(false);
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+      <PaymentElement/>
+      <Button disabled={!stripe || paymentInProgress}></Button>
+    </form>
+  )
+};`

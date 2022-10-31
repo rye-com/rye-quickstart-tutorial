@@ -1,9 +1,13 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import ApiKeyDarkImage from "./rye-api-key-dark.png";
 import ApiKeyLightImage from "./rye-api-key-light.png";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { Badge, Button, Card, Flowbite, Label, Select, Spinner, Tabs, TextInput, Timeline } from "flowbite-react";
 import { KeyIcon, AtSymbolIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js/pure';
+
+
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {
   amazonProductFetchQuery,
@@ -20,10 +24,19 @@ import {
   amazonProductOfferVariables,
   amazonProductOfferQuery,
   productFetchVariables,
+  amazonProductOfferSnippet,
+  shopifyPaymentIntentSnippet,
+  amazonPaymentIntentSnippet,
+  shopifyPaymentIntentVariables,
+  amazonPaymentIntentVariables,
+  shopifyPaymentIntentQuery,
+  amazonPaymentIntentQuery,
+  checkoutFormCode,
 } from "./code_snippets";
 import { atomOneDark, atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { cloneDeep, merge } from "lodash";
 import { GraphQLClient } from "graphql-request";
+import { CheckoutForm } from "../CheckoutForm";
 
 type APIConfiguration = {
   key: string;
@@ -49,10 +62,7 @@ type Store = {
     amazonProductID?: string;
     selectedMarketplace: Marketplace;
   };
-  address: {
-    stateCode: string;
-    city: string;
-  };
+  address: Address;
 };
 
 function detectThemePreference(): string {
@@ -79,8 +89,15 @@ const defaultStore: Store = {
   address: JSON.parse(
     window.localStorage?.getItem("address") ||
       JSON.stringify({
-        city: "San Francisco",
+        firstName: "Will",
+        lastName: "Smith",
+        address1: "Bel Air Mansion",
+        address2: "",
+        city: "Beverly Hills",
         stateCode: "CA",
+        zipCode: "90210",
+        phone: "1234567890",
+        email: "tutorial@rye.com",
       })
   ),
 };
@@ -151,21 +168,36 @@ export const useDebouncedEffect = (effect: any, deps: Array<any>, delay: number)
 
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
+  
   const [isRequestingProduct, setIsRequestingProduct] = useState<boolean>(false);
   const [isFetchingProduct, setIsFetchingProduct] = useState<boolean>(false);
   const [isFetchingProductOffers, setIsFetchingProductOffers] = useState<boolean>(false);
+  const [isFetchingPaymentIntent, setIsFetchingPaymentIntent] = useState<boolean>(false);
+
   const [requestProductResponse, setRequestProductResponse] = useState<any | null>(null);
   const [fetchProductResponse, setFetchProductResponse] = useState<any | null>(null);
   const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<any | null>(null);
+  const [fetchPaymentIntentResponse, setFetchPaymentIntentResponse] = useState<any | null>(null);
+  
   const [isValidAPIKey, setIsValidAPIKey] = useState<boolean>(false);
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(false);
   const [selectedShopifyProductVariant, setSelectedShopifyProductVariant] = useState<string>("");
   const [shopifyStoreCanonicalURL, setShopifyStoreCanonicalURL] = useState<string>("");
 
+  const clientSecret = fetchPaymentIntentResponse?.createShopifyPaymentIntent?.clientSecret || fetchPaymentIntentResponse?.createAmazonPaymentIntent?.clientSecret;
+  const stripeAPIKey = fetchPaymentIntentResponse?.createShopifyPaymentIntent?.publishableAPIKey || fetchPaymentIntentResponse?.createAmazonPaymentIntent?.publishableAPIKey;
+
+  const stripePromise = useMemo(() => {
+    if(stripeAPIKey) {
+      return loadStripe(stripeAPIKey);
+    }
+
+  }, [stripeAPIKey])
+
   const marketPlaceSelector = <T,V>(shopifyVar: T, amazonVar: V): T | V => {
     if (data.requestedProduct.selectedMarketplace === Marketplace.Shopify) {
       return shopifyVar;
-    } else {
+    } else {  
       return amazonVar;
     }
   };
@@ -278,6 +310,7 @@ export default function Index() {
   };
 
   const fetchProductOffers = () => {
+    if(!selectedProductID) { return }
     setIsFetchingProductOffers(true);
     // Add more field validation here to skip request on validation failures
     // 
@@ -290,7 +323,7 @@ export default function Index() {
             stateCode: data.address.stateCode,
           }
         ),
-        amazonProductOfferVariables(selectedProductID || "", { city: data.address.city, stateCode: data.address.stateCode })
+        amazonProductOfferVariables({ city: data.address.city, stateCode: data.address.stateCode }, selectedProductID)
     )
     makeGQLRequest(marketPlaceSelector(shopifyProductOfferQuery, amazonProductOfferQuery), variables)
       .then((res) => {
@@ -304,20 +337,81 @@ export default function Index() {
       });
   };
 
+  const fetchPaymentIntent = () => {
+    if(!data.requestedProduct.amazonProductID) { return }
+    setIsFetchingPaymentIntent(true);
+    // Add more field validation here to skip request on validation failures
+    // 
+    const variables: any = marketPlaceSelector(
+      shopifyPaymentIntentVariables(
+        shopifyStoreCanonicalURL,
+        selectedShopifyProductVariant,
+        {
+          firstName: data.address.firstName,
+          lastName: data.address.lastName,
+          address1: data.address.address1,
+          address2: data.address.address2,
+          phone: data.address.phone,
+          email: data.address.email,
+          city: data.address.city,
+          stateCode: data.address.stateCode,
+          zipCode: data.address.zipCode,
+        },
+        "",
+        "",
+      ),
+      amazonPaymentIntentVariables(
+        data.requestedProduct.amazonProductID,
+        {
+          firstName: data.address.firstName,
+          lastName: data.address.lastName,
+          address1: data.address.address1,
+          address2: data.address.address2,
+          phone: data.address.phone,
+          email: data.address.email,
+          city: data.address.city,
+          stateCode: data.address.stateCode,
+          zipCode: data.address.zipCode,
+        }
+      ),
+    )
+    makeGQLRequest(marketPlaceSelector(shopifyPaymentIntentQuery, amazonPaymentIntentQuery), variables)
+      .then((res) => {
+        setFetchPaymentIntentResponse(res);
+      })
+      .catch((error) => {
+        setFetchPaymentIntentResponse(error);
+      })
+      .finally(() => {
+        setIsFetchingPaymentIntent(false);
+      });
+  };
+
   const onAPIKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateData({ apiConfig: { key: e.target.value } });
   };
+
+  const onAddressFieldChangeFn = (field: keyof Address) => (e: React.ChangeEvent) => {
+    const data = { address: { [field]: (e.target as HTMLInputElement).value } };
+    updateData(data);
+  }
+
+  const onCityChange = onAddressFieldChangeFn("city");
+  const onStateCodeChange = onAddressFieldChangeFn("stateCode");
+  const onFirstNameChange = onAddressFieldChangeFn("firstName");
+  const onLastNameChange = onAddressFieldChangeFn("lastName");
+  const onAddressOneChange = onAddressFieldChangeFn("address1");
+  const onAddressTwoChange = onAddressFieldChangeFn("address2");
+  const onZipCodeChange = onAddressFieldChangeFn("zipCode");
+  const onPhoneChange = onAddressFieldChangeFn("phone");
+  const onEmailChange = onAddressFieldChangeFn("email");
+
 
   const onProductURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateData({ requestedProduct: { productURL: e.target.value } });
   };
 
-  const onStateCodeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    updateData({ address: { stateCode: e.target.value } });
-  };
-
   const onProductVariantChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    console.log("trigger w/ value: ", e.target.value);
     setSelectedShopifyProductVariant(e.target.value);
   };
 
@@ -388,13 +482,13 @@ export default function Index() {
 
   const initClientSnippet = initializeClientSnippet(data.apiConfig.key || "<RYE_API_KEY>");
   const requestedProductSnippet = requestProductSnippet(
-    data.requestedProduct?.productURL || "",
+    data.requestedProduct?.productURL,
     data.requestedProduct?.selectedMarketplace
   );
   const requestedProductSnippetLineNumber = initClientSnippet.split("\n").length + 1;
   const productFetchSnippet = marketPlaceSelector(
-    shopifyProductFetchSnippet(data.requestedProduct.shopifyProductID || ""),
-    amazonProductFetchSnippet(data.requestedProduct.amazonProductID || "")
+    shopifyProductFetchSnippet(data.requestedProduct.shopifyProductID),
+    amazonProductFetchSnippet(data.requestedProduct.amazonProductID)
   );
   const productFetchSnippetLineNumber = requestedProductSnippet.split("\n").length + requestedProductSnippetLineNumber;
 
@@ -403,13 +497,50 @@ export default function Index() {
       shopifyStoreCanonicalURL,
       selectedShopifyProductVariant,
       {
-        city: "San Francisco",
-        stateCode: "CA",
+        city: data.address.city,
+        stateCode: data.address.stateCode,
       }
     ),
-    amazonProductFetchSnippet(data.requestedProduct.amazonProductID || "")
+    amazonProductOfferSnippet({
+        city: data.address.city,
+        stateCode: data.address.stateCode,
+      },
+      data.requestedProduct.amazonProductID,
+    )
   );
   const productOfferSnippetLineNumber = productFetchSnippet.split("\n").length + productFetchSnippetLineNumber;
+  const paymentIntentSnippet = marketPlaceSelector(
+    shopifyPaymentIntentSnippet(
+      shopifyStoreCanonicalURL,
+      selectedShopifyProductVariant,
+      {
+        firstName: data.address.firstName,
+        lastName: data.address.lastName,
+        address1: data.address.address1,
+        address2: data.address.address2,
+        phone: data.address.phone,
+        email: data.address.email,
+        city: data.address.city,
+        stateCode: data.address.stateCode,
+        zipCode: data.address.zipCode,
+      },
+      '',
+      '',
+    ),
+    amazonPaymentIntentSnippet({
+        firstName: data.address.firstName,
+        lastName: data.address.lastName,
+        address1: data.address.address1,
+        address2: data.address.address2,
+        phone: data.address.phone,
+        email: data.address.email,
+        city: data.address.city,
+        stateCode: data.address.stateCode,
+        zipCode: data.address.zipCode,
+    }, data.requestedProduct.amazonProductID)
+  );
+  const paymentIntentSnippetLineNumber = productOfferSnippet.split("\n").length + productOfferSnippetLineNumber 
+
 
   const shopifyOfferFields = () => (
     <div>
@@ -453,7 +584,6 @@ export default function Index() {
       ></TextInput>
     </div>
   )
-
 
   return (
     <div
@@ -758,7 +888,7 @@ export default function Index() {
                     <CustomTimelineBody>
                       <Timeline.Point />
                       <div>
-                      {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
+                        {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
                         <div className="flex mt-3">
                           <div>
                             <Label htmlFor="city" value="City" />
@@ -766,7 +896,7 @@ export default function Index() {
                               icon={AtSymbolIcon}
                               className="w-64 mt-3"
                               id="city"
-                              onChange={onProductIDChange}
+                              onChange={onCityChange}
                               value={data.address.city}
                               placeholder="San Francisco"
                             ></TextInput>
@@ -847,6 +977,235 @@ export default function Index() {
                       dataTheme={currentTheme}
                       startingLineNumber={productOfferSnippetLineNumber}
                       codeString={productOfferSnippet}
+                    ></CustomCodeBlock>
+                  </div>
+                </div>
+              </Timeline.Content>
+            </Timeline.Item>
+            <Timeline.Item>
+              <Timeline.Content>
+                <div className="flex">
+                  <Card className="max-w-xl self-baseline">
+                    <Timeline.Title>Fetch payment intent to perform Stripe checkout</Timeline.Title>
+                    <CustomTimelineBody>
+                      <Timeline.Point icon={AtSymbolIcon} />
+                      <div className="py-1">
+                        You can use the offers query to display a sample checkout for the item. This is useful for
+                        showing estimated taxes, and any shipping costs
+                      </div>
+                    </CustomTimelineBody>
+                    <CustomTimelineBody>
+                      <Timeline.Point />
+                      <div>
+                      {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
+                      <div className="flex mt-3">
+                          <div>
+                            <Label htmlFor="first_name" value="First Name" />
+                            <TextInput
+                              icon={AtSymbolIcon}
+                              className="w-64 mt-3"
+                              id="first_name"
+                              onChange={onFirstNameChange}
+                              value={data.address.firstName}
+                              placeholder="Will"
+                            />
+                          </div>
+                          <div className="mx-3">
+                            <Label htmlFor="last_name" value="Last Name" />
+                            <TextInput
+                              icon={AtSymbolIcon}
+                              className="w-64 mt-3"
+                              id="last_name"
+                              onChange={onLastNameChange}
+                              value={data.address.lastName}
+                              placeholder="Smith"
+                            />
+                          </div>
+                        </div>
+                        <div className="mt-3">
+                          <Label htmlFor="address_one" value="Address Line 1" />
+                          <TextInput
+                            icon={AtSymbolIcon}
+                            className="w-full mt-3"
+                            id="address_one"
+                            onChange={onAddressOneChange}
+                            value={data.address.address1}
+                            placeholder="Bel Air Mansion"
+                          />
+                        </div>
+                        <div className="flex">
+                          <div className="mt-3">
+                            <Label htmlFor="address_two" value="Address Line 2" />
+                            <TextInput
+                              icon={AtSymbolIcon}
+                              className="w-64 mt-3"
+                              id="address_two"
+                              onChange={onAddressTwoChange}
+                              value={data.address.address2}
+                              placeholder=""
+                            />
+                          </div>
+                          <div className="mx-3 mt-3">
+                            <Label htmlFor="zip_code" value="Address Line 2" />
+                            <TextInput
+                              type="text"
+                              icon={AtSymbolIcon}
+                              className="w-64 mt-3"
+                              id="zip_code"
+                              onChange={onZipCodeChange}
+                              value={data.address.zipCode}
+                              placeholder=""
+                            />
+                          </div>
+                        </div>
+                        <div className="flex mt-3">
+                          <div>
+                            <Label htmlFor="email" value="Email" />
+                            <TextInput
+                            type="email"
+                              icon={AtSymbolIcon}
+                              className="w-64 mt-3"
+                              id="email"
+                              onChange={onEmailChange}
+                              value={data.address.email}
+                              placeholder="jane-smith@email.com"
+                            />
+                          </div>
+                          <div className="mx-3">
+                            <Label htmlFor="phone" value="Phone" />
+                            <TextInput
+                              type="tel"
+                              icon={AtSymbolIcon}
+                              className="w-64 mt-3"
+                              id="phone"
+                              onChange={onPhoneChange}
+                              value={data.address.phone}
+                              placeholder="123-456-7890"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex mt-3">
+                          <div>
+                            <Label htmlFor="city" value="City" />
+                            <TextInput
+                              icon={AtSymbolIcon}
+                              className="w-64 mt-3"
+                              id="city"
+                              onChange={onProductIDChange}
+                              value={data.address.city}
+                              placeholder="San Francisco"
+                            ></TextInput>
+                          </div>
+                          <div className="ml-3">
+                            <Label className="mt-3" htmlFor="product_id_offers" value="State" />
+                            <Select onChange={onStateCodeChange} value={data.address.stateCode} className="mt-3 w-24">
+                              <option value="AL">AL</option>
+                              <option value="AK">AK</option>
+                              <option value="AR">AR</option>
+                              <option value="AZ">AZ</option>
+                              <option value="CA">CA</option>
+                              <option value="CO">CO</option>
+                              <option value="CT">CT</option>
+                              <option value="DE">DE</option>
+                              <option value="FL">FL</option>
+                              <option value="GA">GA</option>
+                              <option value="HI">HI</option>
+                              <option value="IA">IA</option>
+                              <option value="ID">ID</option>
+                              <option value="IL">IL</option>
+                              <option value="IN">IN</option>
+                              <option value="KS">KS</option>
+                              <option value="KY">KY</option>
+                              <option value="LA">LA</option>
+                              <option value="MA">MA</option>
+                              <option value="MD">MD</option>
+                              <option value="ME">ME</option>
+                              <option value="MI">MI</option>
+                              <option value="MN">MN</option>
+                              <option value="MO">MO</option>
+                              <option value="MS">MS</option>
+                              <option value="MT">MT</option>
+                              <option value="NC">NC</option>
+                              <option value="ND">ND</option>
+                              <option value="NE">NE</option>
+                              <option value="NH">NH</option>
+                              <option value="NJ">NJ</option>
+                              <option value="NM">NM</option>
+                              <option value="NV">NV</option>
+                              <option value="NY">NY</option>
+                              <option value="OH">OH</option>
+                              <option value="OK">OK</option>
+                              <option value="OR">OR</option>
+                              <option value="PA">PA</option>
+                              <option value="RI">RI</option>
+                              <option value="SC">SC</option>
+                              <option value="SD">SD</option>
+                              <option value="TN">TN</option>
+                              <option value="TX">TX</option>
+                              <option value="UT">UT</option>
+                              <option value="VA">VA</option>
+                              <option value="VT">VT</option>
+                              <option value="WA">WA</option>
+                              <option value="WI">WI</option>
+                              <option value="WV">WV</option>
+                              <option value="WY">WY</option>
+                            </Select>
+                          </div>
+                          <div className="w-full flex">
+                            <Button
+                              style={{ width: 150, height: 40, maxHeight: 40 }}
+                              onClick={fetchPaymentIntent}
+                              className="self-end mx-3"
+                              disabled={isFetchingProduct}
+                            >
+                              {!isFetchingPaymentIntent ? "Fetch" : <Spinner style={{ maxHeight: 30 }} />}
+                            </Button>
+                          </div>
+                        </div>
+                        <RequestResponseCodeBlock response={fetchPaymentIntentResponse} />
+                      </div>
+                    </CustomTimelineBody>
+                  </Card>
+                  <div className="mx-3 max-w-xl overflow-scroll">
+                    <CustomCodeBlock
+                      showLineNumbers={true}
+                      dataTheme={currentTheme}
+                      startingLineNumber={paymentIntentSnippetLineNumber}
+                      codeString={paymentIntentSnippet}
+                    ></CustomCodeBlock>
+                  </div>
+                </div>
+              </Timeline.Content>
+            </Timeline.Item>
+            <Timeline.Item>
+              <Timeline.Content>
+                <div className="flex">
+                  <Card className="max-w-xl self-baseline">
+                    <Timeline.Title>Perform checkout</Timeline.Title>
+                    <CustomTimelineBody>
+                      <div className="py-1">
+                        Fetch a payment intent to display a Stripe checkout form. The stripe payment form will use Rye's Stripe account
+                        to accept payment for the item.
+                      </div>
+                      <Timeline.Point icon={AtSymbolIcon} />
+                      {stripePromise && clientSecret ?
+                        <Elements  stripe={stripePromise} options={{
+                          clientSecret: clientSecret,
+                          appearance: {
+                            theme: currentTheme === Theme.Dark ? "night" : "flat",
+                          }
+                        }}>
+                          <CheckoutForm />
+                        </Elements>
+                      : null}
+                    </CustomTimelineBody>
+                  </Card>
+                  <div className="mx-3 max-w-2xl overflow-scroll">
+                    <CustomCodeBlock
+                      showLineNumbers={true}
+                      dataTheme={currentTheme}
+                      startingLineNumber={1}
+                      codeString={checkoutFormCode}
                     ></CustomCodeBlock>
                   </div>
                 </div>
