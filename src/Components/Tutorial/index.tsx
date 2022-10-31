@@ -338,7 +338,10 @@ export default function Index() {
   };
 
   const fetchPaymentIntent = () => {
-    if(!data.requestedProduct.amazonProductID) { return }
+    if(!data.requestedProduct.amazonProductID && !data.requestedProduct.shopifyProductID) {
+      console.log("No product ID"); // TODO: show error message
+      return
+    }
     setIsFetchingPaymentIntent(true);
     // Add more field validation here to skip request on validation failures
     // 
