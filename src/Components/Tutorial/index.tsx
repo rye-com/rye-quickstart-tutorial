@@ -128,14 +128,12 @@ function CustomCodeBlock({
   showLineNumbers = false,
   startingLineNumber = 1,
   style = {},
-  ...rest
 }: {
   language?: string;
   codeString: string;
   dataTheme: Theme;
   showLineNumbers?: boolean;
   startingLineNumber?: number;
-  rest?: any;
   style?: React.CSSProperties;
 }) {
   const theme = dataTheme === Theme.Dark.valueOf() ? atomOneDark : atomOneLight;
@@ -484,9 +482,6 @@ export default function Index() {
         dataTheme={currentTheme}
         codeString={prettyJSON}
         language="json"
-        rest={{
-          wrapLines: true,
-        }}
       ></CustomCodeBlock>
     );
   };
