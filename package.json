@@ -37,6 +37,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "type-check": "tsc --noEmit --pretty",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

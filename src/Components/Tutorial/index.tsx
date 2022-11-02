@@ -15,7 +15,7 @@ import {
   Timeline,
 } from 'flowbite-react';
 import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from '@heroicons/react/24/solid';
-import { Elements } from '@stripe/react-stripe-js';
+import { Elements as StripeElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
@@ -48,6 +48,8 @@ import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/sty
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
 import { CheckoutForm } from '../CheckoutForm';
+import type { RecursivePartial } from '../../types/utils/RecursivePartial';
+import type { Address } from '../../types/api-data/Address';
 
 type APIConfiguration = {
   key: string;
@@ -126,14 +128,12 @@ function CustomCodeBlock({
   showLineNumbers = false,
   startingLineNumber = 1,
   style = {},
-  ...rest
 }: {
   language?: string;
   codeString: string;
   dataTheme: Theme;
   showLineNumbers?: boolean;
   startingLineNumber?: number;
-  rest?: any;
   style?: React.CSSProperties;
 }) {
   const theme = dataTheme === Theme.Dark.valueOf() ? atomOneDark : atomOneLight;
@@ -202,9 +202,14 @@ export default function Index() {
     fetchPaymentIntentResponse?.createShopifyPaymentIntent?.publishableAPIKey ||
     fetchPaymentIntentResponse?.createAmazonPaymentIntent?.publishableAPIKey;
 
-  const stripePromise = useMemo(() => {
+  type StripeProp = Parameters<typeof StripeElements>[0]['stripe'];
+
+  const stripePromise: StripeProp = useMemo(() => {
     if (stripeAPIKey) {
       return loadStripe(stripeAPIKey);
+    } else {
+      console.warn('stripeAPIKey is falsy:', stripeAPIKey);
+      return null;
     }
   }, [stripeAPIKey]);
 
@@ -244,10 +249,10 @@ export default function Index() {
       },
     };
     makeGQLRequest(amazonProductFetchQuery, variables)
-      .then((result) => {
+      .then((_result) => {
         setIsValidAPIKey(true);
       })
-      .catch((error) => {
+      .catch((_error) => {
         setIsValidAPIKey(false);
       })
       .finally(() => {
@@ -477,9 +482,6 @@ export default function Index() {
         dataTheme={currentTheme}
         codeString={prettyJSON}
         language="json"
-        rest={{
-          wrapLines: true,
-        }}
       ></CustomCodeBlock>
     );
   };
@@ -608,6 +610,7 @@ export default function Index() {
       <Label htmlFor="offers_product_id" value="Enter product ID" className="mt-10" />
       <TextInput
         value={selectedProductID || ''}
+        // @ts-expect-error - TS2322 - "color props are not compatible with exactOptionalPropertyTypes: true" - shouldn't really matter, as long as js is checking for truthiness
         icon={BarcodeIcon}
         className="w-full mt-3"
         id="offers_product_id"
@@ -905,6 +908,7 @@ export default function Index() {
                         <div className="flex my-3">
                           <TextInput
                             value={selectedProductID || ''}
+                            // @ts-expect-error - TS2322 - "color props are not compatible with exactOptionalPropertyTypes: true" - shouldn't really matter, as long as js is checking for truthiness
                             icon={BarcodeIcon}
                             className="w-full"
                             id="fetch_product_id"
@@ -1258,7 +1262,7 @@ export default function Index() {
                       </div>
                       <Timeline.Point />
                       {stripePromise && clientSecret ? (
-                        <Elements
+                        <StripeElements
                           stripe={stripePromise}
                           options={{
                             clientSecret: clientSecret,
@@ -1268,7 +1272,7 @@ export default function Index() {
                           }}
                         >
                           <CheckoutForm />
-                        </Elements>
+                        </StripeElements>
                       ) : null}
                     </CustomTimelineBody>
                   </Card>

@@ -1,3 +1,5 @@
+import type { Address } from '../../types/api-data/Address';
+
 const indent = (code: string) => {
   const split = code.split('\n');
   // no need to indent single line code
@@ -26,7 +28,7 @@ export const initializeClientSnippet = (RYE_API_TOKEN: string) =>
   `import { GraphQLClient, gql } from 'graphql-request'
 const API_KEY = '${RYE_API_TOKEN}'
 
-const endpoint = 'https://graphql.api.rye.com/v1/query'B000NQ10FK
+const endpoint = 'https://graphql.api.rye.com/v1/query'
 const client = new GraphQLClient(endpoint)
 const headers = {
   'Authorization': 'Basic ' + Buffer.from(API_KEY + ':').toString('base64'),
