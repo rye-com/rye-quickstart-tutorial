@@ -615,6 +615,7 @@ export default function Index() {
       <Label htmlFor="offers_product_id" value="Enter product ID" className="mt-10" />
       <TextInput
         value={selectedProductID || ''}
+        // @ts-expect-error - TS2322 - "color props are not compatible with exactOptionalPropertyTypes: true" - shouldn't really matter, as long as js is checking for truthiness
         icon={BarcodeIcon}
         className="w-full mt-3"
         id="offers_product_id"
@@ -912,6 +913,7 @@ export default function Index() {
                         <div className="flex my-3">
                           <TextInput
                             value={selectedProductID || ''}
+                            // @ts-expect-error - TS2322 - "color props are not compatible with exactOptionalPropertyTypes: true" - shouldn't really matter, as long as js is checking for truthiness
                             icon={BarcodeIcon}
                             className="w-full"
                             id="fetch_product_id"
