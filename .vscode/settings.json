@@ -39,5 +39,13 @@
     "editor.formatOnSave": false,
     "editor.codeActionsOnSave": ["source.fixAll.eslint", "source.formatDocument"]
   },
-  "cSpell.words": []
+  "cSpell.words": [
+    "Flowbite",
+    "heroicons",
+    "hljs",
+    "preinstall",
+    "quickstart",
+    "tabitem",
+    "tailwindcss"
+  ]
 }
