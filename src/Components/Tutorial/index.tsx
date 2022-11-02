@@ -15,7 +15,7 @@ import {
   Timeline,
 } from 'flowbite-react';
 import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from '@heroicons/react/24/solid';
-import { Elements } from '@stripe/react-stripe-js';
+import { Elements as StripeElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
@@ -204,7 +204,7 @@ export default function Index() {
     fetchPaymentIntentResponse?.createShopifyPaymentIntent?.publishableAPIKey ||
     fetchPaymentIntentResponse?.createAmazonPaymentIntent?.publishableAPIKey;
 
-  type StripeProp = Parameters<typeof Elements>[0]['stripe'];
+  type StripeProp = Parameters<typeof StripeElements>[0]['stripe'];
 
   const stripePromise: StripeProp = useMemo(() => {
     if (stripeAPIKey) {
@@ -1265,7 +1265,7 @@ export default function Index() {
                       </div>
                       <Timeline.Point />
                       {stripePromise && clientSecret ? (
-                        <Elements
+                        <StripeElements
                           stripe={stripePromise}
                           options={{
                             clientSecret: clientSecret,
@@ -1275,7 +1275,7 @@ export default function Index() {
                           }}
                         >
                           <CheckoutForm />
-                        </Elements>
+                        </StripeElements>
                       ) : null}
                     </CustomTimelineBody>
                   </Card>
