@@ -3,9 +3,7 @@ import './App.css';
 import Tutorial from './Components/Tutorial';
 
 function App() {
-  return (
-    <Tutorial />
-  );
+  return <Tutorial />;
 }
 
 export default App;

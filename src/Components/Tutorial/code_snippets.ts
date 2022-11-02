@@ -1,21 +1,26 @@
 const indent = (code: string) => {
-  const split = code.split('\n')
+  const split = code.split('\n');
   // no need to indent single line code
-  if(split.length === 1) return code;
-  return split[0] + '\n' + split.slice(1, split.length).map(line => `  ${line}`).join('\n');
-}
+  if (split.length === 1) return code;
+  return (
+    split[0] +
+    '\n' +
+    split
+      .slice(1, split.length)
+      .map((line) => `  ${line}`)
+      .join('\n')
+  );
+};
 
 const formatQueryCode = (fnName: string, query: string, variables: object) => {
-  return (
-`function ${fnName}() {
+  return `function ${fnName}() {
   const variables = ${indent(JSON.stringify(variables, null, 2))};
   const query = gql\`${indent(query)}\`;
   const data = await client.request(query, variables, headers)
   console.log(JSON.stringify(data, undefined, 2))
 }
-${fnName}();`
-  );
-}
+${fnName}();`;
+};
 
 export const initializeClientSnippet = (RYE_API_TOKEN: string) =>
   `import { GraphQLClient, gql } from 'graphql-request'
@@ -26,7 +31,6 @@ const client = new GraphQLClient(endpoint)
 const headers = {
   'Authorization': 'Basic ' + Buffer.from(API_KEY + ':').toString('base64'),
 }`;
-
 
 export const requestProductQuery = `mutation RequestProductByURL(
   $input: RequestProductByURLInput!
@@ -41,10 +45,14 @@ export const requestProductVariables = (productURL: string, marketplace: string)
       url: productURL,
       marketplace: marketplace,
     },
-  }
+  };
 };
 export const requestProductSnippet = (productURL: string, marketplace: string) => {
-  return formatQueryCode("requestProduct", requestProductQuery, requestProductVariables(productURL, marketplace));
+  return formatQueryCode(
+    'requestProduct',
+    requestProductQuery,
+    requestProductVariables(productURL, marketplace),
+  );
 };
 
 export const amazonProductFetchQuery = `query DemoAmazonProductFetch($input: ProductByIDInput!) {
@@ -63,7 +71,7 @@ export const amazonProductFetchQuery = `query DemoAmazonProductFetch($input: Pro
       ASIN
     }
   }
-}`
+}`;
 
 export const productFetchVariables = (productID: string, marketplace: string) => {
   return {
@@ -71,13 +79,16 @@ export const productFetchVariables = (productID: string, marketplace: string) =>
       id: productID,
       marketplace: marketplace,
     },
-  }
-}
+  };
+};
 
 export const amazonProductFetchSnippet = (productID?: string) => {
-  return formatQueryCode("fetchProduct", amazonProductFetchQuery, productFetchVariables(productID || "<AMAZON_PRODUCT_ID>", "AMAZON"));
-}
-
+  return formatQueryCode(
+    'fetchProduct',
+    amazonProductFetchQuery,
+    productFetchVariables(productID || '<AMAZON_PRODUCT_ID>', 'AMAZON'),
+  );
+};
 
 export const shopifyProductFetchQuery = `query DemoShopifyProductByID($input: ProductByIDInput!) {
   product: productByID(input: $input) {
@@ -102,11 +113,15 @@ export const shopifyProductFetchQuery = `query DemoShopifyProductByID($input: Pr
       storeCanonicalURL
     }
   }
-}`
+}`;
 
 export const shopifyProductFetchSnippet = (productID?: string) => {
-  return formatQueryCode("fetchProduct", shopifyProductFetchQuery, productFetchVariables(productID || "<SHOPIFY_PRODUCT_ID>", "SHOPIFY"));
-}
+  return formatQueryCode(
+    'fetchProduct',
+    shopifyProductFetchQuery,
+    productFetchVariables(productID || '<SHOPIFY_PRODUCT_ID>', 'SHOPIFY'),
+  );
+};
 
 export const shopifyProductOfferQuery = `query ShopifyOffer($input: ShopifyOfferInput!) {
   shopifyOffer(input: $input) {
@@ -140,25 +155,40 @@ export const shopifyProductOfferQuery = `query ShopifyOffer($input: ShopifyOffer
       }
     }
   }
-}`
+}`;
 
-
-export const shopifyProductOfferVariables = (storeCanonicalURL: string, productVariantID: string, { city, stateCode }: {city: string, stateCode: string}) => {
+export const shopifyProductOfferVariables = (
+  storeCanonicalURL: string,
+  productVariantID: string,
+  { city, stateCode }: { city: string; stateCode: string },
+) => {
   return {
-    "input": {
-      "variantID": productVariantID,
-      "storeURL": storeCanonicalURL,
-      "location": {
-        "city": city,
-        "stateCode": stateCode,
-        "countryCode": "US"
-      }
-    }
-  }
+    input: {
+      variantID: productVariantID,
+      storeURL: storeCanonicalURL,
+      location: {
+        city: city,
+        stateCode: stateCode,
+        countryCode: 'US',
+      },
+    },
+  };
 };
-export const shopifyProductOfferSnippet = (storeCanonicalURL: string, productVariantID: string, { city, stateCode }: {city: string, stateCode: string}) => {
-  return formatQueryCode("fetchProductOffer", shopifyProductOfferQuery, shopifyProductOfferVariables(storeCanonicalURL || "<SHOPIFY_STORE_CANONICAL_URL>", productVariantID || "<SHOPIFY_PRODUCT_VARIANT_ID>", { city, stateCode }));
-}
+export const shopifyProductOfferSnippet = (
+  storeCanonicalURL: string,
+  productVariantID: string,
+  { city, stateCode }: { city: string; stateCode: string },
+) => {
+  return formatQueryCode(
+    'fetchProductOffer',
+    shopifyProductOfferQuery,
+    shopifyProductOfferVariables(
+      storeCanonicalURL || '<SHOPIFY_STORE_CANONICAL_URL>',
+      productVariantID || '<SHOPIFY_PRODUCT_VARIANT_ID>',
+      { city, stateCode },
+    ),
+  );
+};
 
 export const amazonProductOfferQuery = `query AmazonOffer {
   amazonOffer(input: {
@@ -193,62 +223,62 @@ export const amazonProductOfferQuery = `query AmazonOffer {
       }
     }
   }
-}`
+}`;
 
-export const amazonProductOfferVariables = ({ city, stateCode}: {city: string, stateCode: string}, productID: string) => {
+export const amazonProductOfferVariables = (
+  { city, stateCode }: { city: string; stateCode: string },
+  productID: string,
+) => {
   return {
-    "input": {
-      "productID": productID,
-      "location": {
-        "city": city,
-        "stateCode": stateCode,
-        "countryCode": "US"
-      }
-    }
-  }
+    input: {
+      productID: productID,
+      location: {
+        city: city,
+        stateCode: stateCode,
+        countryCode: 'US',
+      },
+    },
+  };
 };
-export const amazonProductOfferSnippet = ({ city, stateCode}: {city: string, stateCode: string}, productID?: string) => {
-  return formatQueryCode("fetchProductOffer", amazonProductOfferQuery, amazonProductOfferVariables({ city, stateCode }, productID || "<AMAZON_PRODUCT_ID>"));
-}
+export const amazonProductOfferSnippet = (
+  { city, stateCode }: { city: string; stateCode: string },
+  productID?: string,
+) => {
+  return formatQueryCode(
+    'fetchProductOffer',
+    amazonProductOfferQuery,
+    amazonProductOfferVariables({ city, stateCode }, productID || '<AMAZON_PRODUCT_ID>'),
+  );
+};
 
 export const shopifyPaymentIntentVariables = (
   storeCanonicalURL: string,
   productVariantID: string,
-  {
-    firstName,
-    lastName,
-    email,
-    phone,
-    address1,
-    address2,
-    city,
-    stateCode,
-    zipCode,
-  }: Address,
+  { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address,
   promoCode?: string,
   shippingID?: string,
-  ) => {
+) => {
   return {
-    "input": {
-      "storeURL": storeCanonicalURL,
-      "variantID": productVariantID,
-      "address": {
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "phone": phone,
-        "address1": address1,
-        "address2": address2,
-        "city": city,
-        "stateCode": stateCode,
-        "countryCode": "US",
-        "zip": zipCode,
+    input: {
+      storeURL: storeCanonicalURL,
+      variantID: productVariantID,
+      address: {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        address1: address1,
+        address2: address2,
+        city: city,
+        stateCode: stateCode,
+        countryCode: 'US',
+        zip: zipCode,
       },
-      "shippingID": shippingID,
-      "promoCode": promoCode,
-    }
-  }
-}
+      shippingID: shippingID,
+      promoCode: promoCode,
+    },
+  };
+};
 export const shopifyPaymentIntentQuery = `mutation DemoShopifyPaymentIntent(
   $input: CreateShopifyPaymentIntentInput!
   ) {
@@ -256,32 +286,50 @@ export const shopifyPaymentIntentQuery = `mutation DemoShopifyPaymentIntent(
     clientSecret
     publishableAPIKey
   }
-}`
+}`;
 
-export const shopifyPaymentIntentSnippet = (storeCanonicalURL: string, productVariantID: string, { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address, promoCode?: string, shippingID?: string) => {
-  return formatQueryCode("createPaymentIntent", shopifyPaymentIntentQuery, shopifyPaymentIntentVariables(storeCanonicalURL || "<SHOPIFY_STORE_CANONICAL_URL>", productVariantID || "<SHOPIFY_PRODUCT_VARIANT_ID>", { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode}, promoCode, shippingID));
-}
+export const shopifyPaymentIntentSnippet = (
+  storeCanonicalURL: string,
+  productVariantID: string,
+  { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address,
+  promoCode?: string,
+  shippingID?: string,
+) => {
+  return formatQueryCode(
+    'createPaymentIntent',
+    shopifyPaymentIntentQuery,
+    shopifyPaymentIntentVariables(
+      storeCanonicalURL || '<SHOPIFY_STORE_CANONICAL_URL>',
+      productVariantID || '<SHOPIFY_PRODUCT_VARIANT_ID>',
+      { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode },
+      promoCode,
+      shippingID,
+    ),
+  );
+};
 
-
-export const amazonPaymentIntentVariables = (productID: string, { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address) => {
+export const amazonPaymentIntentVariables = (
+  productID: string,
+  { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address,
+) => {
   return {
-    "input": {
-      "productID": productID,
-      "address": {
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "phone": phone,
-        "address1": address1,
-        "address2": address2,
-        "city": city,
-        "stateCode": stateCode,
-        "countryCode": "US",
-        "zip": zipCode,
+    input: {
+      productID: productID,
+      address: {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        address1: address1,
+        address2: address2,
+        city: city,
+        stateCode: stateCode,
+        countryCode: 'US',
+        zip: zipCode,
       },
-    }
-  }
-}
+    },
+  };
+};
 export const amazonPaymentIntentQuery = `mutation DemoAmazonPaymentIntent(
   $input: CreateAmazonPaymentIntentInput!
   ) {
@@ -291,9 +339,26 @@ export const amazonPaymentIntentQuery = `mutation DemoAmazonPaymentIntent(
   }
 }`;
 
-export const amazonPaymentIntentSnippet = ({ firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode}: Address, productID?: string) => {
-  return formatQueryCode("createPaymentIntent", amazonPaymentIntentQuery, amazonPaymentIntentVariables(productID || "<AMAZON_PRODUCT_ID>", { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }));
-}
+export const amazonPaymentIntentSnippet = (
+  { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address,
+  productID?: string,
+) => {
+  return formatQueryCode(
+    'createPaymentIntent',
+    amazonPaymentIntentQuery,
+    amazonPaymentIntentVariables(productID || '<AMAZON_PRODUCT_ID>', {
+      firstName,
+      lastName,
+      email,
+      phone,
+      address1,
+      address2,
+      city,
+      stateCode,
+      zipCode,
+    }),
+  );
+};
 
 export const checkoutFormCode = `import {Elements, useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js/pure';
@@ -354,4 +419,4 @@ const CheckoutForm = () => {
       <Button disabled={!stripe || paymentInProgress}></Button>
     </form>
   )
-};`
+};`;
