@@ -204,9 +204,14 @@ export default function Index() {
     fetchPaymentIntentResponse?.createShopifyPaymentIntent?.publishableAPIKey ||
     fetchPaymentIntentResponse?.createAmazonPaymentIntent?.publishableAPIKey;
 
-  const stripePromise = useMemo(() => {
+  type StripeProp = Parameters<typeof Elements>[0]['stripe'];
+
+  const stripePromise: StripeProp = useMemo(() => {
     if (stripeAPIKey) {
       return loadStripe(stripeAPIKey);
+    } else {
+      console.warn('stripeAPIKey is falsy:', stripeAPIKey);
+      return null;
     }
   }, [stripeAPIKey]);
 
