@@ -251,10 +251,10 @@ export default function Index() {
       },
     };
     makeGQLRequest(amazonProductFetchQuery, variables)
-      .then((result) => {
+      .then((_result) => {
         setIsValidAPIKey(true);
       })
-      .catch((error) => {
+      .catch((_error) => {
         setIsValidAPIKey(false);
       })
       .finally(() => {
