@@ -3,9 +3,10 @@ import ApiKeyDarkImage from "./rye-api-key-dark.png";
 import ApiKeyLightImage from "./rye-api-key-light.png";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { Badge, Button, Card, Flowbite, Label, Select, Spinner, Tabs, TextInput, Timeline } from "flowbite-react";
-import { KeyIcon, AtSymbolIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from "@heroicons/react/24/solid";
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js/pure';
+import {RiBarcodeLine as BarcodeIcon} from 'react-icons/ri';
 
 
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -549,7 +550,7 @@ export default function Index() {
     <div>
       <Label htmlFor="shopify_store_canonical_url" value="Store Canonical URL" />
       <TextInput
-        icon={AtSymbolIcon}
+      
         className="my-3 w-full"
         id="shopify_store_canonical_url"
         value={shopifyStoreCanonicalURL}
@@ -579,7 +580,7 @@ export default function Index() {
       <Label htmlFor="offers_product_id" value="Enter product ID" className="mt-10" />
       <TextInput
         value={selectedProductID || ""}
-        icon={AtSymbolIcon}
+        icon={BarcodeIcon}
         className="w-full mt-3"
         id="offers_product_id"
         placeholder={marketPlaceSelector("2863039381604", "B000NQ10FK")}
@@ -692,7 +693,7 @@ export default function Index() {
                 <div className="flex">
                   <Card className="max-w-xl self-baseline">
                     <Timeline.Title>
-                      <Timeline.Point icon={AtSymbolIcon} />
+                      <Timeline.Point />
                       Request an item to be requested by the Rye API
                     </Timeline.Title>
                     <CustomTimelineBody>
@@ -752,7 +753,7 @@ export default function Index() {
                           <TextInput
                             type="url"
                             value={data.requestedProduct.productURL}
-                            icon={AtSymbolIcon}
+                            icon={LinkIcon}
                             className="w-full"
                             id="item_url"
                             placeholder={marketPlaceSelector(
@@ -791,7 +792,7 @@ export default function Index() {
                   <Card className="max-w-xl self-baseline">
                     <Timeline.Title>Fetch an item from the Rye API</Timeline.Title>
                     <CustomTimelineBody>
-                      <Timeline.Point icon={AtSymbolIcon} />
+                      <Timeline.Point />
                       <div className="py-1">Once an item is requested, it can be retrieved using the Rye API</div>
                     </CustomTimelineBody>
                     <CustomTimelineBody>
@@ -836,7 +837,7 @@ export default function Index() {
                         <Label htmlFor="marketplace_request" value="Marketplace" />
                         <TextInput
                           disabled
-                          icon={AtSymbolIcon}
+                        
                           className="my-3 w-full"
                           id="marketplace_request"
                           value={data.requestedProduct.selectedMarketplace}
@@ -846,7 +847,7 @@ export default function Index() {
                         <div className="flex my-3">
                           <TextInput
                             value={selectedProductID || ""}
-                            icon={AtSymbolIcon}
+                            icon={BarcodeIcon}
                             className="w-full"
                             id="fetch_product_id"
                             placeholder={marketPlaceSelector("2863039381604", "B000NQ10FK")}
@@ -882,7 +883,7 @@ export default function Index() {
                   <Card className="max-w-xl self-baseline">
                     <Timeline.Title>Fetch offers on the item from the Rye API</Timeline.Title>
                     <CustomTimelineBody>
-                      <Timeline.Point icon={AtSymbolIcon} />
+                      <Timeline.Point />
                       <div className="py-1">
                         You can use the offers query to display a sample checkout for the item. This is useful for
                         showing estimated taxes, and any shipping costs
@@ -896,7 +897,6 @@ export default function Index() {
                           <div>
                             <Label htmlFor="city" value="City" />
                             <TextInput
-                              icon={AtSymbolIcon}
                               className="w-64 mt-3"
                               id="city"
                               onChange={onCityChange}
@@ -991,7 +991,7 @@ export default function Index() {
                   <Card className="max-w-xl self-baseline">
                     <Timeline.Title>Fetch payment intent to perform Stripe checkout</Timeline.Title>
                     <CustomTimelineBody>
-                      <Timeline.Point icon={AtSymbolIcon} />
+                      <Timeline.Point />
                       <div className="py-1">
                         You can use the offers query to display a sample checkout for the item. This is useful for
                         showing estimated taxes, and any shipping costs
@@ -1005,7 +1005,7 @@ export default function Index() {
                           <div>
                             <Label htmlFor="first_name" value="First Name" />
                             <TextInput
-                              icon={AtSymbolIcon}
+                            
                               className="w-64 mt-3"
                               id="first_name"
                               onChange={onFirstNameChange}
@@ -1016,7 +1016,7 @@ export default function Index() {
                           <div className="mx-3">
                             <Label htmlFor="last_name" value="Last Name" />
                             <TextInput
-                              icon={AtSymbolIcon}
+                            
                               className="w-64 mt-3"
                               id="last_name"
                               onChange={onLastNameChange}
@@ -1028,7 +1028,7 @@ export default function Index() {
                         <div className="mt-3">
                           <Label htmlFor="address_one" value="Address Line 1" />
                           <TextInput
-                            icon={AtSymbolIcon}
+                          
                             className="w-full mt-3"
                             id="address_one"
                             onChange={onAddressOneChange}
@@ -1040,7 +1040,7 @@ export default function Index() {
                           <div className="mt-3">
                             <Label htmlFor="address_two" value="Address Line 2" />
                             <TextInput
-                              icon={AtSymbolIcon}
+                            
                               className="w-64 mt-3"
                               id="address_two"
                               onChange={onAddressTwoChange}
@@ -1052,7 +1052,7 @@ export default function Index() {
                             <Label htmlFor="zip_code" value="Address Line 2" />
                             <TextInput
                               type="text"
-                              icon={AtSymbolIcon}
+                            
                               className="w-64 mt-3"
                               id="zip_code"
                               onChange={onZipCodeChange}
@@ -1066,7 +1066,7 @@ export default function Index() {
                             <Label htmlFor="email" value="Email" />
                             <TextInput
                             type="email"
-                              icon={AtSymbolIcon}
+                            
                               className="w-64 mt-3"
                               id="email"
                               onChange={onEmailChange}
@@ -1078,7 +1078,7 @@ export default function Index() {
                             <Label htmlFor="phone" value="Phone" />
                             <TextInput
                               type="tel"
-                              icon={AtSymbolIcon}
+                            
                               className="w-64 mt-3"
                               id="phone"
                               onChange={onPhoneChange}
@@ -1091,7 +1091,6 @@ export default function Index() {
                           <div>
                             <Label htmlFor="city" value="City" />
                             <TextInput
-                              icon={AtSymbolIcon}
                               className="w-64 mt-3"
                               id="city"
                               onChange={onCityChange}
@@ -1190,7 +1189,7 @@ export default function Index() {
                         Fetch a payment intent to display a Stripe checkout form. The stripe payment form will use Rye's Stripe account
                         to accept payment for the item.
                       </div>
-                      <Timeline.Point icon={AtSymbolIcon} />
+                      <Timeline.Point />
                       {stripePromise && clientSecret ?
                         <Elements  stripe={stripePromise} options={{
                           clientSecret: clientSecret,
