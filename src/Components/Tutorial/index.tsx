@@ -3,7 +3,7 @@ import ApiKeyDarkImage from "./rye-api-key-dark.png";
 import ApiKeyLightImage from "./rye-api-key-light.png";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { Badge, Button, Card, Flowbite, Label, Select, Spinner, Tabs, TextInput, Timeline } from "flowbite-react";
-import { KeyIcon, AtSymbolIcon, CheckIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { KeyIcon, AtSymbolIcon, CheckIcon, XMarkIcon, LinkIcon } from "@heroicons/react/24/solid";
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js/pure';
 
@@ -752,7 +752,7 @@ export default function Index() {
                           <TextInput
                             type="url"
                             value={data.requestedProduct.productURL}
-                            icon={AtSymbolIcon}
+                            icon={LinkIcon}
                             className="w-full"
                             id="item_url"
                             placeholder={marketPlaceSelector(
