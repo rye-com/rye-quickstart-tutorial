@@ -1,15 +1,25 @@
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
-import ApiKeyDarkImage from "./rye-api-key-dark.png";
-import ApiKeyLightImage from "./rye-api-key-light.png";
-import { DarkModeSwitch } from "react-toggle-dark-mode";
-import { Badge, Button, Card, Flowbite, Label, Select, Spinner, Tabs, TextInput, Timeline } from "flowbite-react";
-import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from "@heroicons/react/24/solid";
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js/pure';
-import {RiBarcodeLine as BarcodeIcon} from 'react-icons/ri';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import ApiKeyDarkImage from './rye-api-key-dark.png';
+import ApiKeyLightImage from './rye-api-key-light.png';
+import { DarkModeSwitch } from 'react-toggle-dark-mode';
+import {
+  Badge,
+  Button,
+  Card,
+  Flowbite,
+  Label,
+  Select,
+  Spinner,
+  Tabs,
+  TextInput,
+  Timeline,
+} from 'flowbite-react';
+import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from '@heroicons/react/24/solid';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js/pure';
+import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
-
-import SyntaxHighlighter from "react-syntax-highlighter";
+import SyntaxHighlighter from 'react-syntax-highlighter';
 import {
   amazonProductFetchQuery,
   amazonProductFetchSnippet,
@@ -33,11 +43,11 @@ import {
   shopifyPaymentIntentQuery,
   amazonPaymentIntentQuery,
   checkoutFormCode,
-} from "./code_snippets";
-import { atomOneDark, atomOneLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { cloneDeep, merge } from "lodash";
-import { GraphQLClient } from "graphql-request";
-import { CheckoutForm } from "../CheckoutForm";
+} from './code_snippets';
+import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { cloneDeep, merge } from 'lodash';
+import { GraphQLClient } from 'graphql-request';
+import { CheckoutForm } from '../CheckoutForm';
 
 type APIConfiguration = {
   key: string;
@@ -45,13 +55,13 @@ type APIConfiguration = {
 };
 
 enum Theme {
-  Dark = "dark",
-  Light = "light",
+  Dark = 'dark',
+  Light = 'light',
 }
 
 enum Marketplace {
-  Shopify = "SHOPIFY",
-  Amazon = "AMAZON",
+  Shopify = 'SHOPIFY',
+  Amazon = 'AMAZON',
 }
 
 type Store = {
@@ -67,43 +77,43 @@ type Store = {
 };
 
 function detectThemePreference(): string {
-  const setTheme = window.localStorage?.getItem("appTheme");
+  const setTheme = window.localStorage?.getItem('appTheme');
   if (setTheme) {
     return JSON.parse(setTheme);
   }
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   return prefersDark ? Theme.Dark.valueOf() : Theme.Light.valueOf();
 }
 
 const defaultStore: Store = {
-  apiConfig: JSON.parse(window.localStorage?.getItem("apiConfig") || "{}"),
+  apiConfig: JSON.parse(window.localStorage?.getItem('apiConfig') || '{}'),
   appTheme: detectThemePreference(),
   requestedProduct: JSON.parse(
-    window.localStorage?.getItem("requestedProduct") ||
+    window.localStorage?.getItem('requestedProduct') ||
       JSON.stringify({
-        shopifyProductID: "",
-        amazonProductID: "",
+        shopifyProductID: '',
+        amazonProductID: '',
         selectedMarketplace: Marketplace.Amazon,
-        productURL: "",
-      })
+        productURL: '',
+      }),
   ),
   address: JSON.parse(
-    window.localStorage?.getItem("address") ||
+    window.localStorage?.getItem('address') ||
       JSON.stringify({
-        firstName: "Will",
-        lastName: "Smith",
-        address1: "Bel Air Mansion",
-        address2: "",
-        city: "Beverly Hills",
-        stateCode: "CA",
-        zipCode: "90210",
-        phone: "1234567890",
-        email: "tutorial@rye.com",
-      })
+        firstName: 'Will',
+        lastName: 'Smith',
+        address1: 'Bel Air Mansion',
+        address2: '',
+        city: 'Beverly Hills',
+        stateCode: 'CA',
+        zipCode: '90210',
+        phone: '1234567890',
+        email: 'tutorial@rye.com',
+      }),
   ),
 };
 
-const linkClasses = "text-indigo-500 dark:text-rye-lime";
+const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 function CustomTimelineBody(props: any) {
   return <div className="text-slate-600 dark:text-slate-200">{props.children}</div>;
@@ -112,7 +122,7 @@ function CustomTimelineBody(props: any) {
 function CustomCodeBlock({
   codeString,
   dataTheme,
-  language = "javascript",
+  language = 'javascript',
   showLineNumbers = false,
   startingLineNumber = 1,
   style = {},
@@ -128,16 +138,16 @@ function CustomCodeBlock({
 }) {
   const theme = dataTheme === Theme.Dark.valueOf() ? atomOneDark : atomOneLight;
   const themeOverrides: { [key: string]: React.CSSProperties } = {
-    hljs: { background: "transparent" },
+    hljs: { background: 'transparent' },
   };
   return (
     <SyntaxHighlighter
       showLineNumbers={showLineNumbers}
-      lineNumberStyle={{ color: "rgb(176 171 171)" }}
+      lineNumberStyle={{ color: 'rgb(176 171 171)' }}
       startingLineNumber={startingLineNumber}
       codeTagProps={{
         style: {
-          fontSize: "0.8rem",
+          fontSize: '0.8rem',
           ...style,
         },
       }}
@@ -154,7 +164,7 @@ function CustomCodeBlock({
 
 function InlineCodeSnippet(props: any): JSX.Element {
   const codeSnippetClasses =
-    "text-slate-500 dark:bg-neutral-700 border dark:border-neutral-500 dark:text-amber-200 px-1";
+    'text-slate-500 dark:bg-neutral-700 border dark:border-neutral-500 dark:text-amber-200 px-1';
   return <span className={codeSnippetClasses}>{props.children}</span>;
 }
 
@@ -169,7 +179,7 @@ export const useDebouncedEffect = (effect: any, deps: Array<any>, delay: number)
 
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
-  
+
   const [isRequestingProduct, setIsRequestingProduct] = useState<boolean>(false);
   const [isFetchingProduct, setIsFetchingProduct] = useState<boolean>(false);
   const [isFetchingProductOffers, setIsFetchingProductOffers] = useState<boolean>(false);
@@ -179,41 +189,44 @@ export default function Index() {
   const [fetchProductResponse, setFetchProductResponse] = useState<any | null>(null);
   const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<any | null>(null);
   const [fetchPaymentIntentResponse, setFetchPaymentIntentResponse] = useState<any | null>(null);
-  
+
   const [isValidAPIKey, setIsValidAPIKey] = useState<boolean>(false);
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(false);
-  const [selectedShopifyProductVariant, setSelectedShopifyProductVariant] = useState<string>("");
-  const [shopifyStoreCanonicalURL, setShopifyStoreCanonicalURL] = useState<string>("");
+  const [selectedShopifyProductVariant, setSelectedShopifyProductVariant] = useState<string>('');
+  const [shopifyStoreCanonicalURL, setShopifyStoreCanonicalURL] = useState<string>('');
 
-  const clientSecret = fetchPaymentIntentResponse?.createShopifyPaymentIntent?.clientSecret || fetchPaymentIntentResponse?.createAmazonPaymentIntent?.clientSecret;
-  const stripeAPIKey = fetchPaymentIntentResponse?.createShopifyPaymentIntent?.publishableAPIKey || fetchPaymentIntentResponse?.createAmazonPaymentIntent?.publishableAPIKey;
+  const clientSecret =
+    fetchPaymentIntentResponse?.createShopifyPaymentIntent?.clientSecret ||
+    fetchPaymentIntentResponse?.createAmazonPaymentIntent?.clientSecret;
+  const stripeAPIKey =
+    fetchPaymentIntentResponse?.createShopifyPaymentIntent?.publishableAPIKey ||
+    fetchPaymentIntentResponse?.createAmazonPaymentIntent?.publishableAPIKey;
 
   const stripePromise = useMemo(() => {
-    if(stripeAPIKey) {
+    if (stripeAPIKey) {
       return loadStripe(stripeAPIKey);
     }
+  }, [stripeAPIKey]);
 
-  }, [stripeAPIKey])
-
-  const marketPlaceSelector = <T,V>(shopifyVar: T, amazonVar: V): T | V => {
+  const marketPlaceSelector = <T, V>(shopifyVar: T, amazonVar: V): T | V => {
     if (data.requestedProduct.selectedMarketplace === Marketplace.Shopify) {
       return shopifyVar;
-    } else {  
+    } else {
       return amazonVar;
     }
   };
 
   const selectedProductID = marketPlaceSelector(
     data.requestedProduct.shopifyProductID,
-    data.requestedProduct.amazonProductID
+    data.requestedProduct.amazonProductID,
   );
 
   const currentTheme = data.appTheme === Theme.Dark.valueOf() ? Theme.Dark : Theme.Light;
 
   const makeGQLRequest = (query: string, variables: any) => {
-    const client = new GraphQLClient("https://graphql.api.rye.com/v1/query");
+    const client = new GraphQLClient('https://graphql.api.rye.com/v1/query');
     const headers = {
-      Authorization: "Basic " + btoa(data.apiConfig.key + ":"),
+      Authorization: 'Basic ' + btoa(data.apiConfig.key + ':'),
     };
     return client.request(query, variables, headers);
   };
@@ -226,8 +239,8 @@ export default function Index() {
     setIsCheckingAPIKey(true);
     const variables = {
       input: {
-        id: "B073K14CVB",
-        marketplace: "AMAZON",
+        id: 'B073K14CVB',
+        marketplace: 'AMAZON',
       },
     };
     makeGQLRequest(amazonProductFetchQuery, variables)
@@ -267,15 +280,18 @@ export default function Index() {
 
   const requestProduct = () => {
     setIsRequestingProduct(true);
-    const variables = requestProductVariables(data.requestedProduct.productURL, data.requestedProduct.selectedMarketplace.valueOf().toUpperCase())
+    const variables = requestProductVariables(
+      data.requestedProduct.productURL,
+      data.requestedProduct.selectedMarketplace.valueOf().toUpperCase(),
+    );
     makeGQLRequest(requestProductQuery, variables)
       .then((res) => {
         setRequestProductResponse(res);
-        let requestedProduct: Partial<Store["requestedProduct"]> = {};
+        let requestedProduct: Partial<Store['requestedProduct']> = {};
         if (data.requestedProduct.selectedMarketplace === Marketplace.Shopify) {
-          requestedProduct["shopifyProductID"] = res["requestProductByURL"].productID;
+          requestedProduct['shopifyProductID'] = res['requestProductByURL'].productID;
         } else {
-          requestedProduct["amazonProductID"] = res["requestProductByURL"].productID;
+          requestedProduct['amazonProductID'] = res['requestProductByURL'].productID;
         }
         updateData({ requestedProduct: requestedProduct });
       })
@@ -289,17 +305,25 @@ export default function Index() {
   };
 
   const fetchProduct = () => {
-    if(!selectedProductID) { return }
+    if (!selectedProductID) {
+      return;
+    }
     setIsFetchingProduct(true);
-    const variables =  productFetchVariables(selectedProductID, data.requestedProduct.selectedMarketplace.valueOf().toUpperCase())
-    makeGQLRequest(marketPlaceSelector(shopifyProductFetchQuery, amazonProductFetchQuery), variables)
+    const variables = productFetchVariables(
+      selectedProductID,
+      data.requestedProduct.selectedMarketplace.valueOf().toUpperCase(),
+    );
+    makeGQLRequest(
+      marketPlaceSelector(shopifyProductFetchQuery, amazonProductFetchQuery),
+      variables,
+    )
       .then((res) => {
         setFetchProductResponse(res);
-        if (res["product"]?.variants && res["product"].variants.length > 0) {
-          setSelectedShopifyProductVariant(res["product"].variants[0].id);
+        if (res['product']?.variants && res['product'].variants.length > 0) {
+          setSelectedShopifyProductVariant(res['product'].variants[0].id);
         }
-        if (res["product"]?.storeCanonicalURL) {
-          setShopifyStoreCanonicalURL(res["product"].storeCanonicalURL);
+        if (res['product']?.storeCanonicalURL) {
+          setShopifyStoreCanonicalURL(res['product'].storeCanonicalURL);
         }
       })
       .catch((error) => {
@@ -311,22 +335,26 @@ export default function Index() {
   };
 
   const fetchProductOffers = () => {
-    if(!selectedProductID) { return }
+    if (!selectedProductID) {
+      return;
+    }
     setIsFetchingProductOffers(true);
     // Add more field validation here to skip request on validation failures
-    // 
+    //
     const variables: any = marketPlaceSelector(
-        shopifyProductOfferVariables(
-          shopifyStoreCanonicalURL,
-          selectedShopifyProductVariant,
-          {
-            city: data.address.city,
-            stateCode: data.address.stateCode,
-          }
-        ),
-        amazonProductOfferVariables({ city: data.address.city, stateCode: data.address.stateCode }, selectedProductID)
+      shopifyProductOfferVariables(shopifyStoreCanonicalURL, selectedShopifyProductVariant, {
+        city: data.address.city,
+        stateCode: data.address.stateCode,
+      }),
+      amazonProductOfferVariables(
+        { city: data.address.city, stateCode: data.address.stateCode },
+        selectedProductID,
+      ),
+    );
+    makeGQLRequest(
+      marketPlaceSelector(shopifyProductOfferQuery, amazonProductOfferQuery),
+      variables,
     )
-    makeGQLRequest(marketPlaceSelector(shopifyProductOfferQuery, amazonProductOfferQuery), variables)
       .then((res) => {
         setFetchProductOffersResponse(res);
       })
@@ -339,13 +367,13 @@ export default function Index() {
   };
 
   const fetchPaymentIntent = () => {
-    if(!data.requestedProduct.amazonProductID && !selectedShopifyProductVariant) {
-      console.log("No product ID"); // TODO: show error message
-      return
+    if (!data.requestedProduct.amazonProductID && !selectedShopifyProductVariant) {
+      console.log('No product ID'); // TODO: show error message
+      return;
     }
     setIsFetchingPaymentIntent(true);
     // Add more field validation here to skip request on validation failures
-    // 
+    //
     const variables: any = marketPlaceSelector(
       shopifyPaymentIntentVariables(
         shopifyStoreCanonicalURL,
@@ -361,25 +389,25 @@ export default function Index() {
           stateCode: data.address.stateCode,
           zipCode: data.address.zipCode,
         },
-        "",
-        "",
+        '',
+        '',
       ),
-      amazonPaymentIntentVariables(
-        data.requestedProduct.amazonProductID!,
-        {
-          firstName: data.address.firstName,
-          lastName: data.address.lastName,
-          address1: data.address.address1,
-          address2: data.address.address2,
-          phone: data.address.phone,
-          email: data.address.email,
-          city: data.address.city,
-          stateCode: data.address.stateCode,
-          zipCode: data.address.zipCode,
-        }
-      ),
+      amazonPaymentIntentVariables(data.requestedProduct.amazonProductID!, {
+        firstName: data.address.firstName,
+        lastName: data.address.lastName,
+        address1: data.address.address1,
+        address2: data.address.address2,
+        phone: data.address.phone,
+        email: data.address.email,
+        city: data.address.city,
+        stateCode: data.address.stateCode,
+        zipCode: data.address.zipCode,
+      }),
+    );
+    makeGQLRequest(
+      marketPlaceSelector(shopifyPaymentIntentQuery, amazonPaymentIntentQuery),
+      variables,
     )
-    makeGQLRequest(marketPlaceSelector(shopifyPaymentIntentQuery, amazonPaymentIntentQuery), variables)
       .then((res) => {
         setFetchPaymentIntentResponse(res);
       })
@@ -398,18 +426,17 @@ export default function Index() {
   const onAddressFieldChangeFn = (field: keyof Address) => (e: React.ChangeEvent) => {
     const data = { address: { [field]: (e.target as HTMLInputElement).value } };
     updateData(data);
-  }
+  };
 
-  const onCityChange = onAddressFieldChangeFn("city");
-  const onStateCodeChange = onAddressFieldChangeFn("stateCode");
-  const onFirstNameChange = onAddressFieldChangeFn("firstName");
-  const onLastNameChange = onAddressFieldChangeFn("lastName");
-  const onAddressOneChange = onAddressFieldChangeFn("address1");
-  const onAddressTwoChange = onAddressFieldChangeFn("address2");
-  const onZipCodeChange = onAddressFieldChangeFn("zipCode");
-  const onPhoneChange = onAddressFieldChangeFn("phone");
-  const onEmailChange = onAddressFieldChangeFn("email");
-
+  const onCityChange = onAddressFieldChangeFn('city');
+  const onStateCodeChange = onAddressFieldChangeFn('stateCode');
+  const onFirstNameChange = onAddressFieldChangeFn('firstName');
+  const onLastNameChange = onAddressFieldChangeFn('lastName');
+  const onAddressOneChange = onAddressFieldChangeFn('address1');
+  const onAddressTwoChange = onAddressFieldChangeFn('address2');
+  const onZipCodeChange = onAddressFieldChangeFn('zipCode');
+  const onPhoneChange = onAddressFieldChangeFn('phone');
+  const onEmailChange = onAddressFieldChangeFn('email');
 
   const onProductURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateData({ requestedProduct: { productURL: e.target.value } });
@@ -429,7 +456,7 @@ export default function Index() {
       document,
       null,
       XPathResult.ANY_TYPE,
-      null
+      null,
     );
     let button = otherTabButtons.iterateNext();
     while (button) {
@@ -458,9 +485,9 @@ export default function Index() {
   };
 
   const onProductIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let update: Partial<Store["requestedProduct"]> = marketPlaceSelector(
+    let update: Partial<Store['requestedProduct']> = marketPlaceSelector(
       { shopifyProductID: e.target.value },
-      { amazonProductID: e.target.value }
+      { amazonProductID: e.target.value },
     );
     updateData({ requestedProduct: update });
   };
@@ -474,7 +501,7 @@ export default function Index() {
       checkRyeAPIKey();
     },
     [data.apiConfig.key],
-    500
+    500,
   );
 
   const shopifyProductVariantOptions = (): Array<{ id: string; title: string }> | null => {
@@ -484,35 +511,34 @@ export default function Index() {
 
   const shopifyVariants = shopifyProductVariantOptions();
 
-  const initClientSnippet = initializeClientSnippet(data.apiConfig.key || "<RYE_API_KEY>");
+  const initClientSnippet = initializeClientSnippet(data.apiConfig.key || '<RYE_API_KEY>');
   const requestedProductSnippet = requestProductSnippet(
     data.requestedProduct?.productURL,
-    data.requestedProduct?.selectedMarketplace
+    data.requestedProduct?.selectedMarketplace,
   );
-  const requestedProductSnippetLineNumber = initClientSnippet.split("\n").length + 1;
+  const requestedProductSnippetLineNumber = initClientSnippet.split('\n').length + 1;
   const productFetchSnippet = marketPlaceSelector(
     shopifyProductFetchSnippet(data.requestedProduct.shopifyProductID),
-    amazonProductFetchSnippet(data.requestedProduct.amazonProductID)
+    amazonProductFetchSnippet(data.requestedProduct.amazonProductID),
   );
-  const productFetchSnippetLineNumber = requestedProductSnippet.split("\n").length + requestedProductSnippetLineNumber;
+  const productFetchSnippetLineNumber =
+    requestedProductSnippet.split('\n').length + requestedProductSnippetLineNumber;
 
   const productOfferSnippet = marketPlaceSelector(
-    shopifyProductOfferSnippet(
-      shopifyStoreCanonicalURL,
-      selectedShopifyProductVariant,
+    shopifyProductOfferSnippet(shopifyStoreCanonicalURL, selectedShopifyProductVariant, {
+      city: data.address.city,
+      stateCode: data.address.stateCode,
+    }),
+    amazonProductOfferSnippet(
       {
-        city: data.address.city,
-        stateCode: data.address.stateCode,
-      }
-    ),
-    amazonProductOfferSnippet({
         city: data.address.city,
         stateCode: data.address.stateCode,
       },
       data.requestedProduct.amazonProductID,
-    )
+    ),
   );
-  const productOfferSnippetLineNumber = productFetchSnippet.split("\n").length + productFetchSnippetLineNumber;
+  const productOfferSnippetLineNumber =
+    productFetchSnippet.split('\n').length + productFetchSnippetLineNumber;
   const paymentIntentSnippet = marketPlaceSelector(
     shopifyPaymentIntentSnippet(
       shopifyStoreCanonicalURL,
@@ -531,7 +557,8 @@ export default function Index() {
       '',
       '',
     ),
-    amazonPaymentIntentSnippet({
+    amazonPaymentIntentSnippet(
+      {
         firstName: data.address.firstName,
         lastName: data.address.lastName,
         address1: data.address.address1,
@@ -541,16 +568,17 @@ export default function Index() {
         city: data.address.city,
         stateCode: data.address.stateCode,
         zipCode: data.address.zipCode,
-    }, data.requestedProduct.amazonProductID)
+      },
+      data.requestedProduct.amazonProductID,
+    ),
   );
-  const paymentIntentSnippetLineNumber = productOfferSnippet.split("\n").length + productOfferSnippetLineNumber 
-
+  const paymentIntentSnippetLineNumber =
+    productOfferSnippet.split('\n').length + productOfferSnippetLineNumber;
 
   const shopifyOfferFields = () => (
     <div>
       <Label htmlFor="shopify_store_canonical_url" value="Store Canonical URL" />
       <TextInput
-      
         className="my-3 w-full"
         id="shopify_store_canonical_url"
         value={shopifyStoreCanonicalURL}
@@ -579,26 +607,29 @@ export default function Index() {
     <div>
       <Label htmlFor="offers_product_id" value="Enter product ID" className="mt-10" />
       <TextInput
-        value={selectedProductID || ""}
+        value={selectedProductID || ''}
         icon={BarcodeIcon}
         className="w-full mt-3"
         id="offers_product_id"
-        placeholder={marketPlaceSelector("2863039381604", "B000NQ10FK")}
+        placeholder={marketPlaceSelector('2863039381604', 'B000NQ10FK')}
         onChange={onProductIDChange}
       ></TextInput>
     </div>
-  )
+  );
 
   return (
     <div
-      className={"flex " + (currentTheme === Theme.Dark ? "dark bg-black text-white" : "bg-light-pastel text-black")}
+      className={
+        'flex ' +
+        (currentTheme === Theme.Dark ? 'dark bg-black text-white' : 'bg-light-pastel text-black')
+      }
     >
       <Flowbite
         theme={{
           usePreferences: false,
           theme: {
             card: {
-              base: "flex rounded-lg border border-gray-200 text-slate-800 bg-white shadow-md dark:border-gray-700 dark:bg-neutral-900 flex-col",
+              base: 'flex rounded-lg border border-gray-200 text-slate-800 bg-white shadow-md dark:border-gray-700 dark:bg-neutral-900 flex-col',
             },
             tab: {
               tablist: {
@@ -606,7 +637,7 @@ export default function Index() {
                   styles: {
                     underline: {
                       active: {
-                        on: "text-indigo-600 rounded-t-lg border-b-2 border-indigo-600 active dark:text-rye-lime dark:border-rye-lime",
+                        on: 'text-indigo-600 rounded-t-lg border-b-2 border-indigo-600 active dark:text-rye-lime dark:border-rye-lime',
                       },
                     },
                   },
@@ -620,8 +651,12 @@ export default function Index() {
           <div className="flex items-center justify-end font-200">
             <DarkModeSwitch checked={currentTheme === Theme.Dark} onChange={onChangeTheme} />
           </div>
-          <h1 className="flex items-center justify-between text-5xl font-200">Rye API Quick Start</h1>
-          <h2 className="text-1xl my-2">Try out Rye API to make a purchase from Shopify or Amazon</h2>
+          <h1 className="flex items-center justify-between text-5xl font-200">
+            Rye API Quick Start
+          </h1>
+          <h2 className="text-1xl my-2">
+            Try out Rye API to make a purchase from Shopify or Amazon
+          </h2>
           <Timeline>
             <Timeline.Item>
               <Timeline.Content>
@@ -631,16 +666,18 @@ export default function Index() {
                     <Timeline.Title>Grab your API Key</Timeline.Title>
                     <CustomTimelineBody>
                       <div className="py-3 text">
-                        Navigate to{" "}
+                        Navigate to{' '}
                         <a className={linkClasses} href="https://console.rye.com">
                           console.rye.com
-                        </a>{" "}
+                        </a>{' '}
                         and grab your API key
                       </div>
                     </CustomTimelineBody>
                     <CustomTimelineBody>
                       <Timeline.Point />
-                      <div className="py-1">Under Access and Security, view and copy your API key</div>
+                      <div className="py-1">
+                        Under Access and Security, view and copy your API key
+                      </div>
                       <img
                         src={currentTheme === Theme.Dark ? ApiKeyDarkImage : ApiKeyLightImage}
                         alt="API Key"
@@ -667,12 +704,16 @@ export default function Index() {
                             <Badge
                               className="h-full w-full flex justify-center"
                               icon={isValidAPIKey ? CheckIcon : XMarkIcon}
-                              color={isValidAPIKey ? "success" : "warning"}
+                              color={isValidAPIKey ? 'success' : 'warning'}
                             />
                           ) : null}
                         </div>
                         <span className="text-sm">
-                          {isCheckingAPIKey ? "Validating" : isValidAPIKey ? "Connected" : "Offline"}
+                          {isCheckingAPIKey
+                            ? 'Validating'
+                            : isValidAPIKey
+                            ? 'Connected'
+                            : 'Offline'}
                         </span>
                       </div>
                     </CustomTimelineBody>
@@ -700,7 +741,7 @@ export default function Index() {
                       <div className="py-1">
                         Request an item from Rye to be requested. You can also do this via the
                         <a href="https://console.rye.com/requests" className={linkClasses}>
-                          {" "}
+                          {' '}
                           Rye Console
                         </a>
                       </div>
@@ -718,10 +759,15 @@ export default function Index() {
                           active={data.requestedProduct.selectedMarketplace === Marketplace.Amazon}
                         >
                           <span className="py-3">
-                            Navigate to{" "}
-                            <a target="_blank" href="https://www.amazon.com" className={linkClasses} rel="noreferrer">
+                            Navigate to{' '}
+                            <a
+                              target="_blank"
+                              href="https://www.amazon.com"
+                              className={linkClasses}
+                              rel="noreferrer"
+                            >
                               Amazon
-                            </a>{" "}
+                            </a>{' '}
                             and find an item you want to request, and copy the URL
                           </span>
                         </Tabs.Item>
@@ -737,9 +783,9 @@ export default function Index() {
                               className={linkClasses}
                               rel="noreferrer"
                             >
-                              {" "}
+                              {' '}
                               Shopify store
-                            </a>{" "}
+                            </a>{' '}
                             and find an item you want to request, and copy the URL.
                           </span>
                         </Tabs.Item>
@@ -757,8 +803,8 @@ export default function Index() {
                             className="w-full"
                             id="item_url"
                             placeholder={marketPlaceSelector(
-                              "https://www.some-store.shopify.com/products/cool-product",
-                              "https://www.amazon.com/Neosporin-Maximum-Strength-Antibiotic-Protection-Bacitracin/dp/B000NQ10FK"
+                              'https://www.some-store.shopify.com/products/cool-product',
+                              'https://www.amazon.com/Neosporin-Maximum-Strength-Antibiotic-Protection-Bacitracin/dp/B000NQ10FK',
                             )}
                             onChange={onProductURLChange}
                           ></TextInput>
@@ -768,7 +814,11 @@ export default function Index() {
                             className="mx-3"
                             disabled={isRequestingProduct}
                           >
-                            {!isRequestingProduct ? "Request" : <Spinner style={{ maxHeight: 30 }} />}
+                            {!isRequestingProduct ? (
+                              'Request'
+                            ) : (
+                              <Spinner style={{ maxHeight: 30 }} />
+                            )}
                           </Button>
                         </div>
                         <RequestResponseCodeBlock response={requestProductResponse} />
@@ -793,7 +843,9 @@ export default function Index() {
                     <Timeline.Title>Fetch an item from the Rye API</Timeline.Title>
                     <CustomTimelineBody>
                       <Timeline.Point />
-                      <div className="py-1">Once an item is requested, it can be retrieved using the Rye API</div>
+                      <div className="py-1">
+                        Once an item is requested, it can be retrieved using the Rye API
+                      </div>
                     </CustomTimelineBody>
                     <CustomTimelineBody>
                       <Timeline.Point />
@@ -808,16 +860,19 @@ export default function Index() {
                           active={data.requestedProduct.selectedMarketplace === Marketplace.Amazon}
                         >
                           <div className="mt-3">
-                            The Amazon Standard identification Number (ASIN) can be used to fetch an item from Amazon.
-                            You can find the item ID for an amazon item by using the ID after{" "}
-                            <InlineCodeSnippet>dp/</InlineCodeSnippet> in the URL. Example:
+                            The Amazon Standard identification Number (ASIN) can be used to fetch an
+                            item from Amazon. You can find the item ID for an amazon item by using
+                            the ID after <InlineCodeSnippet>dp/</InlineCodeSnippet> in the URL.
+                            Example:
                           </div>
                           <span className="text-amber-700">
                             https://amazon.com/neo-sporin/dp/
-                            <span className="text-amber-300 bg-red-500 px-2 rounded-lg">B000NQ10FK</span>
+                            <span className="text-amber-300 bg-red-500 px-2 rounded-lg">
+                              B000NQ10FK
+                            </span>
                           </span>
                           <div className="mt-3">
-                            It is also returned in the response by the{" "}
+                            It is also returned in the response by the{' '}
                             <InlineCodeSnippet>requestProduct</InlineCodeSnippet> mutation.
                           </div>
                         </Tabs.Item>
@@ -826,7 +881,7 @@ export default function Index() {
                           active={data.requestedProduct.selectedMarketplace === Marketplace.Shopify}
                         >
                           <div className="py-3">
-                            The Shopify product ID can be found in the response of the{" "}
+                            The Shopify product ID can be found in the response of the{' '}
                             <InlineCodeSnippet>requestProduct</InlineCodeSnippet> mutation.
                           </div>
                         </Tabs.Item>
@@ -837,20 +892,23 @@ export default function Index() {
                         <Label htmlFor="marketplace_request" value="Marketplace" />
                         <TextInput
                           disabled
-                        
                           className="my-3 w-full"
                           id="marketplace_request"
                           value={data.requestedProduct.selectedMarketplace}
                         ></TextInput>
                         <Timeline.Point />
-                        <Label htmlFor="fetch_product_id" value="Enter product ID" className="mt-10" />
+                        <Label
+                          htmlFor="fetch_product_id"
+                          value="Enter product ID"
+                          className="mt-10"
+                        />
                         <div className="flex my-3">
                           <TextInput
-                            value={selectedProductID || ""}
+                            value={selectedProductID || ''}
                             icon={BarcodeIcon}
                             className="w-full"
                             id="fetch_product_id"
-                            placeholder={marketPlaceSelector("2863039381604", "B000NQ10FK")}
+                            placeholder={marketPlaceSelector('2863039381604', 'B000NQ10FK')}
                             onChange={onProductIDChange}
                           ></TextInput>
                           <Button
@@ -859,7 +917,7 @@ export default function Index() {
                             className="mx-3"
                             disabled={isFetchingProduct}
                           >
-                            {!isFetchingProduct ? "Fetch" : <Spinner style={{ maxHeight: 30 }} />}
+                            {!isFetchingProduct ? 'Fetch' : <Spinner style={{ maxHeight: 30 }} />}
                           </Button>
                         </div>
                         <RequestResponseCodeBlock response={fetchProductResponse} />
@@ -885,8 +943,8 @@ export default function Index() {
                     <CustomTimelineBody>
                       <Timeline.Point />
                       <div className="py-1">
-                        You can use the offers query to display a sample checkout for the item. This is useful for
-                        showing estimated taxes, and any shipping costs
+                        You can use the offers query to display a sample checkout for the item. This
+                        is useful for showing estimated taxes, and any shipping costs
                       </div>
                     </CustomTimelineBody>
                     <CustomTimelineBody>
@@ -906,7 +964,11 @@ export default function Index() {
                           </div>
                           <div className="ml-3">
                             <Label className="mt-3" htmlFor="product_id_offers" value="State" />
-                            <Select onChange={onStateCodeChange} value={data.address.stateCode} className="mt-3 w-24">
+                            <Select
+                              onChange={onStateCodeChange}
+                              value={data.address.stateCode}
+                              className="mt-3 w-24"
+                            >
                               <option value="AL">AL</option>
                               <option value="AK">AK</option>
                               <option value="AR">AR</option>
@@ -966,7 +1028,11 @@ export default function Index() {
                               className="self-end mx-3"
                               disabled={isFetchingProduct}
                             >
-                              {!isFetchingProductOffers ? "Fetch" : <Spinner style={{ maxHeight: 30 }} />}
+                              {!isFetchingProductOffers ? (
+                                'Fetch'
+                              ) : (
+                                <Spinner style={{ maxHeight: 30 }} />
+                              )}
                             </Button>
                           </div>
                         </div>
@@ -993,19 +1059,18 @@ export default function Index() {
                     <CustomTimelineBody>
                       <Timeline.Point />
                       <div className="py-1">
-                        You can use the offers query to display a sample checkout for the item. This is useful for
-                        showing estimated taxes, and any shipping costs
+                        You can use the offers query to display a sample checkout for the item. This
+                        is useful for showing estimated taxes, and any shipping costs
                       </div>
                     </CustomTimelineBody>
                     <CustomTimelineBody>
                       <Timeline.Point />
                       <div>
-                      {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
-                      <div className="flex mt-3">
+                        {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
+                        <div className="flex mt-3">
                           <div>
                             <Label htmlFor="first_name" value="First Name" />
                             <TextInput
-                            
                               className="w-64 mt-3"
                               id="first_name"
                               onChange={onFirstNameChange}
@@ -1016,7 +1081,6 @@ export default function Index() {
                           <div className="mx-3">
                             <Label htmlFor="last_name" value="Last Name" />
                             <TextInput
-                            
                               className="w-64 mt-3"
                               id="last_name"
                               onChange={onLastNameChange}
@@ -1028,7 +1092,6 @@ export default function Index() {
                         <div className="mt-3">
                           <Label htmlFor="address_one" value="Address Line 1" />
                           <TextInput
-                          
                             className="w-full mt-3"
                             id="address_one"
                             onChange={onAddressOneChange}
@@ -1040,7 +1103,6 @@ export default function Index() {
                           <div className="mt-3">
                             <Label htmlFor="address_two" value="Address Line 2" />
                             <TextInput
-                            
                               className="w-64 mt-3"
                               id="address_two"
                               onChange={onAddressTwoChange}
@@ -1052,7 +1114,6 @@ export default function Index() {
                             <Label htmlFor="zip_code" value="Address Line 2" />
                             <TextInput
                               type="text"
-                            
                               className="w-64 mt-3"
                               id="zip_code"
                               onChange={onZipCodeChange}
@@ -1065,8 +1126,7 @@ export default function Index() {
                           <div>
                             <Label htmlFor="email" value="Email" />
                             <TextInput
-                            type="email"
-                            
+                              type="email"
                               className="w-64 mt-3"
                               id="email"
                               onChange={onEmailChange}
@@ -1078,7 +1138,6 @@ export default function Index() {
                             <Label htmlFor="phone" value="Phone" />
                             <TextInput
                               type="tel"
-                            
                               className="w-64 mt-3"
                               id="phone"
                               onChange={onPhoneChange}
@@ -1100,7 +1159,11 @@ export default function Index() {
                           </div>
                           <div className="ml-3">
                             <Label className="mt-3" htmlFor="product_id_offers" value="State" />
-                            <Select onChange={onStateCodeChange} value={data.address.stateCode} className="mt-3 w-24">
+                            <Select
+                              onChange={onStateCodeChange}
+                              value={data.address.stateCode}
+                              className="mt-3 w-24"
+                            >
                               <option value="AL">AL</option>
                               <option value="AK">AK</option>
                               <option value="AR">AR</option>
@@ -1160,7 +1223,11 @@ export default function Index() {
                               className="self-end mx-3"
                               disabled={isFetchingProduct}
                             >
-                              {!isFetchingPaymentIntent ? "Fetch" : <Spinner style={{ maxHeight: 30 }} />}
+                              {!isFetchingPaymentIntent ? (
+                                'Fetch'
+                              ) : (
+                                <Spinner style={{ maxHeight: 30 }} />
+                              )}
                             </Button>
                           </div>
                         </div>
@@ -1186,20 +1253,23 @@ export default function Index() {
                     <Timeline.Title>Perform checkout</Timeline.Title>
                     <CustomTimelineBody>
                       <div className="py-1">
-                        Fetch a payment intent to display a Stripe checkout form. The stripe payment form will use Rye's Stripe account
-                        to accept payment for the item.
+                        Fetch a payment intent to display a Stripe checkout form. The stripe payment
+                        form will use Rye's Stripe account to accept payment for the item.
                       </div>
                       <Timeline.Point />
-                      {stripePromise && clientSecret ?
-                        <Elements  stripe={stripePromise} options={{
-                          clientSecret: clientSecret,
-                          appearance: {
-                            theme: currentTheme === Theme.Dark ? "night" : "flat",
-                          }
-                        }}>
+                      {stripePromise && clientSecret ? (
+                        <Elements
+                          stripe={stripePromise}
+                          options={{
+                            clientSecret: clientSecret,
+                            appearance: {
+                              theme: currentTheme === Theme.Dark ? 'night' : 'flat',
+                            },
+                          }}
+                        >
                           <CheckoutForm />
                         </Elements>
-                      : null}
+                      ) : null}
                     </CustomTimelineBody>
                   </Card>
                   <div className="mx-3 max-w-2xl overflow-scroll">
