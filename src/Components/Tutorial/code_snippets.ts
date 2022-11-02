@@ -1,3 +1,5 @@
+import type { Address } from "../../types/api-data/Address";
+
 const indent = (code: string) => {
   const split = code.split('\n');
   // no need to indent single line code

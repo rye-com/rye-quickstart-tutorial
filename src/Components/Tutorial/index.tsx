@@ -48,6 +48,8 @@ import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/sty
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
 import { CheckoutForm } from '../CheckoutForm';
+import type { RecursivePartial } from '../../types/utils/RecursivePartial';
+import type { Address } from '../../types/api-data/Address';
 
 type APIConfiguration = {
   key: string;
