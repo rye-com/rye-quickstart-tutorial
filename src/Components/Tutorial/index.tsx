@@ -6,6 +6,7 @@ import { Badge, Button, Card, Flowbite, Label, Select, Spinner, Tabs, TextInput,
 import { KeyIcon, AtSymbolIcon, CheckIcon, XMarkIcon, LinkIcon } from "@heroicons/react/24/solid";
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js/pure';
+import {RiBarcodeLine as BarcodeIcon} from 'react-icons/ri';
 
 
 import SyntaxHighlighter from "react-syntax-highlighter";
@@ -579,7 +580,7 @@ export default function Index() {
       <Label htmlFor="offers_product_id" value="Enter product ID" className="mt-10" />
       <TextInput
         value={selectedProductID || ""}
-        icon={AtSymbolIcon}
+        icon={BarcodeIcon}
         className="w-full mt-3"
         id="offers_product_id"
         placeholder={marketPlaceSelector("2863039381604", "B000NQ10FK")}
@@ -846,7 +847,7 @@ export default function Index() {
                         <div className="flex my-3">
                           <TextInput
                             value={selectedProductID || ""}
-                            icon={AtSymbolIcon}
+                            icon={BarcodeIcon}
                             className="w-full"
                             id="fetch_product_id"
                             placeholder={marketPlaceSelector("2863039381604", "B000NQ10FK")}
