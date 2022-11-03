@@ -48,6 +48,7 @@ import {
 import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
+import type { Variables } from 'graphql-request';
 import { CheckoutForm } from '../CheckoutForm';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
@@ -242,12 +243,13 @@ export default function Index() {
 
   const currentTheme = data.appTheme === Theme.Dark.valueOf() ? Theme.Dark : Theme.Light;
 
+  const makeGQLRequest = (
     query: string,
     variables: Variables, // using generic TVars for this causes a weird type error with client.request call
   ) => {
     const client = new GraphQLClient('https://graphql.api.rye.com/v1/query');
     const headers = {
-      Authorization: 'Basic ' + btoa(data.apiConfig.key + ':'),
+      Authorization: 'Basic ' + window.btoa(data.apiConfig.key + ':'),
     };
     return client.request(query, variables, headers);
   };
