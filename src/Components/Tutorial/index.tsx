@@ -242,7 +242,9 @@ export default function Index() {
 
   const currentTheme = data.appTheme === Theme.Dark.valueOf() ? Theme.Dark : Theme.Light;
 
-  const makeGQLRequest = (query: string, variables) => {
+    query: string,
+    variables: Variables, // using generic TVars for this causes a weird type error with client.request call
+  ) => {
     const client = new GraphQLClient('https://graphql.api.rye.com/v1/query');
     const headers = {
       Authorization: 'Basic ' + btoa(data.apiConfig.key + ':'),
