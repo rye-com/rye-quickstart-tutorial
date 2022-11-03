@@ -194,9 +194,7 @@ function InlineCodeSnippet(props: { children: ReactNode }): JSX.Element {
 export const useDebouncedEffect = (
   /** Returned cleanup callback is currently not called */
   effect: () => void,
-  // `any` is preferable here
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  deps: Array<any>,
+  deps: Array<unknown>,
   delay: number,
 ) => {
   useEffect(() => {
@@ -305,8 +303,7 @@ export default function Index() {
     response,
   }: {
     /** Any json serializable object */
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    response: any;
+    response: unknown;
   }): JSX.Element | null {
     if (!response) return null;
     return (
