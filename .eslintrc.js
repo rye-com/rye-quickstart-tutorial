@@ -22,6 +22,11 @@ const conf = {
         properties: 'never',
       },
     ],
+
+    // This rule autofixes tsconfig setting `importsNotUsedAsValues: "error"`
+    // This means type-only import statements use the `import type { ... }` syntax
+    '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+
     // typescript handles this already:
     '@typescript-eslint/no-unused-vars': ['off'],
 

@@ -3,6 +3,7 @@
     "allowJs": true,
     "checkJs": true,
 
+    "importsNotUsedAsValues": "error",
     "forceConsistentCasingInFileNames": true,
 
     /* Backwards compat flags */
