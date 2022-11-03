@@ -1286,7 +1286,7 @@ export default function Index() {
                         <StripeElements
                           stripe={stripePromise}
                           options={{
-                            clientSecret: clientSecret,
+                            clientSecret,
                             appearance: {
                               theme: currentTheme === Theme.Dark ? 'night' : 'flat',
                             },
