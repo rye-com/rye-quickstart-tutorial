@@ -1,10 +1,16 @@
 /** @type {import('eslint').Linter.BaseConfig} */
 const conf = {
+  reportUnusedDisableDirectives: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
+  extends: [
+    'react-app',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
   plugins: ['@typescript-eslint'],
   rules: {
     'consistent-return': 'error',
