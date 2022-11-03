@@ -525,6 +525,8 @@ export default function Index() {
     );
     let button = otherTabButtons.iterateNext();
     while (button) {
+      // We should probably chuck this tab code and re-do it, which makes this type error irrelevant:
+      // @ts-expect-error - TS2339: Property 'click' does not exist on type 'Node'.
       button.click();
       button = otherTabButtons.iterateNext();
     }
