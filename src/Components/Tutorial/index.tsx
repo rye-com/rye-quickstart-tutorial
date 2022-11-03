@@ -242,10 +242,9 @@ export default function Index() {
 
   const stripePromise: StripeProp = useMemo(() => {
     if (stripeAPIKey) {
-      console.log('loading stripe');
       return loadStripe(stripeAPIKey);
     } else {
-      console.warn('stripeAPIKey is falsy:', stripeAPIKey);
+      // stripeAPIKey is undefined until we get to the checkout step, and load the checkout form.
       return null;
     }
   }, [stripeAPIKey]);
