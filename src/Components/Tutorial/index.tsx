@@ -118,7 +118,7 @@ const defaultStore: Store = {
 
 const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
-function CustomTimelineBody(props: any) {
+function CustomTimelineBody(props) {
   return <div className="text-slate-600 dark:text-slate-200">{props.children}</div>;
 }
 
@@ -163,13 +163,13 @@ function CustomCodeBlock({
   );
 }
 
-function InlineCodeSnippet(props: any): JSX.Element {
+function InlineCodeSnippet(props): JSX.Element {
   const codeSnippetClasses =
     'text-slate-500 dark:bg-neutral-700 border dark:border-neutral-500 dark:text-amber-200 px-1';
   return <span className={codeSnippetClasses}>{props.children}</span>;
 }
 
-export const useDebouncedEffect = (effect: any, deps: Array<any>, delay: number) => {
+export const useDebouncedEffect = (effect, deps: Array<unknown>, delay: number) => {
   useEffect(() => {
     const handler = setTimeout(() => effect(), delay);
 
@@ -186,10 +186,14 @@ export default function Index() {
   const [isFetchingProductOffers, setIsFetchingProductOffers] = useState<boolean>(false);
   const [isFetchingPaymentIntent, setIsFetchingPaymentIntent] = useState<boolean>(false);
 
-  const [requestProductResponse, setRequestProductResponse] = useState<any | null>(null);
-  const [fetchProductResponse, setFetchProductResponse] = useState<any | null>(null);
-  const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<any | null>(null);
-  const [fetchPaymentIntentResponse, setFetchPaymentIntentResponse] = useState<any | null>(null);
+  const [requestProductResponse, setRequestProductResponse] = useState<unknown | null>(null);
+  const [fetchProductResponse, setFetchProductResponse] = useState<unknown | null>(null);
+  const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<unknown | null>(
+    null,
+  );
+  const [fetchPaymentIntentResponse, setFetchPaymentIntentResponse] = useState<unknown | null>(
+    null,
+  );
 
   const [isValidAPIKey, setIsValidAPIKey] = useState<boolean>(false);
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(false);
@@ -229,7 +233,7 @@ export default function Index() {
 
   const currentTheme = data.appTheme === Theme.Dark.valueOf() ? Theme.Dark : Theme.Light;
 
-  const makeGQLRequest = (query: string, variables: any) => {
+  const makeGQLRequest = (query: string, variables) => {
     const client = new GraphQLClient('https://graphql.api.rye.com/v1/query');
     const headers = {
       Authorization: 'Basic ' + btoa(data.apiConfig.key + ':'),
@@ -347,7 +351,7 @@ export default function Index() {
     setIsFetchingProductOffers(true);
     // Add more field validation here to skip request on validation failures
     //
-    const variables: any = marketPlaceSelector(
+    const variables = marketPlaceSelector(
       shopifyProductOfferVariables(shopifyStoreCanonicalURL, selectedShopifyProductVariant, {
         city: data.address.city,
         stateCode: data.address.stateCode,
@@ -380,7 +384,7 @@ export default function Index() {
     setIsFetchingPaymentIntent(true);
     // Add more field validation here to skip request on validation failures
     //
-    const variables: any = marketPlaceSelector(
+    const variables = marketPlaceSelector(
       shopifyPaymentIntentVariables(
         shopifyStoreCanonicalURL,
         selectedShopifyProductVariant,
@@ -398,7 +402,7 @@ export default function Index() {
         '',
         '',
       ),
-      amazonPaymentIntentVariables(data.requestedProduct.amazonProductID!, {
+      amazonPaymentIntentVariables(data.requestedProduct.amazonProductID, {
         firstName: data.address.firstName,
         lastName: data.address.lastName,
         address1: data.address.address1,
@@ -452,7 +456,7 @@ export default function Index() {
     setSelectedShopifyProductVariant(e.target.value);
   };
 
-  const onMarketplaceChange = (e: any) => {
+  const onMarketplaceChange = (e) => {
     const marketplace =
       e.target.innerText.toUpperCase() === Marketplace.Amazon.valueOf().toUpperCase()
         ? Marketplace.Amazon
@@ -466,7 +470,7 @@ export default function Index() {
     );
     let button = otherTabButtons.iterateNext();
     while (button) {
-      (button as any).click();
+      button.click();
       button = otherTabButtons.iterateNext();
     }
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
