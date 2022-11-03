@@ -101,7 +101,7 @@ type FetchPaymentIntentResponse = {
 };
 
 function detectThemePreference(): string {
-  const currentTheme = window.localStorage?.getItem('appTheme');
+  const currentTheme = window.localStorage.getItem('appTheme');
   if (currentTheme) {
     return JSON.parse(currentTheme);
   }
@@ -110,10 +110,10 @@ function detectThemePreference(): string {
 }
 
 const defaultStore: Store = {
-  apiConfig: JSON.parse(window.localStorage?.getItem('apiConfig') || '{}'),
+  apiConfig: JSON.parse(window.localStorage.getItem('apiConfig') || '{}'),
   appTheme: detectThemePreference(),
   requestedProduct: JSON.parse(
-    window.localStorage?.getItem('requestedProduct') ||
+    window.localStorage.getItem('requestedProduct') ||
       JSON.stringify({
         shopifyProductID: '',
         amazonProductID: '',
@@ -122,7 +122,7 @@ const defaultStore: Store = {
       }),
   ),
   address: JSON.parse(
-    window.localStorage?.getItem('address') ||
+    window.localStorage.getItem('address') ||
       JSON.stringify({
         firstName: 'Will',
         lastName: 'Smith',
@@ -320,7 +320,7 @@ export default function Index() {
     const newData: Store = merge(cloneDeep(data), dataUpdate);
     let key: keyof Store;
     for (key in newData) {
-      window.localStorage?.setItem(key, JSON.stringify(newData[key]));
+      window.localStorage.setItem(key, JSON.stringify(newData[key]));
     }
     setData(newData);
   }
