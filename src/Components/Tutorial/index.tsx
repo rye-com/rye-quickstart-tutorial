@@ -1,4 +1,5 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import ApiKeyDarkImage from './rye-api-key-dark.png';
 import ApiKeyLightImage from './rye-api-key-light.png';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';

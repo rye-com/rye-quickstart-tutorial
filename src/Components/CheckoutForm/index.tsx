@@ -1,6 +1,7 @@
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { Button, Spinner } from 'flowbite-react';
-import { FormEvent, useState } from 'react';
+import type { FormEvent } from 'react';
+import { useState } from 'react';
 
 export const CheckoutForm = () => {
   const [paymentError, setPaymentError] = useState<string | undefined>();
