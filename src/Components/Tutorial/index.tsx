@@ -219,6 +219,7 @@ export default function Index() {
 
   const stripePromise: StripeProp = useMemo(() => {
     if (stripeAPIKey) {
+      console.log('loading stripe');
       return loadStripe(stripeAPIKey);
     } else {
       console.warn('stripeAPIKey is falsy:', stripeAPIKey);
@@ -466,13 +467,17 @@ export default function Index() {
     setSelectedShopifyProductVariant(e.target.value);
   };
 
-  const onMarketplaceChange = (e) => {
+  const onMarketplaceChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const target = e.target as HTMLElement;
+    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682
+    //   e.currentTarget.innerText is always "Amazon\nShopify"
+    //   e.       target.innerText is either "Amazon" or "Shopify"
     const marketplace =
-      e.target.innerText.toUpperCase() === Marketplace.Amazon.valueOf().toUpperCase()
+      target.innerText.toUpperCase() === Marketplace.Amazon.valueOf().toUpperCase()
         ? Marketplace.Amazon
         : Marketplace.Shopify;
     const otherTabButtons = document.evaluate(
-      `//button[contains(., '${e.target.innerText}')]`,
+      `//button[contains(., '${target.innerText}')]`,
       document,
       null,
       XPathResult.ANY_TYPE,
