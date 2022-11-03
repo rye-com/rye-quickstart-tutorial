@@ -22,7 +22,6 @@ const conf = {
         properties: 'never',
       },
     ],
-    'func-style': ['warn', 'declaration'],
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {
