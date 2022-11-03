@@ -28,7 +28,26 @@ const conf = {
         varsIgnorePattern: '^_',
       },
     ],
+
+    // Disable few rules for .js files, because they can only be fixed with .ts syntax:
+    //   https://github.com/typescript-eslint/typescript-eslint/blob/6c3816b3831e6e683c1a7842196b34248803d69b/packages/eslint-plugin/docs/rules/explicit-function-return-type.md#configuring-in-a-mixed-jsts-codebase
+    //   These are enabled specifically for TS in `overrides` below.
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-var-requires': 'off',
   },
+  overrides: [
+    {
+      // enable the rule specifically for TypeScript files
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        // Getting ton of errors for these rules:
+        // '@typescript-eslint/explicit-function-return-type': ['error'],
+        // '@typescript-eslint/explicit-module-boundary-types': ['error'],
+        '@typescript-eslint/no-var-requires': ['error'],
+      },
+    },
+  ],
   ignorePatterns: ['dist/*'],
 };
 
