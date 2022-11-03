@@ -292,7 +292,7 @@ export default function Index() {
     makeGQLRequest(requestProductQuery, variables)
       .then((res) => {
         setRequestProductResponse(res);
-        let requestedProduct: Partial<Store['requestedProduct']> = {};
+        const requestedProduct: Partial<Store['requestedProduct']> = {};
         if (data.requestedProduct.selectedMarketplace === Marketplace.Shopify) {
           requestedProduct['shopifyProductID'] = res['requestProductByURL'].productID;
         } else {
@@ -456,7 +456,7 @@ export default function Index() {
       e.target.innerText.toUpperCase() === Marketplace.Amazon.valueOf().toUpperCase()
         ? Marketplace.Amazon
         : Marketplace.Shopify;
-    var otherTabButtons = document.evaluate(
+    const otherTabButtons = document.evaluate(
       `//button[contains(., '${e.target.innerText}')]`,
       document,
       null,
@@ -487,7 +487,7 @@ export default function Index() {
   };
 
   const onProductIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let update: Partial<Store['requestedProduct']> = marketPlaceSelector(
+    const update: Partial<Store['requestedProduct']> = marketPlaceSelector(
       { shopifyProductID: e.target.value },
       { amazonProductID: e.target.value },
     );
