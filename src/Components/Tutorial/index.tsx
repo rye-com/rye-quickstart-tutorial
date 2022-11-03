@@ -80,6 +80,26 @@ type Store = {
   address: Address;
 };
 
+// Pedantically typed to force us to validate everything as we need it.
+type FetchProductResponse = {
+  product: null | {
+    variants: null | Array<{
+      id: string;
+      title: string;
+    }>;
+  };
+};
+
+type ApiAccessData = {
+  clientSecret?: undefined | string;
+  publishableAPIKey?: undefined | string;
+};
+
+type FetchPaymentIntentResponse = {
+  createShopifyPaymentIntent?: ApiAccessData;
+  createAmazonPaymentIntent?: ApiAccessData;
+};
+
 function detectThemePreference(): string {
   const currentTheme = window.localStorage?.getItem('appTheme');
   if (currentTheme) {
@@ -196,13 +216,16 @@ export default function Index() {
   const [isFetchingPaymentIntent, setIsFetchingPaymentIntent] = useState<boolean>(false);
 
   const [requestProductResponse, setRequestProductResponse] = useState<unknown | null>(null);
-  const [fetchProductResponse, setFetchProductResponse] = useState<unknown | null>(null);
+  // prettier-ignore
+  const [
+    fetchProductResponse,
+    setFetchProductResponse
+  ] = useState<FetchProductResponse | null>(null);
   const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<unknown | null>(
     null,
   );
-  const [fetchPaymentIntentResponse, setFetchPaymentIntentResponse] = useState<unknown | null>(
-    null,
-  );
+  const [fetchPaymentIntentResponse, setFetchPaymentIntentResponse] =
+    useState<FetchPaymentIntentResponse | null>(null);
 
   const [isValidAPIKey, setIsValidAPIKey] = useState<boolean>(false);
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(false);
