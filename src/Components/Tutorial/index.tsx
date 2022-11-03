@@ -1,4 +1,4 @@
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import ApiKeyDarkImage from './rye-api-key-dark.png';
 import ApiKeyLightImage from './rye-api-key-light.png';
@@ -80,9 +80,9 @@ type Store = {
 };
 
 function detectThemePreference(): string {
-  const setTheme = window.localStorage?.getItem('appTheme');
-  if (setTheme) {
-    return JSON.parse(setTheme);
+  const currentTheme = window.localStorage?.getItem('appTheme');
+  if (currentTheme) {
+    return JSON.parse(currentTheme);
   }
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   return prefersDark ? Theme.Dark.valueOf() : Theme.Light.valueOf();
@@ -118,7 +118,7 @@ const defaultStore: Store = {
 
 const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
-function CustomTimelineBody(props) {
+function CustomTimelineBody(props: { children: ReactNode }) {
   return <div className="text-slate-600 dark:text-slate-200">{props.children}</div>;
 }
 
@@ -163,19 +163,27 @@ function CustomCodeBlock({
   );
 }
 
-function InlineCodeSnippet(props): JSX.Element {
+function InlineCodeSnippet(props: { children: ReactNode }): JSX.Element {
   const codeSnippetClasses =
     'text-slate-500 dark:bg-neutral-700 border dark:border-neutral-500 dark:text-amber-200 px-1';
   return <span className={codeSnippetClasses}>{props.children}</span>;
 }
 
-export const useDebouncedEffect = (effect, deps: Array<unknown>, delay: number) => {
+// Maybe we should use an external lib here?
+export const useDebouncedEffect = (
+  /** Returned cleanup callback is currently not called */
+  effect: () => void,
+  // `any` is preferable here
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  deps: Array<any>,
+  delay: number,
+) => {
   useEffect(() => {
-    const handler = setTimeout(() => effect(), delay);
+    const handler = setTimeout(effect, delay);
 
     return () => clearTimeout(handler);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...(deps || []), delay]);
+  }, [...deps, delay]);
 };
 
 export default function Index() {
@@ -419,6 +427,8 @@ export default function Index() {
       variables,
     )
       .then((res) => {
+        // TODO: use this to cleanup FetchPaymentIntentResponse type def
+        // console.log('fetchPaymentIntentResponse', res);
         setFetchPaymentIntentResponse(res);
       })
       .catch((error) => {
@@ -503,13 +513,7 @@ export default function Index() {
     setShopifyStoreCanonicalURL(e.target.value);
   };
 
-  useDebouncedEffect(
-    () => {
-      checkRyeAPIKey();
-    },
-    [data.apiConfig.key],
-    500,
-  );
+  useDebouncedEffect(checkRyeAPIKey, [data.apiConfig.key], 500);
 
   const shopifyProductVariantOptions = (): Array<{ id: string; title: string }> | null => {
     if (!fetchProductResponse || !fetchProductResponse.product?.variants) return null;
