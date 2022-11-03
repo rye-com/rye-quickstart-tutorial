@@ -278,7 +278,13 @@ export default function Index() {
       });
   };
 
-  function RequestResponseCodeBlock({ response }: { response: object | null }): JSX.Element | null {
+  function RequestResponseCodeBlock({
+    response,
+  }: {
+    /** Any json serializable object */
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    response: any;
+  }): JSX.Element | null {
     if (!response) return null;
     return (
       <div className="mt-5 overflow-scroll rounded-lg p-4 border border-gray-300 dark:border-gray-800">
@@ -495,10 +501,7 @@ export default function Index() {
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
   };
 
-  const prettifiedJSONResponse = (resp: object | null) => {
-    if (!resp) {
-      return null;
-    }
+  const prettifiedJSONResponse = (resp: object) => {
     const prettyJSON = JSON.stringify(resp, null, 2);
     return (
       <CustomCodeBlock
