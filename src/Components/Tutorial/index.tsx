@@ -403,6 +403,13 @@ export default function Index() {
     setIsFetchingPaymentIntent(true);
     // Add more field validation here to skip request on validation failures
     //
+
+    if (!data.requestedProduct.amazonProductID) {
+      throw new Error(
+        'data.requestedProduct.amazonProductID is falsy. data: ' + JSON.stringify(data, null, 2),
+      );
+    }
+
     const variables = marketPlaceSelector(
       shopifyPaymentIntentVariables(
         shopifyStoreCanonicalURL,
