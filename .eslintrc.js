@@ -22,12 +22,8 @@ const conf = {
         properties: 'never',
       },
     ],
-    '@typescript-eslint/no-unused-vars': [
-      'warn',
-      {
-        varsIgnorePattern: '^_',
-      },
-    ],
+    // typescript handles this already:
+    '@typescript-eslint/no-unused-vars': ['off'],
 
     // Disable few rules for .js files, because they can only be fixed with .ts syntax:
     //   https://github.com/typescript-eslint/typescript-eslint/blob/6c3816b3831e6e683c1a7842196b34248803d69b/packages/eslint-plugin/docs/rules/explicit-function-return-type.md#configuring-in-a-mixed-jsts-codebase
