@@ -16,7 +16,6 @@ import {
   Timeline,
 } from 'flowbite-react';
 import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from '@heroicons/react/24/solid';
-import { Elements as StripeElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
@@ -47,7 +46,7 @@ import {
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
 import type { Variables } from 'graphql-request';
-import { CheckoutForm } from '../CheckoutForm';
+import { StripeCheckout } from './primary-components/StripeCheckout';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
 import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
@@ -1163,19 +1162,11 @@ export default function Index() {
                         form will use Rye's Stripe account to accept payment for the item.
                       </div>
                       <Timeline.Point />
-                      {stripePromise && clientSecret ? (
-                        <StripeElements
-                          stripe={stripePromise}
-                          options={{
-                            clientSecret,
-                            appearance: {
-                              theme: currentTheme === ThemeEnum.Dark ? 'night' : 'flat',
-                            },
-                          }}
-                        >
-                          <CheckoutForm />
-                        </StripeElements>
-                      ) : null}
+                      <StripeCheckout
+                        stripePromise={stripePromise}
+                        clientSecret={clientSecret}
+                        currentTheme={currentTheme}
+                      />
                     </CustomTimelineBody>
                   </Card>
                   <div className="mx-3 max-w-2xl overflow-scroll">
