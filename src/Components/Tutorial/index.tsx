@@ -145,6 +145,7 @@ export default function Index({ analytics }: { analytics: AnalyticsBrowser }) {
     };
     makeGQLRequest(amazonProductFetchQuery, variables)
       .then((_result) => {
+        analytics.identify(`apiKey:${data.apiConfig.key}`);
         setIsValidAPIKey(true);
       })
       .catch((_error) => {
