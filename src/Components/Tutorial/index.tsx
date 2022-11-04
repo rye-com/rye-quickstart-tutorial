@@ -20,7 +20,6 @@ import { Elements as StripeElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
-import SyntaxHighlighter from 'react-syntax-highlighter';
 import {
   amazonProductFetchQuery,
   amazonProductFetchSnippet,
@@ -45,7 +44,6 @@ import {
   amazonPaymentIntentQuery,
   checkoutFormCode,
 } from './code_snippets';
-import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
 import type { Variables } from 'graphql-request';
@@ -58,51 +56,11 @@ import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
 import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
 import { CustomTimelineBody } from './helper-components/CustomTimelineBody';
 import { InlineCodeSnippet } from './helper-components/InlineCodeSnippet';
+import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
 
 const defaultStore = getDefaultStore();
 
 const linkClasses = 'text-indigo-500 dark:text-rye-lime';
-
-function CustomCodeBlock({
-  codeString,
-  dataTheme,
-  language = 'javascript',
-  showLineNumbers = false,
-  startingLineNumber = 1,
-  style = {},
-}: {
-  language?: string;
-  codeString: string;
-  dataTheme: Theme;
-  showLineNumbers?: boolean;
-  startingLineNumber?: number;
-  style?: React.CSSProperties;
-}) {
-  const theme = dataTheme === Theme.Dark.valueOf() ? atomOneDark : atomOneLight;
-  const themeOverrides: { [key: string]: React.CSSProperties } = {
-    hljs: { background: 'transparent' },
-  };
-  return (
-    <SyntaxHighlighter
-      showLineNumbers={showLineNumbers}
-      lineNumberStyle={{ color: 'rgb(176 171 171)' }}
-      startingLineNumber={startingLineNumber}
-      codeTagProps={{
-        style: {
-          fontSize: '0.8rem',
-          ...style,
-        },
-      }}
-      language={language}
-      style={{
-        ...theme,
-        ...themeOverrides,
-      }}
-    >
-      {codeString}
-    </SyntaxHighlighter>
-  );
-}
 
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
