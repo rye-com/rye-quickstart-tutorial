@@ -2,6 +2,7 @@ import type { UserModel } from './UserModel';
 import type { ACTION, SOURCE } from './constants';
 import type { Analytics, AnalyticsBrowser } from '@segment/analytics-next';
 
+// Based on: https://github.com/rye-com/dev-console/blob/ccdaf725d7a9782cdd1a020b7b97399e4aaa4528/src/app/utils.ts#L59
 export const getRyelytics = (analytics: AnalyticsBrowser) => {
   return {
     identify: (userInfoModel: UserModel) => {
