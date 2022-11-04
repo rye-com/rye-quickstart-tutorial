@@ -121,11 +121,9 @@ export default function Index() {
   const [isFetchingPaymentIntent, setIsFetchingPaymentIntent] = useState<boolean>(false);
 
   const [requestProductResponse, setRequestProductResponse] = useState<unknown | null>(null);
-  // prettier-ignore
-  const [
-    fetchProductResponse,
-    setFetchProductResponse
-  ] = useState<FetchProductResponse | null>(null);
+  const [fetchProductResponse, setFetchProductResponse] = useState<FetchProductResponse | null>(
+    null,
+  );
   const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<unknown | null>(
     null,
   );
