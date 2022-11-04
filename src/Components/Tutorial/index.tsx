@@ -156,14 +156,16 @@ export default function Index() {
 
   function RequestResponseCodeBlock({
     response,
+    currentTheme,
   }: {
     /** Any json serializable object */
     response: unknown;
+    currentTheme: ThemeEnum;
   }): JSX.Element | null {
     if (!response) return null;
     return (
       <div className="mt-5 overflow-scroll rounded-lg p-4 border border-gray-300 dark:border-gray-800">
-        <PrettifiedJSONResponse response={response} />
+        <PrettifiedJSONResponse response={response} currentTheme={currentTheme} />
       </div>
     );
   }
@@ -385,7 +387,13 @@ export default function Index() {
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
   };
 
-  const PrettifiedJSONResponse = ({ response }: { response: object }): JSX.Element => {
+  const PrettifiedJSONResponse = ({
+    response,
+    currentTheme,
+  }: {
+    response: object;
+    currentTheme: ThemeEnum;
+  }): JSX.Element => {
     const prettyJSON = JSON.stringify(response, null, 2);
     return (
       <CustomCodeBlock
@@ -735,7 +743,10 @@ export default function Index() {
                             )}
                           </Button>
                         </div>
-                        <RequestResponseCodeBlock response={requestProductResponse} />
+                        <RequestResponseCodeBlock
+                          response={requestProductResponse}
+                          currentTheme={currentTheme}
+                        />
                       </div>
                     </CustomTimelineBody>
                   </Card>
@@ -839,7 +850,10 @@ export default function Index() {
                             {!isFetchingProduct ? 'Fetch' : <Spinner style={{ maxHeight: 30 }} />}
                           </Button>
                         </div>
-                        <RequestResponseCodeBlock response={fetchProductResponse} />
+                        <RequestResponseCodeBlock
+                          response={fetchProductResponse}
+                          currentTheme={currentTheme}
+                        />
                       </div>
                     </CustomTimelineBody>
                   </Card>
@@ -955,7 +969,10 @@ export default function Index() {
                             </Button>
                           </div>
                         </div>
-                        <RequestResponseCodeBlock response={fetchProductOffersResponse} />
+                        <RequestResponseCodeBlock
+                          response={fetchProductOffersResponse}
+                          currentTheme={currentTheme}
+                        />
                       </div>
                     </CustomTimelineBody>
                   </Card>
@@ -1150,7 +1167,10 @@ export default function Index() {
                             </Button>
                           </div>
                         </div>
-                        <RequestResponseCodeBlock response={fetchPaymentIntentResponse} />
+                        <RequestResponseCodeBlock
+                          response={fetchPaymentIntentResponse}
+                          currentTheme={currentTheme}
+                        />
                       </div>
                     </CustomTimelineBody>
                   </Card>
