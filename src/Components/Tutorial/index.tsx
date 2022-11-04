@@ -18,7 +18,6 @@ import {
 import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from '@heroicons/react/24/solid';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
-import type { AnalyticsBrowser } from '@segment/analytics-next';
 
 import {
   amazonProductFetchQuery,
@@ -60,6 +59,7 @@ import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
 import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock';
 import type { StripeProp } from './types/StripeProp';
 import type { getRyeAnalytics } from '../../shared-analytics/getRyeAnalytics';
+import type { UserModel } from '../../shared-analytics/UserModel';
 
 const defaultStore = getDefaultStore();
 
@@ -146,7 +146,11 @@ export default function Index({ analytics }: { analytics: ReturnType<typeof getR
     };
     makeGQLRequest(amazonProductFetchQuery, variables)
       .then((_result) => {
-        analytics.identify(`apiKey:${data.apiConfig.key}`);
+        analytics.identify({
+          // TODO: get proper user model data for good tracking
+          uid: `__apiKey__:${data.apiConfig.key}`,
+          apiKey: data.apiConfig.key,
+        } as UserModel);
         setIsValidAPIKey(true);
       })
       .catch((_error) => {
