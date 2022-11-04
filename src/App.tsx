@@ -1,7 +1,7 @@
 import './App.css';
 import Tutorial from './Components/Tutorial';
 import { AnalyticsBrowser } from '@segment/analytics-next';
-import { getAnalyticsUtils } from './shared-analytics/getAnalyticsUtils';
+import { getRyeAnalytics } from './shared-analytics/getRyeAnalytics';
 
 const devKey = 'yv3GSCG8FGnDawBWNCRYbKDRjvLHDqdx';
 const prodKey = 'bN1nSWedUvp3WNAB9baPCNG87RrEkrSk';
@@ -11,7 +11,7 @@ const analytics = AnalyticsBrowser.load({ writeKey });
 analytics.page();
 
 function App() {
-  return <Tutorial analytics={getAnalyticsUtils(analytics)} />;
+  return <Tutorial analytics={getRyeAnalytics(analytics)} />;
 }
 
 export default App;
