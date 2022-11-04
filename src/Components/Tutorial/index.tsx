@@ -55,35 +55,9 @@ import type { Address } from '../../types/api-data/Address';
 import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
 import { Theme, Marketplace } from './types';
 import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
-import { detectThemePreference } from '../../localStorage-crud/detectThemePreference';
+import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
 
-const defaultStore: Store = {
-  apiConfig: JSON.parse(window.localStorage.getItem('apiConfig') || '{}'),
-  appTheme: detectThemePreference(),
-  requestedProduct: JSON.parse(
-    window.localStorage.getItem('requestedProduct') ||
-      JSON.stringify({
-        shopifyProductID: '',
-        amazonProductID: '',
-        selectedMarketplace: Marketplace.Amazon,
-        productURL: '',
-      }),
-  ),
-  address: JSON.parse(
-    window.localStorage.getItem('address') ||
-      JSON.stringify({
-        firstName: 'Will',
-        lastName: 'Smith',
-        address1: 'Bel Air Mansion',
-        address2: '',
-        city: 'Beverly Hills',
-        stateCode: 'CA',
-        zipCode: '90210',
-        phone: '1234567890',
-        email: 'tutorial@rye.com',
-      }),
-  ),
-};
+const defaultStore = getDefaultStore();
 
 const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
