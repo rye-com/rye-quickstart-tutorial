@@ -2,7 +2,7 @@ import type { UserModel } from './UserModel';
 import type { ACTION, SOURCE } from './constants';
 import type { Analytics, AnalyticsBrowser } from '@segment/analytics-next';
 
-export const getRyeAnalytics = (analytics: AnalyticsBrowser) => {
+export const getRyelytics = (analytics: AnalyticsBrowser) => {
   return {
     identify: (userInfoModel: UserModel) => {
       analytics.identify(userInfoModel.uid, {
