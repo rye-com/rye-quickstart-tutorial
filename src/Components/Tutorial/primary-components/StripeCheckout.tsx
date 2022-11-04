@@ -12,21 +12,21 @@ export const StripeCheckout = ({
   clientSecret: string | undefined;
   currentTheme: ThemeEnum;
 }): JSX.Element | null => {
+  if (!stripePromise || !clientSecret) {
+    return null;
+  }
+
   return (
-    <>
-      {stripePromise && clientSecret ? (
-        <StripeElements
-          stripe={stripePromise}
-          options={{
-            clientSecret,
-            appearance: {
-              theme: currentTheme === ThemeEnum.Dark ? 'night' : 'flat',
-            },
-          }}
-        >
-          <CheckoutForm />
-        </StripeElements>
-      ) : null}
-    </>
+    <StripeElements
+      stripe={stripePromise}
+      options={{
+        clientSecret,
+        appearance: {
+          theme: currentTheme === ThemeEnum.Dark ? 'night' : 'flat',
+        },
+      }}
+    >
+      <CheckoutForm />
+    </StripeElements>
   );
 };
