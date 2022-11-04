@@ -1,5 +1,5 @@
-import type { ChangeEvent, ReactNode } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import type { ChangeEvent } from 'react';
+import { useMemo, useState } from 'react';
 import ApiKeyDarkImage from './rye-api-key-dark.png';
 import ApiKeyLightImage from './rye-api-key-light.png';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
@@ -20,7 +20,6 @@ import { Elements as StripeElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
-import SyntaxHighlighter from 'react-syntax-highlighter';
 import {
   amazonProductFetchQuery,
   amazonProductFetchSnippet,
@@ -45,166 +44,26 @@ import {
   amazonPaymentIntentQuery,
   checkoutFormCode,
 } from './code_snippets';
-import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
 import type { Variables } from 'graphql-request';
 import { CheckoutForm } from '../CheckoutForm';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
+import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
+import { ThemeEnum, MarketplaceEnum } from './types';
+import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
+import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
+import { CustomTimelineBody } from './helper-components/CustomTimelineBody';
+import { InlineCodeSnippet } from './helper-components/InlineCodeSnippet';
+import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
+import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock';
 
-type APIConfiguration = {
-  key: string;
-  endpoint: string;
-};
-
-enum Theme {
-  Dark = 'dark',
-  Light = 'light',
-}
-
-enum Marketplace {
-  Shopify = 'SHOPIFY',
-  Amazon = 'AMAZON',
-}
-
-type Store = {
-  appTheme: string;
-  apiConfig: APIConfiguration;
-  requestedProduct: {
-    productURL: string;
-    shopifyProductID?: string;
-    amazonProductID?: string;
-    selectedMarketplace: Marketplace;
-  };
-  address: Address;
-};
-
-// Pedantically typed to force us to validate everything as we need it.
-type FetchProductResponse = {
-  product: null | {
-    variants: null | Array<{
-      id: string;
-      title: string;
-    }>;
-  };
-};
-
-type ApiAccessData = {
-  clientSecret?: undefined | string;
-  publishableAPIKey?: undefined | string;
-};
-
-type FetchPaymentIntentResponse = {
-  createShopifyPaymentIntent?: ApiAccessData;
-  createAmazonPaymentIntent?: ApiAccessData;
-};
-
-function detectThemePreference(): string {
-  const currentTheme = window.localStorage.getItem('appTheme');
-  if (currentTheme) {
-    return JSON.parse(currentTheme);
-  }
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return prefersDark ? Theme.Dark.valueOf() : Theme.Light.valueOf();
-}
-
-const defaultStore: Store = {
-  apiConfig: JSON.parse(window.localStorage.getItem('apiConfig') || '{}'),
-  appTheme: detectThemePreference(),
-  requestedProduct: JSON.parse(
-    window.localStorage.getItem('requestedProduct') ||
-      JSON.stringify({
-        shopifyProductID: '',
-        amazonProductID: '',
-        selectedMarketplace: Marketplace.Amazon,
-        productURL: '',
-      }),
-  ),
-  address: JSON.parse(
-    window.localStorage.getItem('address') ||
-      JSON.stringify({
-        firstName: 'Will',
-        lastName: 'Smith',
-        address1: 'Bel Air Mansion',
-        address2: '',
-        city: 'Beverly Hills',
-        stateCode: 'CA',
-        zipCode: '90210',
-        phone: '1234567890',
-        email: 'tutorial@rye.com',
-      }),
-  ),
-};
+const defaultStore = getDefaultStore();
 
 const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
-function CustomTimelineBody(props: { children: ReactNode }) {
-  return <div className="text-slate-600 dark:text-slate-200">{props.children}</div>;
-}
-
-function CustomCodeBlock({
-  codeString,
-  dataTheme,
-  language = 'javascript',
-  showLineNumbers = false,
-  startingLineNumber = 1,
-  style = {},
-}: {
-  language?: string;
-  codeString: string;
-  dataTheme: Theme;
-  showLineNumbers?: boolean;
-  startingLineNumber?: number;
-  style?: React.CSSProperties;
-}) {
-  const theme = dataTheme === Theme.Dark.valueOf() ? atomOneDark : atomOneLight;
-  const themeOverrides: { [key: string]: React.CSSProperties } = {
-    hljs: { background: 'transparent' },
-  };
-  return (
-    <SyntaxHighlighter
-      showLineNumbers={showLineNumbers}
-      lineNumberStyle={{ color: 'rgb(176 171 171)' }}
-      startingLineNumber={startingLineNumber}
-      codeTagProps={{
-        style: {
-          fontSize: '0.8rem',
-          ...style,
-        },
-      }}
-      language={language}
-      style={{
-        ...theme,
-        ...themeOverrides,
-      }}
-    >
-      {codeString}
-    </SyntaxHighlighter>
-  );
-}
-
-function InlineCodeSnippet(props: { children: ReactNode }): JSX.Element {
-  const codeSnippetClasses =
-    'text-slate-500 dark:bg-neutral-700 border dark:border-neutral-500 dark:text-amber-200 px-1';
-  return <span className={codeSnippetClasses}>{props.children}</span>;
-}
-
-// Maybe we should use an external lib here?
-export const useDebouncedEffect = (
-  /** Returned cleanup callback is currently not called */
-  effect: () => void,
-  deps: Array<unknown>,
-  delay: number,
-) => {
-  useEffect(() => {
-    const handler = setTimeout(effect, delay);
-
-    return () => clearTimeout(handler);
-    // TODO: include `effect` in the deps array, and then use `useCallback` on the code being passed in, etc.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps, delay]);
-};
+const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
@@ -215,11 +74,9 @@ export default function Index() {
   const [isFetchingPaymentIntent, setIsFetchingPaymentIntent] = useState<boolean>(false);
 
   const [requestProductResponse, setRequestProductResponse] = useState<unknown | null>(null);
-  // prettier-ignore
-  const [
-    fetchProductResponse,
-    setFetchProductResponse
-  ] = useState<FetchProductResponse | null>(null);
+  const [fetchProductResponse, setFetchProductResponse] = useState<FetchProductResponse | null>(
+    null,
+  );
   const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<unknown | null>(
     null,
   );
@@ -250,7 +107,7 @@ export default function Index() {
   }, [stripeAPIKey]);
 
   const marketPlaceSelector = <T, V>(shopifyVar: T, amazonVar: V): T | V => {
-    if (data.requestedProduct.selectedMarketplace === Marketplace.Shopify) {
+    if (data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify) {
       return shopifyVar;
     } else {
       return amazonVar;
@@ -262,17 +119,17 @@ export default function Index() {
     data.requestedProduct.amazonProductID,
   );
 
-  const currentTheme = data.appTheme === Theme.Dark.valueOf() ? Theme.Dark : Theme.Light;
+  const currentTheme =
+    data.appTheme === ThemeEnum.Dark.valueOf() ? ThemeEnum.Dark : ThemeEnum.Light;
 
   const makeGQLRequest = (
     query: string,
     variables: Variables, // using generic TVars for this causes a weird type error with client.request call
   ) => {
-    const client = new GraphQLClient('https://graphql.api.rye.com/v1/query');
     const headers = {
       Authorization: 'Basic ' + window.btoa(data.apiConfig.key + ':'),
     };
-    return client.request(query, variables, headers);
+    return gqlClient.request(query, variables, headers);
   };
 
   const checkRyeAPIKey = () => {
@@ -299,20 +156,6 @@ export default function Index() {
       });
   };
 
-  function RequestResponseCodeBlock({
-    response,
-  }: {
-    /** Any json serializable object */
-    response: unknown;
-  }): JSX.Element | null {
-    if (!response) return null;
-    return (
-      <div className="mt-5 overflow-scroll rounded-lg p-4 border border-gray-300 dark:border-gray-800">
-        {prettifiedJSONResponse(response)}
-      </div>
-    );
-  }
-
   function updateData(dataUpdate: RecursivePartial<Store>) {
     const newData: Store = merge(cloneDeep(data), dataUpdate);
     let key: keyof Store;
@@ -323,7 +166,7 @@ export default function Index() {
   }
 
   const onChangeTheme = (checked: boolean) => {
-    const theme = checked ? Theme.Dark : Theme.Light;
+    const theme = checked ? ThemeEnum.Dark : ThemeEnum.Light;
     updateData({ appTheme: theme });
   };
 
@@ -337,7 +180,7 @@ export default function Index() {
       .then((res) => {
         setRequestProductResponse(res);
         const requestedProduct: Partial<Store['requestedProduct']> = {};
-        if (data.requestedProduct.selectedMarketplace === Marketplace.Shopify) {
+        if (data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify) {
           requestedProduct['shopifyProductID'] = res['requestProductByURL'].productID;
         } else {
           requestedProduct['amazonProductID'] = res['requestProductByURL'].productID;
@@ -510,9 +353,9 @@ export default function Index() {
     //   e.currentTarget.innerText is always "Amazon\nShopify"
     //   e.       target.innerText is either "Amazon" or "Shopify"
     const marketplace =
-      target.innerText.toUpperCase() === Marketplace.Amazon.valueOf().toUpperCase()
-        ? Marketplace.Amazon
-        : Marketplace.Shopify;
+      target.innerText.toUpperCase() === MarketplaceEnum.Amazon.valueOf().toUpperCase()
+        ? MarketplaceEnum.Amazon
+        : MarketplaceEnum.Shopify;
     const otherTabButtons = document.evaluate(
       `//button[contains(., '${target.innerText}')]`,
       document,
@@ -528,18 +371,6 @@ export default function Index() {
       button = otherTabButtons.iterateNext();
     }
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
-  };
-
-  const prettifiedJSONResponse = (resp: object) => {
-    const prettyJSON = JSON.stringify(resp, null, 2);
-    return (
-      <CustomCodeBlock
-        showLineNumbers={false}
-        dataTheme={currentTheme}
-        codeString={prettyJSON}
-        language="json"
-      ></CustomCodeBlock>
-    );
   };
 
   const onProductIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -674,7 +505,9 @@ export default function Index() {
     <div
       className={
         'flex ' +
-        (currentTheme === Theme.Dark ? 'dark bg-black text-white' : 'bg-light-pastel text-black')
+        (currentTheme === ThemeEnum.Dark
+          ? 'dark bg-black text-white'
+          : 'bg-light-pastel text-black')
       }
     >
       <Flowbite
@@ -702,7 +535,7 @@ export default function Index() {
       >
         <div className="mx-10 mt-5">
           <div className="flex items-center justify-end font-200">
-            <DarkModeSwitch checked={currentTheme === Theme.Dark} onChange={onChangeTheme} />
+            <DarkModeSwitch checked={currentTheme === ThemeEnum.Dark} onChange={onChangeTheme} />
           </div>
           <h1 className="flex items-center justify-between text-5xl font-200">
             Rye API Quick Start
@@ -732,7 +565,7 @@ export default function Index() {
                         Under Access and Security, view and copy your API key
                       </div>
                       <img
-                        src={currentTheme === Theme.Dark ? ApiKeyDarkImage : ApiKeyLightImage}
+                        src={currentTheme === ThemeEnum.Dark ? ApiKeyDarkImage : ApiKeyLightImage}
                         alt="API Key"
                         className="border rounded border-slate-200 dark:border-rye-lime"
                       />
@@ -774,7 +607,7 @@ export default function Index() {
                   <div className="mx-3 max-w-2xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={1}
                       codeString={initClientSnippet}
                     ></CustomCodeBlock>
@@ -809,7 +642,9 @@ export default function Index() {
                       >
                         <Tabs.Item
                           title="Amazon"
-                          active={data.requestedProduct.selectedMarketplace === Marketplace.Amazon}
+                          active={
+                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Amazon
+                          }
                         >
                           <span className="py-3">
                             Navigate to{' '}
@@ -826,7 +661,9 @@ export default function Index() {
                         </Tabs.Item>
                         <Tabs.Item
                           title="Shopify"
-                          active={data.requestedProduct.selectedMarketplace === Marketplace.Shopify}
+                          active={
+                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify
+                          }
                         >
                           <span className="py-3">
                             Navigate to any
@@ -874,14 +711,17 @@ export default function Index() {
                             )}
                           </Button>
                         </div>
-                        <RequestResponseCodeBlock response={requestProductResponse} />
+                        <RequestResponseCodeBlock
+                          response={requestProductResponse}
+                          currentTheme={currentTheme}
+                        />
                       </div>
                     </CustomTimelineBody>
                   </Card>
                   <div className="mx-3 max-w-xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={requestedProductSnippetLineNumber}
                       codeString={requestedProductSnippet}
                     ></CustomCodeBlock>
@@ -910,7 +750,9 @@ export default function Index() {
                       >
                         <Tabs.Item
                           title="Amazon"
-                          active={data.requestedProduct.selectedMarketplace === Marketplace.Amazon}
+                          active={
+                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Amazon
+                          }
                         >
                           <div className="mt-3">
                             The Amazon Standard identification Number (ASIN) can be used to fetch an
@@ -931,7 +773,9 @@ export default function Index() {
                         </Tabs.Item>
                         <Tabs.Item
                           title="Shopify"
-                          active={data.requestedProduct.selectedMarketplace === Marketplace.Shopify}
+                          active={
+                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify
+                          }
                         >
                           <div className="py-3">
                             The Shopify product ID can be found in the response of the{' '}
@@ -974,7 +818,10 @@ export default function Index() {
                             {!isFetchingProduct ? 'Fetch' : <Spinner style={{ maxHeight: 30 }} />}
                           </Button>
                         </div>
-                        <RequestResponseCodeBlock response={fetchProductResponse} />
+                        <RequestResponseCodeBlock
+                          response={fetchProductResponse}
+                          currentTheme={currentTheme}
+                        />
                       </div>
                     </CustomTimelineBody>
                   </Card>
@@ -982,7 +829,7 @@ export default function Index() {
                     <CustomCodeBlock
                       showLineNumbers={true}
                       startingLineNumber={productFetchSnippetLineNumber}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       codeString={productFetchSnippet}
                     ></CustomCodeBlock>
                   </div>
@@ -1090,14 +937,17 @@ export default function Index() {
                             </Button>
                           </div>
                         </div>
-                        <RequestResponseCodeBlock response={fetchProductOffersResponse} />
+                        <RequestResponseCodeBlock
+                          response={fetchProductOffersResponse}
+                          currentTheme={currentTheme}
+                        />
                       </div>
                     </CustomTimelineBody>
                   </Card>
                   <div className="mx-3 max-w-xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={productOfferSnippetLineNumber}
                       codeString={productOfferSnippet}
                     ></CustomCodeBlock>
@@ -1285,14 +1135,17 @@ export default function Index() {
                             </Button>
                           </div>
                         </div>
-                        <RequestResponseCodeBlock response={fetchPaymentIntentResponse} />
+                        <RequestResponseCodeBlock
+                          response={fetchPaymentIntentResponse}
+                          currentTheme={currentTheme}
+                        />
                       </div>
                     </CustomTimelineBody>
                   </Card>
                   <div className="mx-3 max-w-xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={paymentIntentSnippetLineNumber}
                       codeString={paymentIntentSnippet}
                     ></CustomCodeBlock>
@@ -1317,7 +1170,7 @@ export default function Index() {
                           options={{
                             clientSecret,
                             appearance: {
-                              theme: currentTheme === Theme.Dark ? 'night' : 'flat',
+                              theme: currentTheme === ThemeEnum.Dark ? 'night' : 'flat',
                             },
                           }}
                         >
@@ -1329,7 +1182,7 @@ export default function Index() {
                   <div className="mx-3 max-w-2xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={1}
                       codeString={checkoutFormCode}
                     ></CustomCodeBlock>
