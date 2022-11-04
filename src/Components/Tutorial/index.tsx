@@ -67,7 +67,7 @@ const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
-export default function Index({ analytics }: { analytics: ReturnType<typeof getRyeAnalytics> }) {
+export default function Index({ ryelytics }: { ryelytics: ReturnType<typeof getRyeAnalytics> }) {
   const [data, setData] = useState<Store>(defaultStore);
 
   const [isRequestingProduct, setIsRequestingProduct] = useState<boolean>(false);
@@ -146,7 +146,7 @@ export default function Index({ analytics }: { analytics: ReturnType<typeof getR
     };
     makeGQLRequest(amazonProductFetchQuery, variables)
       .then((_result) => {
-        analytics.identify({
+        ryelytics.identify({
           // TODO: get proper user model data for good tracking
           uid: `__apiKey__:${data.apiConfig.key}`,
           apiKey: data.apiConfig.key,

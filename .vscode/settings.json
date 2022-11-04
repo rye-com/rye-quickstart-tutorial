@@ -47,6 +47,7 @@
     "hljs",
     "preinstall",
     "quickstart",
+    "ryelytics",
     "tabitem",
     "tailwindcss"
   ]

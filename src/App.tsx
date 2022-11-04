@@ -11,7 +11,7 @@ const analytics = AnalyticsBrowser.load({ writeKey });
 analytics.page();
 
 function App() {
-  return <Tutorial analytics={getRyeAnalytics(analytics)} />;
+  return <Tutorial ryelytics={getRyeAnalytics(analytics)} />;
 }
 
 export default App;
