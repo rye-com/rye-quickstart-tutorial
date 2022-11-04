@@ -55,15 +55,7 @@ import type { Address } from '../../types/api-data/Address';
 import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
 import { Theme, Marketplace } from './types';
 import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
-
-function detectThemePreference(): string {
-  const currentTheme = window.localStorage.getItem('appTheme');
-  if (currentTheme) {
-    return JSON.parse(currentTheme);
-  }
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return prefersDark ? Theme.Dark.valueOf() : Theme.Light.valueOf();
-}
+import { detectThemePreference } from '../../localStorage-crud/detectThemePreference';
 
 const defaultStore: Store = {
   apiConfig: JSON.parse(window.localStorage.getItem('apiConfig') || '{}'),
