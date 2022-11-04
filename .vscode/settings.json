@@ -40,6 +40,8 @@
     "editor.codeActionsOnSave": ["source.fixAll.eslint", "source.formatDocument"]
   },
   "cSpell.words": [
+    "autofixes",
+    "camelcase",
     "Flowbite",
     "heroicons",
     "hljs",
