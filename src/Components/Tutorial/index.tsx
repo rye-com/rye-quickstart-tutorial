@@ -607,7 +607,7 @@ export default function Index() {
                   <div className="mx-3 max-w-2xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={1}
                       codeString={initClientSnippet}
                     ></CustomCodeBlock>
@@ -721,7 +721,7 @@ export default function Index() {
                   <div className="mx-3 max-w-xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={requestedProductSnippetLineNumber}
                       codeString={requestedProductSnippet}
                     ></CustomCodeBlock>
@@ -829,7 +829,7 @@ export default function Index() {
                     <CustomCodeBlock
                       showLineNumbers={true}
                       startingLineNumber={productFetchSnippetLineNumber}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       codeString={productFetchSnippet}
                     ></CustomCodeBlock>
                   </div>
@@ -947,7 +947,7 @@ export default function Index() {
                   <div className="mx-3 max-w-xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={productOfferSnippetLineNumber}
                       codeString={productOfferSnippet}
                     ></CustomCodeBlock>
@@ -1145,7 +1145,7 @@ export default function Index() {
                   <div className="mx-3 max-w-xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={paymentIntentSnippetLineNumber}
                       codeString={paymentIntentSnippet}
                     ></CustomCodeBlock>
@@ -1182,7 +1182,7 @@ export default function Index() {
                   <div className="mx-3 max-w-2xl overflow-scroll">
                     <CustomCodeBlock
                       showLineNumbers={true}
-                      dataTheme={currentTheme}
+                      currentTheme={currentTheme}
                       startingLineNumber={1}
                       codeString={checkoutFormCode}
                     ></CustomCodeBlock>

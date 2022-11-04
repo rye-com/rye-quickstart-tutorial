@@ -4,7 +4,7 @@ import { ThemeEnum } from '../types';
 
 export function CustomCodeBlock({
   codeString,
-  dataTheme,
+  currentTheme,
   language = 'javascript',
   showLineNumbers = false,
   startingLineNumber = 1,
@@ -12,12 +12,12 @@ export function CustomCodeBlock({
 }: {
   language?: string;
   codeString: string;
-  dataTheme: ThemeEnum;
+  currentTheme: ThemeEnum;
   showLineNumbers?: boolean;
   startingLineNumber?: number;
   style?: React.CSSProperties;
 }) {
-  const theme = dataTheme === ThemeEnum.Dark.valueOf() ? atomOneDark : atomOneLight;
+  const theme = currentTheme === ThemeEnum.Dark.valueOf() ? atomOneDark : atomOneLight;
   const themeOverrides: { [key: string]: React.CSSProperties } = {
     hljs: { background: 'transparent' },
   };

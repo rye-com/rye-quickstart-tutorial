@@ -12,7 +12,7 @@ export const PrettifiedJSONResponse = ({
   return (
     <CustomCodeBlock
       showLineNumbers={false}
-      dataTheme={currentTheme}
+      currentTheme={currentTheme}
       codeString={prettyJSON}
       language="json"
     ></CustomCodeBlock>
