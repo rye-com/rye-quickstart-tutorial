@@ -63,6 +63,8 @@ const defaultStore = getDefaultStore();
 
 const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
+const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
+
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
 
@@ -124,11 +126,10 @@ export default function Index() {
     query: string,
     variables: Variables, // using generic TVars for this causes a weird type error with client.request call
   ) => {
-    const client = new GraphQLClient('https://graphql.api.rye.com/v1/query');
     const headers = {
       Authorization: 'Basic ' + window.btoa(data.apiConfig.key + ':'),
     };
-    return client.request(query, variables, headers);
+    return gqlClient.request(query, variables, headers);
   };
 
   const checkRyeAPIKey = () => {
