@@ -16,7 +16,7 @@ export const StripeCheckout = ({
     return null;
   }
 
-  return (
+  const StripeForm = (
     <StripeElements
       stripe={stripePromise}
       options={{
@@ -29,4 +29,24 @@ export const StripeCheckout = ({
       <CheckoutForm />
     </StripeElements>
   );
+
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get('enableCheckout') === '1') {
+    return StripeForm;
+  } else {
+    return (
+      <div
+        style={{
+          pointerEvents: 'none',
+          cursor: 'not-allowed',
+          opacity: 0.5,
+          backgroundColor: 'black',
+        }}
+      >
+        <h2 className="text-1xl my-2">Email support@rye.com to test checkout</h2>
+        {StripeForm}
+      </div>
+    );
+  }
 };
