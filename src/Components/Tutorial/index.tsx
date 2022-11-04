@@ -57,6 +57,7 @@ import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
 import { CustomTimelineBody } from './helper-components/CustomTimelineBody';
 import { InlineCodeSnippet } from './helper-components/InlineCodeSnippet';
 import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
+import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock';
 
 const defaultStore = getDefaultStore();
 
@@ -153,22 +154,6 @@ export default function Index() {
         setIsCheckingAPIKey(false);
       });
   };
-
-  function RequestResponseCodeBlock({
-    response,
-    currentTheme,
-  }: {
-    /** Any json serializable object */
-    response: unknown;
-    currentTheme: ThemeEnum;
-  }): JSX.Element | null {
-    if (!response) return null;
-    return (
-      <div className="mt-5 overflow-scroll rounded-lg p-4 border border-gray-300 dark:border-gray-800">
-        <PrettifiedJSONResponse response={response} currentTheme={currentTheme} />
-      </div>
-    );
-  }
 
   function updateData(dataUpdate: RecursivePartial<Store>) {
     const newData: Store = merge(cloneDeep(data), dataUpdate);
@@ -385,24 +370,6 @@ export default function Index() {
       button = otherTabButtons.iterateNext();
     }
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
-  };
-
-  const PrettifiedJSONResponse = ({
-    response,
-    currentTheme,
-  }: {
-    response: object;
-    currentTheme: ThemeEnum;
-  }): JSX.Element => {
-    const prettyJSON = JSON.stringify(response, null, 2);
-    return (
-      <CustomCodeBlock
-        showLineNumbers={false}
-        dataTheme={currentTheme}
-        codeString={prettyJSON}
-        language="json"
-      ></CustomCodeBlock>
-    );
   };
 
   const onProductIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
