@@ -1,5 +1,5 @@
 import type { ChangeEvent, ReactNode } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import ApiKeyDarkImage from './rye-api-key-dark.png';
 import ApiKeyLightImage from './rye-api-key-light.png';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
@@ -54,6 +54,7 @@ import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
 import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
 import { Theme, Marketplace } from './types';
+import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
 
 function detectThemePreference(): string {
   const currentTheme = window.localStorage.getItem('appTheme');
@@ -144,22 +145,6 @@ function InlineCodeSnippet(props: { children: ReactNode }): JSX.Element {
     'text-slate-500 dark:bg-neutral-700 border dark:border-neutral-500 dark:text-amber-200 px-1';
   return <span className={codeSnippetClasses}>{props.children}</span>;
 }
-
-// Maybe we should use an external lib here?
-export const useDebouncedEffect = (
-  /** Returned cleanup callback is currently not called */
-  effect: () => void,
-  deps: Array<unknown>,
-  delay: number,
-) => {
-  useEffect(() => {
-    const handler = setTimeout(effect, delay);
-
-    return () => clearTimeout(handler);
-    // TODO: include `effect` in the deps array, and then use `useCallback` on the code being passed in, etc.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps, delay]);
-};
 
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
