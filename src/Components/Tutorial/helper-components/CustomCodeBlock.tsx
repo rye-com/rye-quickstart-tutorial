@@ -1,6 +1,6 @@
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { Theme } from '../types';
+import { ThemeEnum } from '../types';
 
 export function CustomCodeBlock({
   codeString,
@@ -12,12 +12,12 @@ export function CustomCodeBlock({
 }: {
   language?: string;
   codeString: string;
-  dataTheme: Theme;
+  dataTheme: ThemeEnum;
   showLineNumbers?: boolean;
   startingLineNumber?: number;
   style?: React.CSSProperties;
 }) {
-  const theme = dataTheme === Theme.Dark.valueOf() ? atomOneDark : atomOneLight;
+  const theme = dataTheme === ThemeEnum.Dark.valueOf() ? atomOneDark : atomOneLight;
   const themeOverrides: { [key: string]: React.CSSProperties } = {
     hljs: { background: 'transparent' },
   };

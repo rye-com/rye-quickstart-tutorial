@@ -1,5 +1,5 @@
 import type { Store } from '../Components/Tutorial/types';
-import { Marketplace } from '../Components/Tutorial/types';
+import { MarketplaceEnum } from '../Components/Tutorial/types';
 import { detectThemePreference } from './detectThemePreference';
 
 export const getDefaultStore = (): Store => {
@@ -11,7 +11,7 @@ export const getDefaultStore = (): Store => {
         JSON.stringify({
           shopifyProductID: '',
           amazonProductID: '',
-          selectedMarketplace: Marketplace.Amazon,
+          selectedMarketplace: MarketplaceEnum.Amazon,
           productURL: '',
         }),
     ),

@@ -51,7 +51,7 @@ import { CheckoutForm } from '../CheckoutForm';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
 import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
-import { Theme, Marketplace } from './types';
+import { ThemeEnum, MarketplaceEnum } from './types';
 import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
 import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
 import { CustomTimelineBody } from './helper-components/CustomTimelineBody';
@@ -104,7 +104,7 @@ export default function Index() {
   }, [stripeAPIKey]);
 
   const marketPlaceSelector = <T, V>(shopifyVar: T, amazonVar: V): T | V => {
-    if (data.requestedProduct.selectedMarketplace === Marketplace.Shopify) {
+    if (data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify) {
       return shopifyVar;
     } else {
       return amazonVar;
@@ -116,7 +116,8 @@ export default function Index() {
     data.requestedProduct.amazonProductID,
   );
 
-  const currentTheme = data.appTheme === Theme.Dark.valueOf() ? Theme.Dark : Theme.Light;
+  const currentTheme =
+    data.appTheme === ThemeEnum.Dark.valueOf() ? ThemeEnum.Dark : ThemeEnum.Light;
 
   const makeGQLRequest = (
     query: string,
@@ -177,7 +178,7 @@ export default function Index() {
   }
 
   const onChangeTheme = (checked: boolean) => {
-    const theme = checked ? Theme.Dark : Theme.Light;
+    const theme = checked ? ThemeEnum.Dark : ThemeEnum.Light;
     updateData({ appTheme: theme });
   };
 
@@ -191,7 +192,7 @@ export default function Index() {
       .then((res) => {
         setRequestProductResponse(res);
         const requestedProduct: Partial<Store['requestedProduct']> = {};
-        if (data.requestedProduct.selectedMarketplace === Marketplace.Shopify) {
+        if (data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify) {
           requestedProduct['shopifyProductID'] = res['requestProductByURL'].productID;
         } else {
           requestedProduct['amazonProductID'] = res['requestProductByURL'].productID;
@@ -364,9 +365,9 @@ export default function Index() {
     //   e.currentTarget.innerText is always "Amazon\nShopify"
     //   e.       target.innerText is either "Amazon" or "Shopify"
     const marketplace =
-      target.innerText.toUpperCase() === Marketplace.Amazon.valueOf().toUpperCase()
-        ? Marketplace.Amazon
-        : Marketplace.Shopify;
+      target.innerText.toUpperCase() === MarketplaceEnum.Amazon.valueOf().toUpperCase()
+        ? MarketplaceEnum.Amazon
+        : MarketplaceEnum.Shopify;
     const otherTabButtons = document.evaluate(
       `//button[contains(., '${target.innerText}')]`,
       document,
@@ -528,7 +529,9 @@ export default function Index() {
     <div
       className={
         'flex ' +
-        (currentTheme === Theme.Dark ? 'dark bg-black text-white' : 'bg-light-pastel text-black')
+        (currentTheme === ThemeEnum.Dark
+          ? 'dark bg-black text-white'
+          : 'bg-light-pastel text-black')
       }
     >
       <Flowbite
@@ -556,7 +559,7 @@ export default function Index() {
       >
         <div className="mx-10 mt-5">
           <div className="flex items-center justify-end font-200">
-            <DarkModeSwitch checked={currentTheme === Theme.Dark} onChange={onChangeTheme} />
+            <DarkModeSwitch checked={currentTheme === ThemeEnum.Dark} onChange={onChangeTheme} />
           </div>
           <h1 className="flex items-center justify-between text-5xl font-200">
             Rye API Quick Start
@@ -586,7 +589,7 @@ export default function Index() {
                         Under Access and Security, view and copy your API key
                       </div>
                       <img
-                        src={currentTheme === Theme.Dark ? ApiKeyDarkImage : ApiKeyLightImage}
+                        src={currentTheme === ThemeEnum.Dark ? ApiKeyDarkImage : ApiKeyLightImage}
                         alt="API Key"
                         className="border rounded border-slate-200 dark:border-rye-lime"
                       />
@@ -663,7 +666,9 @@ export default function Index() {
                       >
                         <Tabs.Item
                           title="Amazon"
-                          active={data.requestedProduct.selectedMarketplace === Marketplace.Amazon}
+                          active={
+                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Amazon
+                          }
                         >
                           <span className="py-3">
                             Navigate to{' '}
@@ -680,7 +685,9 @@ export default function Index() {
                         </Tabs.Item>
                         <Tabs.Item
                           title="Shopify"
-                          active={data.requestedProduct.selectedMarketplace === Marketplace.Shopify}
+                          active={
+                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify
+                          }
                         >
                           <span className="py-3">
                             Navigate to any
@@ -764,7 +771,9 @@ export default function Index() {
                       >
                         <Tabs.Item
                           title="Amazon"
-                          active={data.requestedProduct.selectedMarketplace === Marketplace.Amazon}
+                          active={
+                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Amazon
+                          }
                         >
                           <div className="mt-3">
                             The Amazon Standard identification Number (ASIN) can be used to fetch an
@@ -785,7 +794,9 @@ export default function Index() {
                         </Tabs.Item>
                         <Tabs.Item
                           title="Shopify"
-                          active={data.requestedProduct.selectedMarketplace === Marketplace.Shopify}
+                          active={
+                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify
+                          }
                         >
                           <div className="py-3">
                             The Shopify product ID can be found in the response of the{' '}
@@ -1171,7 +1182,7 @@ export default function Index() {
                           options={{
                             clientSecret,
                             appearance: {
-                              theme: currentTheme === Theme.Dark ? 'night' : 'flat',
+                              theme: currentTheme === ThemeEnum.Dark ? 'night' : 'flat',
                             },
                           }}
                         >

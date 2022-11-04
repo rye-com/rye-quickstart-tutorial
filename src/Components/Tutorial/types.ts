@@ -5,12 +5,12 @@ type APIConfiguration = {
   endpoint: string;
 };
 
-export enum Theme {
+export enum ThemeEnum {
   Dark = 'dark',
   Light = 'light',
 }
 
-export enum Marketplace {
+export enum MarketplaceEnum {
   Shopify = 'SHOPIFY',
   Amazon = 'AMAZON',
 }
@@ -22,7 +22,7 @@ export type Store = {
     productURL: string;
     shopifyProductID?: string;
     amazonProductID?: string;
-    selectedMarketplace: Marketplace;
+    selectedMarketplace: MarketplaceEnum;
   };
   address: Address;
 };
