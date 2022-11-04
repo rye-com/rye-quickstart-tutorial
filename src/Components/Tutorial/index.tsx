@@ -52,53 +52,8 @@ import type { Variables } from 'graphql-request';
 import { CheckoutForm } from '../CheckoutForm';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
-
-type APIConfiguration = {
-  key: string;
-  endpoint: string;
-};
-
-enum Theme {
-  Dark = 'dark',
-  Light = 'light',
-}
-
-enum Marketplace {
-  Shopify = 'SHOPIFY',
-  Amazon = 'AMAZON',
-}
-
-type Store = {
-  appTheme: string;
-  apiConfig: APIConfiguration;
-  requestedProduct: {
-    productURL: string;
-    shopifyProductID?: string;
-    amazonProductID?: string;
-    selectedMarketplace: Marketplace;
-  };
-  address: Address;
-};
-
-// Pedantically typed to force us to validate everything as we need it.
-type FetchProductResponse = {
-  product: null | {
-    variants: null | Array<{
-      id: string;
-      title: string;
-    }>;
-  };
-};
-
-type ApiAccessData = {
-  clientSecret?: undefined | string;
-  publishableAPIKey?: undefined | string;
-};
-
-type FetchPaymentIntentResponse = {
-  createShopifyPaymentIntent?: ApiAccessData;
-  createAmazonPaymentIntent?: ApiAccessData;
-};
+import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
+import { Theme, Marketplace } from './types';
 
 function detectThemePreference(): string {
   const currentTheme = window.localStorage.getItem('appTheme');
