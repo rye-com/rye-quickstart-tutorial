@@ -1,4 +1,4 @@
-import type { ChangeEvent, ReactNode } from 'react';
+import type { ChangeEvent } from 'react';
 import { useMemo, useState } from 'react';
 import ApiKeyDarkImage from './rye-api-key-dark.png';
 import ApiKeyLightImage from './rye-api-key-light.png';
@@ -56,14 +56,12 @@ import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './
 import { Theme, Marketplace } from './types';
 import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
 import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
+import { CustomTimelineBody } from './helper-components/CustomTimelineBody';
+import { InlineCodeSnippet } from './helper-components/InlineCodeSnippet';
 
 const defaultStore = getDefaultStore();
 
 const linkClasses = 'text-indigo-500 dark:text-rye-lime';
-
-function CustomTimelineBody(props: { children: ReactNode }) {
-  return <div className="text-slate-600 dark:text-slate-200">{props.children}</div>;
-}
 
 function CustomCodeBlock({
   codeString,
@@ -104,12 +102,6 @@ function CustomCodeBlock({
       {codeString}
     </SyntaxHighlighter>
   );
-}
-
-function InlineCodeSnippet(props: { children: ReactNode }): JSX.Element {
-  const codeSnippetClasses =
-    'text-slate-500 dark:bg-neutral-700 border dark:border-neutral-500 dark:text-amber-200 px-1';
-  return <span className={codeSnippetClasses}>{props.children}</span>;
 }
 
 export default function Index() {
