@@ -1,4 +1,4 @@
-import type { ChangeEvent } from 'react';
+import type { ChangeEvent, ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import ApiKeyDarkImage from './rye-api-key-dark.png';
 import ApiKeyLightImage from './rye-api-key-light.png';
@@ -48,6 +48,7 @@ import {
 import { atomOneDark, atomOneLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
+import type { Variables } from 'graphql-request';
 import { CheckoutForm } from '../CheckoutForm';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
@@ -79,20 +80,40 @@ type Store = {
   address: Address;
 };
 
+// Pedantically typed to force us to validate everything as we need it.
+type FetchProductResponse = {
+  product: null | {
+    variants: null | Array<{
+      id: string;
+      title: string;
+    }>;
+  };
+};
+
+type ApiAccessData = {
+  clientSecret?: undefined | string;
+  publishableAPIKey?: undefined | string;
+};
+
+type FetchPaymentIntentResponse = {
+  createShopifyPaymentIntent?: ApiAccessData;
+  createAmazonPaymentIntent?: ApiAccessData;
+};
+
 function detectThemePreference(): string {
-  const setTheme = window.localStorage?.getItem('appTheme');
-  if (setTheme) {
-    return JSON.parse(setTheme);
+  const currentTheme = window.localStorage.getItem('appTheme');
+  if (currentTheme) {
+    return JSON.parse(currentTheme);
   }
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   return prefersDark ? Theme.Dark.valueOf() : Theme.Light.valueOf();
 }
 
 const defaultStore: Store = {
-  apiConfig: JSON.parse(window.localStorage?.getItem('apiConfig') || '{}'),
+  apiConfig: JSON.parse(window.localStorage.getItem('apiConfig') || '{}'),
   appTheme: detectThemePreference(),
   requestedProduct: JSON.parse(
-    window.localStorage?.getItem('requestedProduct') ||
+    window.localStorage.getItem('requestedProduct') ||
       JSON.stringify({
         shopifyProductID: '',
         amazonProductID: '',
@@ -101,7 +122,7 @@ const defaultStore: Store = {
       }),
   ),
   address: JSON.parse(
-    window.localStorage?.getItem('address') ||
+    window.localStorage.getItem('address') ||
       JSON.stringify({
         firstName: 'Will',
         lastName: 'Smith',
@@ -118,7 +139,7 @@ const defaultStore: Store = {
 
 const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
-function CustomTimelineBody(props: any) {
+function CustomTimelineBody(props: { children: ReactNode }) {
   return <div className="text-slate-600 dark:text-slate-200">{props.children}</div>;
 }
 
@@ -163,19 +184,26 @@ function CustomCodeBlock({
   );
 }
 
-function InlineCodeSnippet(props: any): JSX.Element {
+function InlineCodeSnippet(props: { children: ReactNode }): JSX.Element {
   const codeSnippetClasses =
     'text-slate-500 dark:bg-neutral-700 border dark:border-neutral-500 dark:text-amber-200 px-1';
   return <span className={codeSnippetClasses}>{props.children}</span>;
 }
 
-export const useDebouncedEffect = (effect: any, deps: Array<any>, delay: number) => {
+// Maybe we should use an external lib here?
+export const useDebouncedEffect = (
+  /** Returned cleanup callback is currently not called */
+  effect: () => void,
+  deps: Array<unknown>,
+  delay: number,
+) => {
   useEffect(() => {
-    const handler = setTimeout(() => effect(), delay);
+    const handler = setTimeout(effect, delay);
 
     return () => clearTimeout(handler);
+    // TODO: include `effect` in the deps array, and then use `useCallback` on the code being passed in, etc.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...(deps || []), delay]);
+  }, [...deps, delay]);
 };
 
 export default function Index() {
@@ -186,10 +214,17 @@ export default function Index() {
   const [isFetchingProductOffers, setIsFetchingProductOffers] = useState<boolean>(false);
   const [isFetchingPaymentIntent, setIsFetchingPaymentIntent] = useState<boolean>(false);
 
-  const [requestProductResponse, setRequestProductResponse] = useState<any | null>(null);
-  const [fetchProductResponse, setFetchProductResponse] = useState<any | null>(null);
-  const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<any | null>(null);
-  const [fetchPaymentIntentResponse, setFetchPaymentIntentResponse] = useState<any | null>(null);
+  const [requestProductResponse, setRequestProductResponse] = useState<unknown | null>(null);
+  // prettier-ignore
+  const [
+    fetchProductResponse,
+    setFetchProductResponse
+  ] = useState<FetchProductResponse | null>(null);
+  const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<unknown | null>(
+    null,
+  );
+  const [fetchPaymentIntentResponse, setFetchPaymentIntentResponse] =
+    useState<FetchPaymentIntentResponse | null>(null);
 
   const [isValidAPIKey, setIsValidAPIKey] = useState<boolean>(false);
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(false);
@@ -209,7 +244,7 @@ export default function Index() {
     if (stripeAPIKey) {
       return loadStripe(stripeAPIKey);
     } else {
-      console.warn('stripeAPIKey is falsy:', stripeAPIKey);
+      // stripeAPIKey is undefined until we get to the checkout step, and load the checkout form.
       return null;
     }
   }, [stripeAPIKey]);
@@ -229,10 +264,13 @@ export default function Index() {
 
   const currentTheme = data.appTheme === Theme.Dark.valueOf() ? Theme.Dark : Theme.Light;
 
-  const makeGQLRequest = (query: string, variables: any) => {
+  const makeGQLRequest = (
+    query: string,
+    variables: Variables, // using generic TVars for this causes a weird type error with client.request call
+  ) => {
     const client = new GraphQLClient('https://graphql.api.rye.com/v1/query');
     const headers = {
-      Authorization: 'Basic ' + btoa(data.apiConfig.key + ':'),
+      Authorization: 'Basic ' + window.btoa(data.apiConfig.key + ':'),
     };
     return client.request(query, variables, headers);
   };
@@ -261,7 +299,12 @@ export default function Index() {
       });
   };
 
-  function RequestResponseCodeBlock({ response }: { response: object | null }): JSX.Element | null {
+  function RequestResponseCodeBlock({
+    response,
+  }: {
+    /** Any json serializable object */
+    response: unknown;
+  }): JSX.Element | null {
     if (!response) return null;
     return (
       <div className="mt-5 overflow-scroll rounded-lg p-4 border border-gray-300 dark:border-gray-800">
@@ -274,7 +317,7 @@ export default function Index() {
     const newData: Store = merge(cloneDeep(data), dataUpdate);
     let key: keyof Store;
     for (key in newData) {
-      window.localStorage?.setItem(key, JSON.stringify(newData[key]));
+      window.localStorage.setItem(key, JSON.stringify(newData[key]));
     }
     setData(newData);
   }
@@ -347,7 +390,7 @@ export default function Index() {
     setIsFetchingProductOffers(true);
     // Add more field validation here to skip request on validation failures
     //
-    const variables: any = marketPlaceSelector(
+    const variables = marketPlaceSelector(
       shopifyProductOfferVariables(shopifyStoreCanonicalURL, selectedShopifyProductVariant, {
         city: data.address.city,
         stateCode: data.address.stateCode,
@@ -380,7 +423,14 @@ export default function Index() {
     setIsFetchingPaymentIntent(true);
     // Add more field validation here to skip request on validation failures
     //
-    const variables: any = marketPlaceSelector(
+
+    if (!data.requestedProduct.amazonProductID) {
+      throw new Error(
+        'data.requestedProduct.amazonProductID is falsy. data: ' + JSON.stringify(data, null, 2),
+      );
+    }
+
+    const variables = marketPlaceSelector(
       shopifyPaymentIntentVariables(
         shopifyStoreCanonicalURL,
         selectedShopifyProductVariant,
@@ -398,7 +448,7 @@ export default function Index() {
         '',
         '',
       ),
-      amazonPaymentIntentVariables(data.requestedProduct.amazonProductID!, {
+      amazonPaymentIntentVariables(data.requestedProduct.amazonProductID, {
         firstName: data.address.firstName,
         lastName: data.address.lastName,
         address1: data.address.address1,
@@ -415,6 +465,8 @@ export default function Index() {
       variables,
     )
       .then((res) => {
+        // TODO: use this to cleanup FetchPaymentIntentResponse type def
+        // console.log('fetchPaymentIntentResponse', res);
         setFetchPaymentIntentResponse(res);
       })
       .catch((error) => {
@@ -452,13 +504,17 @@ export default function Index() {
     setSelectedShopifyProductVariant(e.target.value);
   };
 
-  const onMarketplaceChange = (e: any) => {
+  const onMarketplaceChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const target = e.target as HTMLElement;
+    // https://github.com/DefinitelyTyped/DefinitelyTyped/issues/11508#issuecomment-256045682
+    //   e.currentTarget.innerText is always "Amazon\nShopify"
+    //   e.       target.innerText is either "Amazon" or "Shopify"
     const marketplace =
-      e.target.innerText.toUpperCase() === Marketplace.Amazon.valueOf().toUpperCase()
+      target.innerText.toUpperCase() === Marketplace.Amazon.valueOf().toUpperCase()
         ? Marketplace.Amazon
         : Marketplace.Shopify;
     const otherTabButtons = document.evaluate(
-      `//button[contains(., '${e.target.innerText}')]`,
+      `//button[contains(., '${target.innerText}')]`,
       document,
       null,
       XPathResult.ANY_TYPE,
@@ -466,16 +522,15 @@ export default function Index() {
     );
     let button = otherTabButtons.iterateNext();
     while (button) {
-      (button as any).click();
+      // We should probably chuck this tab code and re-do it, which makes this type error irrelevant:
+      // @ts-expect-error - TS2339: Property 'click' does not exist on type 'Node'.
+      button.click();
       button = otherTabButtons.iterateNext();
     }
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
   };
 
-  const prettifiedJSONResponse = (resp: object | null) => {
-    if (!resp) {
-      return null;
-    }
+  const prettifiedJSONResponse = (resp: object) => {
     const prettyJSON = JSON.stringify(resp, null, 2);
     return (
       <CustomCodeBlock
@@ -499,13 +554,7 @@ export default function Index() {
     setShopifyStoreCanonicalURL(e.target.value);
   };
 
-  useDebouncedEffect(
-    () => {
-      checkRyeAPIKey();
-    },
-    [data.apiConfig.key],
-    500,
-  );
+  useDebouncedEffect(checkRyeAPIKey, [data.apiConfig.key], 500);
 
   const shopifyProductVariantOptions = (): Array<{ id: string; title: string }> | null => {
     if (!fetchProductResponse || !fetchProductResponse.product?.variants) return null;
@@ -1266,7 +1315,7 @@ export default function Index() {
                         <StripeElements
                           stripe={stripePromise}
                           options={{
-                            clientSecret: clientSecret,
+                            clientSecret,
                             appearance: {
                               theme: currentTheme === Theme.Dark ? 'night' : 'flat',
                             },
