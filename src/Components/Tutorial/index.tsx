@@ -162,7 +162,7 @@ export default function Index() {
     if (!response) return null;
     return (
       <div className="mt-5 overflow-scroll rounded-lg p-4 border border-gray-300 dark:border-gray-800">
-        {prettifiedJSONResponse(response)}
+        <PrettifiedJSONResponse response={response} />
       </div>
     );
   }
@@ -384,8 +384,8 @@ export default function Index() {
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
   };
 
-  const prettifiedJSONResponse = (resp: object) => {
-    const prettyJSON = JSON.stringify(resp, null, 2);
+  const PrettifiedJSONResponse = ({ response }: { response: object }): JSX.Element => {
+    const prettyJSON = JSON.stringify(response, null, 2);
     return (
       <CustomCodeBlock
         showLineNumbers={false}
