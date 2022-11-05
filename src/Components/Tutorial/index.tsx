@@ -60,6 +60,7 @@ import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock'
 import type { StripeProp } from './types/StripeProp';
 import type { getRyelytics } from '../../shared-analytics/getRyelytics';
 import type { UserModel } from '../../shared-analytics/UserModel';
+import { ACTION, SOURCE } from '../../shared-analytics/constants';
 
 const defaultStore = getDefaultStore();
 
@@ -151,9 +152,11 @@ export default function Index({ ryelytics }: { ryelytics: ReturnType<typeof getR
           uid: `__apiKey__:${data.apiConfig.key}`,
           apiKey: data.apiConfig.key,
         } as UserModel);
+        ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_valid');
         setIsValidAPIKey(true);
       })
       .catch((_error) => {
+        ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_invalid');
         setIsValidAPIKey(false);
       })
       .finally(() => {
@@ -329,7 +332,10 @@ export default function Index({ ryelytics }: { ryelytics: ReturnType<typeof getR
   };
 
   const onAPIKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateData({ apiConfig: { key: e.target.value } });
+    const key = e.currentTarget.value;
+    if (key !== data.apiConfig.key) {
+      updateData({ apiConfig: { key } });
+    }
   };
 
   const onAddressFieldChangeFn = (field: keyof Address) => (e: React.ChangeEvent) => {
