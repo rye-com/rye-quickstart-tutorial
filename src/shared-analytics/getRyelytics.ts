@@ -4,14 +4,22 @@ import type { Analytics, AnalyticsBrowser } from '@segment/analytics-next';
 
 // Based on: https://github.com/rye-com/dev-console/blob/ccdaf725d7a9782cdd1a020b7b97399e4aaa4528/src/app/utils.ts#L59
 export const getRyelytics = (analytics: AnalyticsBrowser) => {
+  const logAnalyticsEvents = sessionStorage.getItem('logAnalyticsEvents') === '1';
+
   return {
     identify: (userInfoModel: UserModel) => {
+      if (logAnalyticsEvents) {
+        console.log('ryelytics.identify', userInfoModel);
+      }
       analytics.identify(userInfoModel.uid, {
         email: userInfoModel.email,
       });
     },
 
     page: (pageName: string) => {
+      if (logAnalyticsEvents) {
+        console.log('ryelytics.page', pageName);
+      }
       analytics.page(pageName);
     },
 
@@ -24,8 +32,12 @@ export const getRyelytics = (analytics: AnalyticsBrowser) => {
       // _options?: Parameters<Analytics['track']>[2],
       // _callback?: Parameters<Analytics['track']>[3],
     ) => {
+      const eventName = [source.valueOf(), action.valueOf(), noun].join('_');
+      if (logAnalyticsEvents) {
+        console.log('ryelytics.track', eventName, properties);
+      }
       analytics.track(
-        [source.valueOf(), action.valueOf(), noun].join('_'),
+        eventName,
         properties,
         // _options,
         // _callback,
