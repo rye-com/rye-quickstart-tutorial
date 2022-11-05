@@ -472,7 +472,7 @@ export default function Index() {
       <Select
         value={selectedShopifyProductVariant}
         onChange={onProductVariantChange}
-        className="w-full mt-3"
+        className="mt-3 w-full"
         disabled={shopifyVariants === null}
       >
         {shopifyVariants ? (
@@ -494,7 +494,7 @@ export default function Index() {
         value={selectedProductID || ''}
         // @ts-expect-error - TS2322 - "color props are not compatible with exactOptionalPropertyTypes: true" - shouldn't really matter, as long as js is checking for truthiness
         icon={BarcodeIcon}
-        className="w-full mt-3"
+        className="mt-3 w-full"
         id="offers_product_id"
         placeholder={marketPlaceSelector('2863039381604', 'B000NQ10FK')}
         onChange={onProductIDChange}
@@ -535,10 +535,10 @@ export default function Index() {
         }}
       >
         <div className="mx-10 mt-5">
-          <div className="flex items-center justify-end font-200">
+          <div className="font-200 flex items-center justify-end">
             <DarkModeSwitch checked={currentTheme === ThemeEnum.Dark} onChange={onChangeTheme} />
           </div>
-          <h1 className="flex items-center justify-between text-5xl font-200">
+          <h1 className="font-200 flex items-center justify-between text-5xl">
             Rye API Quick Start
           </h1>
           <h2 className="text-1xl my-2">
@@ -552,7 +552,7 @@ export default function Index() {
                     <Timeline.Point icon={KeyIcon} />
                     <Timeline.Title>Grab your API Key</Timeline.Title>
                     <CustomTimelineBody>
-                      <div className="py-3 text">
+                      <div className="text py-3">
                         Navigate to{' '}
                         <a className={linkClasses} href="https://console.rye.com">
                           console.rye.com
@@ -568,7 +568,7 @@ export default function Index() {
                       <img
                         src={currentTheme === ThemeEnum.Dark ? ApiKeyDarkImage : ApiKeyLightImage}
                         alt="API Key"
-                        className="border rounded border-slate-200 dark:border-rye-lime"
+                        className="rounded border border-slate-200 dark:border-rye-lime"
                       />
                     </CustomTimelineBody>
                     <CustomTimelineBody>
@@ -584,12 +584,12 @@ export default function Index() {
                           onChange={onAPIKeyChange}
                         />
                       </div>
-                      <div className="flex flex-wrap items-center gap-2 mt-3">
-                        <div className="w-6 h-6 flex items-center">
-                          {isCheckingAPIKey ? <Spinner className="w-6 h-6" /> : null}
+                      <div className="mt-3 flex flex-wrap items-center gap-2">
+                        <div className="flex h-6 w-6 items-center">
+                          {isCheckingAPIKey ? <Spinner className="h-6 w-6" /> : null}
                           {!isCheckingAPIKey ? (
                             <Badge
-                              className="h-full w-full flex justify-center"
+                              className="flex h-full w-full justify-center"
                               icon={isValidAPIKey ? CheckIcon : XMarkIcon}
                               color={isValidAPIKey ? 'success' : 'warning'}
                             />
@@ -686,7 +686,7 @@ export default function Index() {
                       <Timeline.Point />
                       <div className="py-1">
                         <Label htmlFor="item_url" value="Enter product URL" />
-                        <div className="flex mt-3">
+                        <div className="mt-3 flex">
                           <TextInput
                             type="url"
                             value={data.requestedProduct.productURL}
@@ -763,7 +763,7 @@ export default function Index() {
                           </div>
                           <span className="text-amber-700">
                             https://amazon.com/neo-sporin/dp/
-                            <span className="text-amber-300 bg-red-500 px-2 rounded-lg">
+                            <span className="rounded-lg bg-red-500 px-2 text-amber-300">
                               B000NQ10FK
                             </span>
                           </span>
@@ -800,7 +800,7 @@ export default function Index() {
                           value="Enter product ID"
                           className="mt-10"
                         />
-                        <div className="flex my-3">
+                        <div className="my-3 flex">
                           <TextInput
                             value={selectedProductID || ''}
                             // @ts-expect-error - TS2322 - "color props are not compatible with exactOptionalPropertyTypes: true" - shouldn't really matter, as long as js is checking for truthiness
@@ -853,11 +853,11 @@ export default function Index() {
                       <Timeline.Point />
                       <div>
                         {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
-                        <div className="flex mt-3">
+                        <div className="mt-3 flex">
                           <div>
                             <Label htmlFor="city" value="City" />
                             <TextInput
-                              className="w-64 mt-3"
+                              className="mt-3 w-64"
                               id="city"
                               onChange={onCityChange}
                               value={data.address.city}
@@ -923,11 +923,11 @@ export default function Index() {
                               <option value="WY">WY</option>
                             </Select>
                           </div>
-                          <div className="w-full flex">
+                          <div className="flex w-full">
                             <Button
                               style={{ width: 150, height: 40, maxHeight: 40 }}
                               onClick={fetchProductOffers}
-                              className="self-end mx-3"
+                              className="mx-3 self-end"
                               disabled={isFetchingProduct}
                             >
                               {!isFetchingProductOffers ? (
@@ -972,11 +972,11 @@ export default function Index() {
                       <Timeline.Point />
                       <div>
                         {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
-                        <div className="flex mt-3">
+                        <div className="mt-3 flex">
                           <div>
                             <Label htmlFor="first_name" value="First Name" />
                             <TextInput
-                              className="w-64 mt-3"
+                              className="mt-3 w-64"
                               id="first_name"
                               onChange={onFirstNameChange}
                               value={data.address.firstName}
@@ -986,7 +986,7 @@ export default function Index() {
                           <div className="mx-3">
                             <Label htmlFor="last_name" value="Last Name" />
                             <TextInput
-                              className="w-64 mt-3"
+                              className="mt-3 w-64"
                               id="last_name"
                               onChange={onLastNameChange}
                               value={data.address.lastName}
@@ -997,7 +997,7 @@ export default function Index() {
                         <div className="mt-3">
                           <Label htmlFor="address_one" value="Address Line 1" />
                           <TextInput
-                            className="w-full mt-3"
+                            className="mt-3 w-full"
                             id="address_one"
                             onChange={onAddressOneChange}
                             value={data.address.address1}
@@ -1008,7 +1008,7 @@ export default function Index() {
                           <div className="mt-3">
                             <Label htmlFor="address_two" value="Address Line 2" />
                             <TextInput
-                              className="w-64 mt-3"
+                              className="mt-3 w-64"
                               id="address_two"
                               onChange={onAddressTwoChange}
                               value={data.address.address2}
@@ -1019,7 +1019,7 @@ export default function Index() {
                             <Label htmlFor="zip_code" value="Address Line 2" />
                             <TextInput
                               type="text"
-                              className="w-64 mt-3"
+                              className="mt-3 w-64"
                               id="zip_code"
                               onChange={onZipCodeChange}
                               value={data.address.zipCode}
@@ -1027,12 +1027,12 @@ export default function Index() {
                             />
                           </div>
                         </div>
-                        <div className="flex mt-3">
+                        <div className="mt-3 flex">
                           <div>
                             <Label htmlFor="email" value="Email" />
                             <TextInput
                               type="email"
-                              className="w-64 mt-3"
+                              className="mt-3 w-64"
                               id="email"
                               onChange={onEmailChange}
                               value={data.address.email}
@@ -1043,7 +1043,7 @@ export default function Index() {
                             <Label htmlFor="phone" value="Phone" />
                             <TextInput
                               type="tel"
-                              className="w-64 mt-3"
+                              className="mt-3 w-64"
                               id="phone"
                               onChange={onPhoneChange}
                               value={data.address.phone}
@@ -1051,11 +1051,11 @@ export default function Index() {
                             />
                           </div>
                         </div>
-                        <div className="flex mt-3">
+                        <div className="mt-3 flex">
                           <div>
                             <Label htmlFor="city" value="City" />
                             <TextInput
-                              className="w-64 mt-3"
+                              className="mt-3 w-64"
                               id="city"
                               onChange={onCityChange}
                               value={data.address.city}
@@ -1121,11 +1121,11 @@ export default function Index() {
                               <option value="WY">WY</option>
                             </Select>
                           </div>
-                          <div className="w-full flex">
+                          <div className="flex w-full">
                             <Button
                               style={{ width: 150, height: 40, maxHeight: 40 }}
                               onClick={fetchPaymentIntent}
-                              className="self-end mx-3"
+                              className="mx-3 self-end"
                               disabled={isFetchingProduct}
                             >
                               {!isFetchingPaymentIntent ? (

@@ -11,7 +11,7 @@ export function RequestResponseCodeBlock({
 }): JSX.Element | null {
   if (!response) return null;
   return (
-    <div className="mt-5 overflow-scroll rounded-lg p-4 border border-gray-300 dark:border-gray-800">
+    <div className="mt-5 overflow-scroll rounded-lg border border-gray-300 p-4 dark:border-gray-800">
       <PrettifiedJSONResponse response={response} currentTheme={currentTheme} />
     </div>
   );
