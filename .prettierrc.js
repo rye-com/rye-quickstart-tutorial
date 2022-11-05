@@ -1,3 +1,5 @@
+const tailwindPlugin = require('prettier-plugin-tailwindcss');
+
 // Type-check prettier config:
 /** @type {import("prettier").Config} */
 const conf = {
@@ -13,6 +15,10 @@ const conf = {
   // TODO: explicitly specify all prettier config options here
   // This means no matter how prettier runs on this project,
   // the settings will be correct.
+
+  // Sort tailwind classnames: https://github.com/tailwindlabs/prettier-plugin-tailwindcss
+  plugins: [tailwindPlugin],
+  tailwindConfig: './tailwind.config.js',
 };
 
 module.exports = conf;
