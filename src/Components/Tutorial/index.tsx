@@ -267,10 +267,13 @@ export default function Index() {
     // Add more field validation here to skip request on validation failures
     //
 
+    // TODO: make this more robust.
     if (!data.requestedProduct.amazonProductID) {
-      throw new Error(
+      console.error(
         'data.requestedProduct.amazonProductID is falsy. data: ' + JSON.stringify(data, null, 2),
       );
+      // https://rye-api.slack.com/archives/C02BGLWLJNN/p1667705168776799?thread_ts=1667705166.009999&cid=C02BGLWLJNN
+      data.requestedProduct.amazonProductID = '';
     }
 
     const variables = marketPlaceSelector(
