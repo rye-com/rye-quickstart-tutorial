@@ -119,8 +119,7 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
     data.requestedProduct.amazonProductID,
   );
 
-  const currentTheme =
-    data.appTheme === ThemeEnum.Dark.valueOf() ? ThemeEnum.Dark : ThemeEnum.Light;
+  const currentTheme = data.appTheme === ThemeEnum.Dark ? ThemeEnum.Dark : ThemeEnum.Light;
 
   const makeGQLRequest = (
     query: string,
@@ -191,7 +190,7 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
     setIsRequestingProduct(true);
     const variables = requestProductVariables(
       data.requestedProduct.productURL,
-      data.requestedProduct.selectedMarketplace.valueOf().toUpperCase(),
+      data.requestedProduct.selectedMarketplace.toUpperCase(),
     );
     makeGQLRequest(requestProductQuery, variables)
       .then((res) => {
@@ -220,7 +219,7 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
     setIsFetchingProduct(true);
     const variables = productFetchVariables(
       selectedProductID,
-      data.requestedProduct.selectedMarketplace.valueOf().toUpperCase(),
+      data.requestedProduct.selectedMarketplace.toUpperCase(),
     );
     makeGQLRequest(
       marketPlaceSelector(shopifyProductFetchQuery, amazonProductFetchQuery),
@@ -376,7 +375,7 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
     //   e.currentTarget.innerText is always "Amazon\nShopify"
     //   e.       target.innerText is either "Amazon" or "Shopify"
     const marketplace =
-      target.innerText.toUpperCase() === MarketplaceEnum.Amazon.valueOf().toUpperCase()
+      target.innerText.toUpperCase() === MarketplaceEnum.Amazon.toUpperCase()
         ? MarketplaceEnum.Amazon
         : MarketplaceEnum.Shopify;
     const otherTabButtons = document.evaluate(
