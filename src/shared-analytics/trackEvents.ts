@@ -18,13 +18,14 @@ export const trackEvent = (
   action: ACTION,
   noun: string,
   properties?: Parameters<Analytics['track']>[1],
-  _options?: Parameters<Analytics['track']>[2],
-  _callback?: Parameters<Analytics['track']>[3],
+  // Not used yet. Uncomment if you need these.
+  // _options?: Parameters<Analytics['track']>[2],
+  // _callback?: Parameters<Analytics['track']>[3],
 ) => {
   window.analytics.track(
     [source.valueOf(), action.valueOf(), noun].join('_'),
     properties,
-    _options,
-    _callback,
+    // _options,
+    // _callback,
   );
 };
