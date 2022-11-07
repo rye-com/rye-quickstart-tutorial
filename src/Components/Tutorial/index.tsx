@@ -16,7 +16,6 @@ import {
   Timeline,
 } from 'flowbite-react';
 import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from '@heroicons/react/24/solid';
-import { Elements as StripeElements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
@@ -47,7 +46,7 @@ import {
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
 import type { Variables } from 'graphql-request';
-import { CheckoutForm } from '../CheckoutForm';
+import { StripeCheckout } from './primary-components/StripeCheckout';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
 import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
@@ -58,6 +57,7 @@ import { CustomTimelineBody } from './helper-components/CustomTimelineBody';
 import { InlineCodeSnippet } from './helper-components/InlineCodeSnippet';
 import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
 import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock';
+import type { StripeProp } from './types/StripeProp';
 
 const defaultStore = getDefaultStore();
 
@@ -94,8 +94,6 @@ export default function Index() {
   const stripeAPIKey =
     fetchPaymentIntentResponse?.createShopifyPaymentIntent?.publishableAPIKey ||
     fetchPaymentIntentResponse?.createAmazonPaymentIntent?.publishableAPIKey;
-
-  type StripeProp = Parameters<typeof StripeElements>[0]['stripe'];
 
   const stripePromise: StripeProp = useMemo(() => {
     if (stripeAPIKey) {
@@ -1163,23 +1161,18 @@ export default function Index() {
                     <Timeline.Title>Perform checkout</Timeline.Title>
                     <CustomTimelineBody>
                       <div className="py-1">
-                        Fetch a payment intent to display a Stripe checkout form. The stripe payment
-                        form will use Rye's Stripe account to accept payment for the item.
+                        Given a payment intent from the previous step, a stripe payment form will
+                        load here.
+                      </div>
+                      <div className="py-1">
+                        This uses Rye's Stripe account to accept payment for the item.
                       </div>
                       <Timeline.Point />
-                      {stripePromise && clientSecret ? (
-                        <StripeElements
-                          stripe={stripePromise}
-                          options={{
-                            clientSecret,
-                            appearance: {
-                              theme: currentTheme === ThemeEnum.Dark ? 'night' : 'flat',
-                            },
-                          }}
-                        >
-                          <CheckoutForm />
-                        </StripeElements>
-                      ) : null}
+                      <StripeCheckout
+                        stripePromise={stripePromise}
+                        clientSecret={clientSecret}
+                        currentTheme={currentTheme}
+                      />
                     </CustomTimelineBody>
                   </Card>
                   <div className="mx-3 max-w-2xl overflow-scroll">

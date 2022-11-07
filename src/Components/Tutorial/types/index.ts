@@ -1,4 +1,4 @@
-import type { Address } from '../../types/api-data/Address';
+import type { Address } from '../../../types/api-data/Address';
 
 type APIConfiguration = {
   key: string;
