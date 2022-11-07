@@ -49,12 +49,16 @@ export const StripeCheckout = ({
           }}
         >
           <h1
-            className="relative top-24 z-10 text-center text-4xl font-bold text-black"
+            className="relative top-24 z-10 text-center text-3xl font-bold text-black"
             style={{
               textShadow: [
-                [10, 10, 10, 10, 10, 10, 10, 10].map((i) => `0px 0px ${i}px #fff`).join(', '),
-                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => `0px 0px ${i * 2}px #eee`).join(', '),
-                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => `0px 0px ${i * 3}px #ddd`).join(', '),
+                [10, 10].map((i) => `0px 0px ${i}px rgba(255, 255, 255, 0.3)`).join(', '),
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                  .map((i) => `0px 0px ${i * 2}px rgba(245, 245, 245, 0.3)`)
+                  .join(', '),
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                  .map((i) => `0px 0px ${i * 3}px rgba(235, 235, 235, 0.3)`)
+                  .join(', '),
               ].join(', '),
               height: '0px',
             }}
