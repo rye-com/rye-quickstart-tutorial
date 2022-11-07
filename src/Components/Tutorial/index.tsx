@@ -58,6 +58,7 @@ import { CustomTimelineBody } from './helper-components/CustomTimelineBody';
 import { InlineCodeSnippet } from './helper-components/InlineCodeSnippet';
 import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
 import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock';
+import type { StripeProp } from './types/StripeProp';
 
 const defaultStore = getDefaultStore();
 
@@ -94,8 +95,6 @@ export default function Index() {
   const stripeAPIKey =
     fetchPaymentIntentResponse?.createShopifyPaymentIntent?.publishableAPIKey ||
     fetchPaymentIntentResponse?.createAmazonPaymentIntent?.publishableAPIKey;
-
-  type StripeProp = Parameters<typeof StripeElements>[0]['stripe'];
 
   const stripePromise: StripeProp = useMemo(() => {
     if (stripeAPIKey) {
