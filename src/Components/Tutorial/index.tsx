@@ -1158,8 +1158,11 @@ export default function Index() {
                     <Timeline.Title>Perform checkout</Timeline.Title>
                     <CustomTimelineBody>
                       <div className="py-1">
-                        Fetch a payment intent to display a Stripe checkout form. The stripe payment
-                        form will use Rye's Stripe account to accept payment for the item.
+                        Given a payment intent from the previous step, a stripe payment form will
+                        load here.
+                      </div>
+                      <div className="py-1">
+                        This uses Rye's Stripe account to accept payment for the item.
                       </div>
                       <Timeline.Point />
                       <StripeCheckout
