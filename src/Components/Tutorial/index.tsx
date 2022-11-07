@@ -1,11 +1,8 @@
 import { SelectStateOptions } from './helper-components/SelectStateOptions';
 import type { ChangeEvent } from 'react';
 import { useMemo, useState } from 'react';
-import ApiKeyDarkImage from './rye-api-key-dark.png';
-import ApiKeyLightImage from './rye-api-key-light.png';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
 import {
-  Badge,
   Button,
   Card,
   Flowbite,
@@ -16,7 +13,7 @@ import {
   TextInput,
   Timeline,
 } from 'flowbite-react';
-import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from '@heroicons/react/24/solid';
+import { LinkIcon } from '@heroicons/react/24/solid';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
@@ -61,10 +58,11 @@ import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock'
 import type { StripeProp } from './types/StripeProp';
 import type { Ryelytics } from '../../shared-analytics/getRyelytics';
 import { ACTION, SOURCE } from '../../shared-analytics/constants';
+import { enterApiKey } from './tutorial-steps/0-enterApiKey';
 
 const defaultStore = getDefaultStore();
 
-const linkClasses = 'text-indigo-500 dark:text-rye-lime';
+export const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
@@ -567,77 +565,14 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
             Try out Rye API to make a purchase from Shopify or Amazon
           </h2>
           <Timeline>
-            <Timeline.Item>
-              <Timeline.Content>
-                <div className="flex">
-                  <Card className="max-w-xl">
-                    <Timeline.Point icon={KeyIcon} />
-                    <Timeline.Title>Grab your API Key</Timeline.Title>
-                    <CustomTimelineBody>
-                      <div className="text py-3">
-                        Navigate to{' '}
-                        <a className={linkClasses} href="https://console.rye.com">
-                          console.rye.com
-                        </a>{' '}
-                        and grab your API key
-                      </div>
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div className="py-1">
-                        Under Access and Security, view and copy your API key
-                      </div>
-                      <img
-                        src={currentTheme === ThemeEnum.Dark ? ApiKeyDarkImage : ApiKeyLightImage}
-                        alt="API Key"
-                        className="rounded border border-slate-200 dark:border-rye-lime"
-                      />
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div className="py-1">
-                        <Label htmlFor="api_key" value="Enter your RYE API key" />
-                        <TextInput
-                          value={data.apiConfig.key}
-                          icon={KeyIcon}
-                          id="api_key"
-                          className="mt-3"
-                          placeholder="RYE-abcdef"
-                          onChange={onAPIKeyChange}
-                        />
-                      </div>
-                      <div className="mt-3 flex flex-wrap items-center gap-2">
-                        <div className="flex h-6 w-6 items-center">
-                          {isCheckingAPIKey ? <Spinner className="h-6 w-6" /> : null}
-                          {!isCheckingAPIKey ? (
-                            <Badge
-                              className="flex h-full w-full justify-center"
-                              icon={isValidAPIKey ? CheckIcon : XMarkIcon}
-                              color={isValidAPIKey ? 'success' : 'warning'}
-                            />
-                          ) : null}
-                        </div>
-                        <span className="text-sm">
-                          {isCheckingAPIKey
-                            ? 'Validating'
-                            : isValidAPIKey
-                            ? 'Connected'
-                            : 'Offline'}
-                        </span>
-                      </div>
-                    </CustomTimelineBody>
-                  </Card>
-                  <div className="mx-3 max-w-2xl overflow-scroll">
-                    <CustomCodeBlock
-                      showLineNumbers={true}
-                      currentTheme={currentTheme}
-                      startingLineNumber={1}
-                      codeString={initClientSnippet}
-                    ></CustomCodeBlock>
-                  </div>
-                </div>
-              </Timeline.Content>
-            </Timeline.Item>
+            {enterApiKey(
+              currentTheme,
+              data,
+              onAPIKeyChange,
+              isCheckingAPIKey,
+              isValidAPIKey,
+              initClientSnippet,
+            )}
             <Timeline.Item>
               <Timeline.Content>
                 <div className="flex">
