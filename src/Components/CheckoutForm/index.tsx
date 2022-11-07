@@ -53,7 +53,7 @@ export const CheckoutForm = () => {
       <PaymentElement />
       <Button
         type="submit"
-        className="mt-3 px-3 self-center"
+        className="mt-3 self-center px-3"
         disabled={!stripe || paymentInProgress}
       >
         {paymentInProgress ? <Spinner /> : null}
