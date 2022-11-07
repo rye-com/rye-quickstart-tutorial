@@ -1,5 +1,5 @@
 // Copied from https://github.com/rye-com/dev-console/blob/ccdaf725d7a9782cdd1a020b7b97399e4aaa4528/src/app/firebase/collections/users.ts#L6
-enum AuthProvider {
+const enum AuthProvider {
   Local = 'local',
   Google = 'google',
 }

@@ -5,12 +5,12 @@ type APIConfiguration = {
   endpoint: string;
 };
 
-export enum ThemeEnum {
+export const enum ThemeEnum {
   Dark = 'dark',
   Light = 'light',
 }
 
-export enum MarketplaceEnum {
+export const enum MarketplaceEnum {
   Shopify = 'SHOPIFY',
   Amazon = 'AMAZON',
 }
