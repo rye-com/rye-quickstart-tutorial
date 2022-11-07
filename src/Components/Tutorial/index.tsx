@@ -58,6 +58,7 @@ import { ACTION, SOURCE } from '../../shared-analytics/constants';
 import { enterApiKey } from './tutorial-steps/0-enterApiKey';
 import { requestScrape } from './tutorial-steps/1-requestScrape';
 import { requestProductData } from './tutorial-steps/2-requestProductData';
+import { fetchOffers } from './tutorial-steps/3-fetchOffers';
 
 const defaultStore = getDefaultStore();
 
@@ -597,76 +598,21 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
               productFetchSnippetLineNumber,
               productFetchSnippet,
             )}
-            <Timeline.Item>
-              <Timeline.Content>
-                <div className="flex">
-                  <Card className="max-w-xl self-baseline">
-                    <Timeline.Title>Fetch offers on the item from the Rye API</Timeline.Title>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div className="py-1">
-                        You can use the offers query to display a sample checkout for the item. This
-                        is useful for showing estimated taxes, and any shipping costs
-                      </div>
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div>
-                        {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
-                        <div className="mt-3 flex">
-                          <div>
-                            <Label htmlFor="city" value="City" />
-                            <TextInput
-                              className="mt-3 w-64"
-                              id="city"
-                              onChange={onCityChange}
-                              value={data.address.city}
-                              placeholder="San Francisco"
-                            ></TextInput>
-                          </div>
-                          <div className="ml-3">
-                            <Label className="mt-3" htmlFor="product_id_offers" value="State" />
-                            <Select
-                              onChange={onStateCodeChange}
-                              value={data.address.stateCode}
-                              className="mt-3 w-24"
-                            >
-                              {SelectStateOptions}
-                            </Select>
-                          </div>
-                          <div className="flex w-full">
-                            <Button
-                              style={{ width: 150, height: 40, maxHeight: 40 }}
-                              onClick={fetchProductOffers}
-                              className="mx-3 self-end"
-                              disabled={isFetchingProduct}
-                            >
-                              {!isFetchingProductOffers ? (
-                                'Fetch'
-                              ) : (
-                                <Spinner style={{ maxHeight: 30 }} />
-                              )}
-                            </Button>
-                          </div>
-                        </div>
-                        <RequestResponseCodeBlock
-                          response={fetchProductOffersResponse}
-                          currentTheme={currentTheme}
-                        />
-                      </div>
-                    </CustomTimelineBody>
-                  </Card>
-                  <div className="mx-3 max-w-xl overflow-scroll">
-                    <CustomCodeBlock
-                      showLineNumbers={true}
-                      currentTheme={currentTheme}
-                      startingLineNumber={productOfferSnippetLineNumber}
-                      codeString={productOfferSnippet}
-                    ></CustomCodeBlock>
-                  </div>
-                </div>
-              </Timeline.Content>
-            </Timeline.Item>
+            {fetchOffers(
+              marketPlaceSelector,
+              shopifyOfferFields,
+              amazonOfferFields,
+              onCityChange,
+              data,
+              onStateCodeChange,
+              fetchProductOffers,
+              isFetchingProduct,
+              isFetchingProductOffers,
+              fetchProductOffersResponse,
+              currentTheme,
+              productOfferSnippetLineNumber,
+              productOfferSnippet,
+            )}
             <Timeline.Item>
               <Timeline.Content>
                 <div className="flex">
