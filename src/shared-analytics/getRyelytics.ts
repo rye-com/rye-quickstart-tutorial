@@ -56,3 +56,5 @@ export const getRyelytics = () => {
     },
   };
 };
+
+export type Ryelytics = ReturnType<typeof getRyelytics>;

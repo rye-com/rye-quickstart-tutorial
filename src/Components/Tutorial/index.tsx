@@ -58,7 +58,7 @@ import { InlineCodeSnippet } from './helper-components/InlineCodeSnippet';
 import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
 import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock';
 import type { StripeProp } from './types/StripeProp';
-import type { getRyelytics } from '../../shared-analytics/getRyelytics';
+import type { Ryelytics } from '../../shared-analytics/getRyelytics';
 import { ACTION, SOURCE } from '../../shared-analytics/constants';
 
 const defaultStore = getDefaultStore();
@@ -67,7 +67,7 @@ const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
-export default function Index({ ryelytics }: { ryelytics: ReturnType<typeof getRyelytics> }) {
+export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
   const [data, setData] = useState<Store>(defaultStore);
 
   const [isRequestingProduct, setIsRequestingProduct] = useState<boolean>(false);
