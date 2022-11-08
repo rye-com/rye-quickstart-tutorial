@@ -59,7 +59,6 @@ import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
 import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock';
 import type { StripeProp } from './types/StripeProp';
 import type { getRyelytics } from '../../shared-analytics/getRyelytics';
-import type { UserModel } from '../../shared-analytics/UserModel';
 import { ACTION, SOURCE } from '../../shared-analytics/constants';
 
 const defaultStore = getDefaultStore();
@@ -145,22 +144,26 @@ export default function Index({ ryelytics }: { ryelytics: ReturnType<typeof getR
         marketplace: 'AMAZON',
       },
     };
-    const identifyPromise = ryelytics.identify({
-      // TODO: get proper user model data for good tracking
-      uid: `__apiKey__:${data.apiConfig.key}`,
-      apiKey: data.apiConfig.key,
-    } as UserModel);
+    // Ensure we don't get mixed up due to mutations on `data`:
+    // (this also makes typescript happier)
+    const apiKey = data.apiConfig.key;
     makeGQLRequest(amazonProductFetchQuery, variables)
       .then((_result) => {
-        identifyPromise.then(() => {
-          ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_valid');
+        ryelytics.identify({
+          // Docs suggest to simply add traits for anonymous users: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#identify
+          // If we later get the users real uid, we can tie all the data together using that uid.
+          apiKey,
         });
+        ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_valid');
         setIsValidAPIKey(true);
       })
       .catch((_error) => {
-        identifyPromise.then(() => {
-          ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_invalid');
+        ryelytics.identify({
+          // Docs suggest to simply add traits for anonymous users: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#identify
+          // If we later get the users real uid, we can tie all the data together using that uid.
+          apiKey,
         });
+        ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_invalid');
         setIsValidAPIKey(false);
       })
       .finally(() => {
