@@ -648,7 +648,7 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
                     </Timeline.Title>
                     <CustomTimelineBody>
                       <div className="py-1">
-                        Request an item from Rye to be requested. You can also do this via the
+                        You can also do this via the
                         <a href="https://console.rye.com/requests" className={linkClasses}>
                           {' '}
                           Rye Console
