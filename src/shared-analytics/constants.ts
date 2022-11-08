@@ -4,8 +4,8 @@ export const enum SOURCE {
 }
 
 export const enum ACTION {
-  /** Paste, manual typing, etc */
-  KEYBOARD = 'keyboard',
+  /** Paste, manual typing, dropdown/select, etc */
+  UPDATE = 'update_field',
   CLICK = 'click',
   ERROR = 'error',
 }

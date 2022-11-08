@@ -140,7 +140,7 @@ export default function Index() {
       });
       ryelytics.track(
         SOURCE.TUTORIAL_MODULE,
-        ACTION.KEYBOARD,
+        ACTION.UPDATE,
         'api_key_' + isApiKeyValid ? 'valid' : 'invalid',
       );
     };
