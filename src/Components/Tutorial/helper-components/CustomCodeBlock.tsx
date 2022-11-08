@@ -17,7 +17,7 @@ export function CustomCodeBlock({
   startingLineNumber?: number;
   style?: React.CSSProperties;
 }) {
-  const theme = currentTheme === ThemeEnum.Dark.valueOf() ? atomOneDark : atomOneLight;
+  const theme = currentTheme === ThemeEnum.Dark ? atomOneDark : atomOneLight;
   const themeOverrides: { [key: string]: React.CSSProperties } = {
     hljs: { background: 'transparent' },
   };

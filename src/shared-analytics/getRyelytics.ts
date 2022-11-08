@@ -43,7 +43,7 @@ export const getRyelytics = () => {
       // _options?: Parameters<Analytics['track']>[2],
       // _callback?: Parameters<Analytics['track']>[3],
     ) => {
-      const eventName = [source.valueOf(), action.valueOf(), noun].join('_');
+      const eventName = [source, action, noun].join('_');
       if (logAnalyticsEvents) {
         console.log('ryelytics.track', eventName, properties);
       }

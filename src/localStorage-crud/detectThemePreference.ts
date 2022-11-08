@@ -6,5 +6,5 @@ export function detectThemePreference(): string {
     return JSON.parse(currentTheme);
   }
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return prefersDark ? ThemeEnum.Dark.valueOf() : ThemeEnum.Light.valueOf();
+  return prefersDark ? ThemeEnum.Dark : ThemeEnum.Light;
 }
