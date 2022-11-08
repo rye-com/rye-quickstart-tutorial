@@ -75,7 +75,7 @@ export const StripeCheckout = ({
             to test checkout
           </h1>
         </div>
-        <div className="cursor-not-allowed transition-opacity hover:opacity-50">
+        <div className="cursor-not-allowed opacity-50">
           <div className="pointer-events-none">{StripeForm}</div>
         </div>
       </div>
