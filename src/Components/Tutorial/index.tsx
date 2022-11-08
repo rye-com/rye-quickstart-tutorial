@@ -985,18 +985,18 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
                               id="address_two"
                               onChange={onAddressTwoChange}
                               value={data.address.address2}
-                              placeholder=""
+                              placeholder="Apt 212"
                             />
                           </div>
                           <div className="mx-3 mt-3">
-                            <Label htmlFor="zip_code" value="Address Line 2" />
+                            <Label htmlFor="zip_code" value="Zip Code" />
                             <TextInput
                               type="text"
                               className="mt-3 w-64"
                               id="zip_code"
                               onChange={onZipCodeChange}
                               value={data.address.zipCode}
-                              placeholder=""
+                              placeholder="94103"
                             />
                           </div>
                         </div>
