@@ -1,7 +1,7 @@
 import type { ChangeEvent } from 'react';
 import { useMemo, useState } from 'react';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
-import { Card, Flowbite, Label, Select, TextInput, Timeline } from 'flowbite-react';
+import { Flowbite, Label, Select, TextInput, Timeline } from 'flowbite-react';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
@@ -27,20 +27,16 @@ import {
   amazonPaymentIntentVariables,
   shopifyPaymentIntentQuery,
   amazonPaymentIntentQuery,
-  checkoutFormCode,
 } from './code_snippets';
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
 import type { Variables } from 'graphql-request';
-import { StripeCheckout } from './primary-components/StripeCheckout';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
 import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
 import { ThemeEnum, MarketplaceEnum } from './types';
 import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
 import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
-import { CustomTimelineBody } from './helper-components/CustomTimelineBody';
-import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
 import type { StripeProp } from './types/StripeProp';
 import type { Ryelytics } from '../../shared-analytics/getRyelytics';
 import { ACTION, SOURCE } from '../../shared-analytics/constants';
@@ -49,6 +45,7 @@ import { requestScrape } from './tutorial-steps/1-requestScrape';
 import { requestProductData } from './tutorial-steps/2-requestProductData';
 import { fetchOffers } from './tutorial-steps/3-fetchOffers';
 import { stripePaymentIntentExample } from './tutorial-steps/4-stripePaymentIntentExample';
+import { performCheckoutStep } from './tutorial-steps/5-performCheckoutStep';
 
 const defaultStore = getDefaultStore();
 
@@ -625,38 +622,7 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
               paymentIntentSnippetLineNumber,
               paymentIntentSnippet,
             )}
-            <Timeline.Item>
-              <Timeline.Content>
-                <div className="flex">
-                  <Card className="max-w-xl self-baseline">
-                    <Timeline.Title>Perform checkout</Timeline.Title>
-                    <CustomTimelineBody>
-                      <div className="py-1">
-                        Given a payment intent from the previous step, a stripe payment form will
-                        load here.
-                      </div>
-                      <div className="py-1">
-                        This uses Rye's Stripe account to accept payment for the item.
-                      </div>
-                      <Timeline.Point />
-                      <StripeCheckout
-                        stripePromise={stripePromise}
-                        clientSecret={clientSecret}
-                        currentTheme={currentTheme}
-                      />
-                    </CustomTimelineBody>
-                  </Card>
-                  <div className="mx-3 max-w-2xl overflow-scroll">
-                    <CustomCodeBlock
-                      showLineNumbers={true}
-                      currentTheme={currentTheme}
-                      startingLineNumber={1}
-                      codeString={checkoutFormCode}
-                    ></CustomCodeBlock>
-                  </div>
-                </div>
-              </Timeline.Content>
-            </Timeline.Item>
+            {performCheckoutStep(stripePromise, clientSecret, currentTheme)}
           </Timeline>
         </div>
       </Flowbite>
