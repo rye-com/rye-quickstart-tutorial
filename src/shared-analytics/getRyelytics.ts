@@ -19,7 +19,7 @@ export const getRyelytics = () => {
       if (logAnalyticsEvents) {
         console.log('ryelytics.identify', userInfoModel);
       }
-      analytics.identify(userInfoModel.uid, {
+      return analytics.identify(userInfoModel.uid, {
         email: userInfoModel.email,
       });
     },
@@ -28,7 +28,7 @@ export const getRyelytics = () => {
       if (logAnalyticsEvents) {
         console.log('ryelytics.page', pageName);
       }
-      analytics.page(pageName);
+      return analytics.page(pageName);
     },
 
     track: (
@@ -44,7 +44,7 @@ export const getRyelytics = () => {
       if (logAnalyticsEvents) {
         console.log('ryelytics.track', eventName, properties);
       }
-      analytics.track(
+      return analytics.track(
         eventName,
         properties,
         // _options,
