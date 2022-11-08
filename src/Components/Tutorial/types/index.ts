@@ -17,7 +17,8 @@ export enum MarketplaceEnum {
 
 export type Store = {
   appTheme: string;
-  apiConfig: APIConfiguration;
+  /** Must use Partial, because this starts off as an empty object. */
+  apiConfig: Partial<APIConfiguration>;
   requestedProduct: {
     productURL: string;
     shopifyProductID?: string;

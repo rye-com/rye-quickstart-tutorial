@@ -58,6 +58,8 @@ import { InlineCodeSnippet } from './helper-components/InlineCodeSnippet';
 import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
 import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock';
 import type { StripeProp } from './types/StripeProp';
+import type { Ryelytics } from '../../shared-analytics/getRyelytics';
+import { ACTION, SOURCE } from '../../shared-analytics/constants';
 
 const defaultStore = getDefaultStore();
 
@@ -65,7 +67,7 @@ const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
-export default function Index() {
+export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
   const [data, setData] = useState<Store>(defaultStore);
 
   const [isRequestingProduct, setIsRequestingProduct] = useState<boolean>(false);
@@ -142,11 +144,28 @@ export default function Index() {
         marketplace: 'AMAZON',
       },
     };
+    // Ensure we don't get mixed up due to mutations on `data`:
+    // (this also makes typescript happier)
+    const apiKey = data.apiConfig.key;
+    const identifyUser = (isApiKeyValid: boolean) => {
+      ryelytics.identify({
+        // Docs suggest to simply add traits for anonymous users: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#identify
+        // If we later get the users real uid, we can tie all the data together using that uid.
+        apiKey,
+      });
+      ryelytics.track(
+        SOURCE.TUTORIAL_MODULE,
+        ACTION.KEYBOARD,
+        'api_key_' + isApiKeyValid ? 'valid' : 'invalid',
+      );
+    };
     makeGQLRequest(amazonProductFetchQuery, variables)
       .then((_result) => {
+        identifyUser(true);
         setIsValidAPIKey(true);
       })
       .catch((_error) => {
+        identifyUser(false);
         setIsValidAPIKey(false);
       })
       .finally(() => {
@@ -322,7 +341,10 @@ export default function Index() {
   };
 
   const onAPIKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateData({ apiConfig: { key: e.target.value } });
+    const key = e.currentTarget.value;
+    if (key !== data.apiConfig.key) {
+      updateData({ apiConfig: { key } });
+    }
   };
 
   const onAddressFieldChangeFn = (field: keyof Address) => (e: React.ChangeEvent) => {
