@@ -26,13 +26,7 @@ export function requestProductData(
       <Timeline.Content>
         <div className="flex">
           <Card className="max-w-xl self-baseline">
-            <Timeline.Title>Fetch an item from the Rye API</Timeline.Title>
-            <CustomTimelineBody>
-              <Timeline.Point />
-              <div className="py-1">
-                Once an item is requested, it can be retrieved using the Rye API
-              </div>
-            </CustomTimelineBody>
+            <Timeline.Title>Fetch product data from Rye inventory</Timeline.Title>
             <CustomTimelineBody>
               <Timeline.Point />
               <Tabs.Group
