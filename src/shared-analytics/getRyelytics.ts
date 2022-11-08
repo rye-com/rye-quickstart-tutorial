@@ -15,13 +15,16 @@ export const getRyelytics = () => {
   const logAnalyticsEvents = sessionStorage.getItem('logAnalyticsEvents') === '1';
 
   return {
-    identify: (userInfoModel: UserModel) => {
+    identify: ({ uid, ...userInfoModel }: Partial<UserModel>) => {
       if (logAnalyticsEvents) {
         console.log('ryelytics.identify', userInfoModel);
       }
-      return analytics.identify(userInfoModel.uid, {
-        email: userInfoModel.email,
-      });
+      // https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#identify
+      if (uid) {
+        return analytics.identify(uid, userInfoModel);
+      } else {
+        return analytics.identify(userInfoModel);
+      }
     },
 
     page: (pageName: string) => {
