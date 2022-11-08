@@ -145,18 +145,22 @@ export default function Index({ ryelytics }: { ryelytics: ReturnType<typeof getR
         marketplace: 'AMAZON',
       },
     };
+    const identifyPromise = ryelytics.identify({
+      // TODO: get proper user model data for good tracking
+      uid: `__apiKey__:${data.apiConfig.key}`,
+      apiKey: data.apiConfig.key,
+    } as UserModel);
     makeGQLRequest(amazonProductFetchQuery, variables)
       .then((_result) => {
-        ryelytics.identify({
-          // TODO: get proper user model data for good tracking
-          uid: `__apiKey__:${data.apiConfig.key}`,
-          apiKey: data.apiConfig.key,
-        } as UserModel);
-        ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_valid');
+        identifyPromise.then(() => {
+          ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_valid');
+        });
         setIsValidAPIKey(true);
       })
       .catch((_error) => {
-        ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_invalid');
+        identifyPromise.then(() => {
+          ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_invalid');
+        });
         setIsValidAPIKey(false);
       })
       .finally(() => {
