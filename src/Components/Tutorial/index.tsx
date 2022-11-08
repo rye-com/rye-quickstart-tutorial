@@ -147,23 +147,25 @@ export default function Index({ ryelytics }: { ryelytics: ReturnType<typeof getR
     // Ensure we don't get mixed up due to mutations on `data`:
     // (this also makes typescript happier)
     const apiKey = data.apiConfig.key;
+    const identifyUser = (isApiKeyValid: boolean) => {
+      ryelytics.identify({
+        // Docs suggest to simply add traits for anonymous users: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#identify
+        // If we later get the users real uid, we can tie all the data together using that uid.
+        apiKey,
+      });
+      ryelytics.track(
+        SOURCE.TUTORIAL_MODULE,
+        ACTION.KEYBOARD,
+        'api_key_' + isApiKeyValid ? 'valid' : 'invalid',
+      );
+    };
     makeGQLRequest(amazonProductFetchQuery, variables)
       .then((_result) => {
-        ryelytics.identify({
-          // Docs suggest to simply add traits for anonymous users: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#identify
-          // If we later get the users real uid, we can tie all the data together using that uid.
-          apiKey,
-        });
-        ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_valid');
+        identifyUser(true);
         setIsValidAPIKey(true);
       })
       .catch((_error) => {
-        ryelytics.identify({
-          // Docs suggest to simply add traits for anonymous users: https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#identify
-          // If we later get the users real uid, we can tie all the data together using that uid.
-          apiKey,
-        });
-        ryelytics.track(SOURCE.TUTORIAL_MODULE, ACTION.KEYBOARD, 'api_key_invalid');
+        identifyUser(false);
         setIsValidAPIKey(false);
       })
       .finally(() => {
