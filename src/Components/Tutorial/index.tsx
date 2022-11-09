@@ -412,12 +412,13 @@ export default function Index() {
     }
   };
 
-  const onAddressFieldChangeFn = (field: keyof Address) => (e: React.ChangeEvent) => {
-    const fieldValue = (e.target as HTMLInputElement).value;
-    const data = { address: { [field]: fieldValue } };
-    trackAddressFieldChanges(field, fieldValue);
-    updateData(data);
-  };
+  const onAddressFieldChangeFn =
+    (field: keyof Address) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const fieldValue = e.target.value;
+      const data = { address: { [field]: fieldValue } };
+      trackAddressFieldChanges(field, fieldValue);
+      updateData(data);
+    };
 
   const onCityChange = onAddressFieldChangeFn('city');
   const onStateCodeChange = onAddressFieldChangeFn('stateCode');
