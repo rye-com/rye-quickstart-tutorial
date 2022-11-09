@@ -1,22 +1,7 @@
-import { SelectStateOptions } from './helper-components/SelectStateOptions';
 import type { ChangeEvent } from 'react';
 import { useMemo, useState } from 'react';
-import ApiKeyDarkImage from './rye-api-key-dark.png';
-import ApiKeyLightImage from './rye-api-key-light.png';
 import { DarkModeSwitch } from 'react-toggle-dark-mode';
-import {
-  Badge,
-  Button,
-  Card,
-  Flowbite,
-  Label,
-  Select,
-  Spinner,
-  Tabs,
-  TextInput,
-  Timeline,
-} from 'flowbite-react';
-import { KeyIcon, CheckIcon, XMarkIcon, LinkIcon } from '@heroicons/react/24/solid';
+import { Flowbite, Label, Select, TextInput, Timeline } from 'flowbite-react';
 import { loadStripe } from '@stripe/stripe-js/pure';
 import { RiBarcodeLine as BarcodeIcon } from 'react-icons/ri';
 
@@ -42,29 +27,29 @@ import {
   amazonPaymentIntentVariables,
   shopifyPaymentIntentQuery,
   amazonPaymentIntentQuery,
-  checkoutFormCode,
 } from './code_snippets';
 import { cloneDeep, merge } from 'lodash';
 import { GraphQLClient } from 'graphql-request';
 import type { Variables } from 'graphql-request';
-import { StripeCheckout } from './primary-components/StripeCheckout';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
 import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
 import { ThemeEnum, MarketplaceEnum } from './types';
 import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
 import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
-import { CustomTimelineBody } from './helper-components/CustomTimelineBody';
-import { InlineCodeSnippet } from './helper-components/InlineCodeSnippet';
-import { CustomCodeBlock } from './helper-components/CustomCodeBlock';
-import { RequestResponseCodeBlock } from './helper-components/ResponseCodeBlock';
 import type { StripeProp } from './types/StripeProp';
 import type { Ryelytics } from '../../shared-analytics/getRyelytics';
 import { ACTION, SOURCE } from '../../shared-analytics/constants';
+import { enterApiKey } from './tutorial-steps/0-enterApiKey';
+import { requestScrape } from './tutorial-steps/1-requestScrape';
+import { requestProductData } from './tutorial-steps/2-requestProductData';
+import { fetchOffers } from './tutorial-steps/3-fetchOffers';
+import { stripePaymentIntentExample } from './tutorial-steps/4-stripePaymentIntentExample';
+import { performCheckoutStep } from './tutorial-steps/5-performCheckoutStep';
 
 const defaultStore = getDefaultStore();
 
-const linkClasses = 'text-indigo-500 dark:text-rye-lime';
+export const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
@@ -567,549 +552,77 @@ export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
             Try out Rye API to make a purchase from Shopify or Amazon
           </h2>
           <Timeline>
-            <Timeline.Item>
-              <Timeline.Content>
-                <div className="flex">
-                  <Card className="max-w-xl">
-                    <Timeline.Point icon={KeyIcon} />
-                    <Timeline.Title>Grab your API Key</Timeline.Title>
-                    <CustomTimelineBody>
-                      <div className="text py-3">
-                        Navigate to{' '}
-                        <a className={linkClasses} href="https://console.rye.com">
-                          console.rye.com
-                        </a>{' '}
-                        and grab your API key
-                      </div>
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div className="py-1">
-                        Under Access and Security, view and copy your API key
-                      </div>
-                      <img
-                        src={currentTheme === ThemeEnum.Dark ? ApiKeyDarkImage : ApiKeyLightImage}
-                        alt="API Key"
-                        className="rounded border border-slate-200 dark:border-rye-lime"
-                      />
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div className="py-1">
-                        <Label htmlFor="api_key" value="Enter your RYE API key" />
-                        <TextInput
-                          value={data.apiConfig.key}
-                          icon={KeyIcon}
-                          id="api_key"
-                          className="mt-3"
-                          placeholder="RYE-abcdef"
-                          onChange={onAPIKeyChange}
-                        />
-                      </div>
-                      <div className="mt-3 flex flex-wrap items-center gap-2">
-                        <div className="flex h-6 w-6 items-center">
-                          {isCheckingAPIKey ? <Spinner className="h-6 w-6" /> : null}
-                          {!isCheckingAPIKey ? (
-                            <Badge
-                              className="flex h-full w-full justify-center"
-                              icon={isValidAPIKey ? CheckIcon : XMarkIcon}
-                              color={isValidAPIKey ? 'success' : 'warning'}
-                            />
-                          ) : null}
-                        </div>
-                        <span className="text-sm">
-                          {isCheckingAPIKey
-                            ? 'Validating'
-                            : isValidAPIKey
-                            ? 'Connected'
-                            : 'Offline'}
-                        </span>
-                      </div>
-                    </CustomTimelineBody>
-                  </Card>
-                  <div className="mx-3 max-w-2xl overflow-scroll">
-                    <CustomCodeBlock
-                      showLineNumbers={true}
-                      currentTheme={currentTheme}
-                      startingLineNumber={1}
-                      codeString={initClientSnippet}
-                    ></CustomCodeBlock>
-                  </div>
-                </div>
-              </Timeline.Content>
-            </Timeline.Item>
-            <Timeline.Item>
-              <Timeline.Content>
-                <div className="flex">
-                  <Card className="max-w-xl self-baseline">
-                    <Timeline.Title>
-                      <Timeline.Point />
-                      Request an item to be requested by the Rye API
-                    </Timeline.Title>
-                    <CustomTimelineBody>
-                      <div className="py-1">
-                        You can also do this via the
-                        <a href="https://console.rye.com/requests" className={linkClasses}>
-                          {' '}
-                          Rye Console
-                        </a>
-                      </div>
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <Tabs.Group
-                        aria-label="Full width tabs"
-                        // eslint-disable-next-line react/style-prop-object
-                        style="underline"
-                        onClick={onMarketplaceChange}
-                      >
-                        <Tabs.Item
-                          title="Amazon"
-                          active={
-                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Amazon
-                          }
-                        >
-                          <span className="py-3">
-                            Navigate to{' '}
-                            <a
-                              target="_blank"
-                              href="https://www.amazon.com"
-                              className={linkClasses}
-                              rel="noreferrer"
-                            >
-                              Amazon
-                            </a>{' '}
-                            and find an item you want to request, and copy the URL
-                          </span>
-                        </Tabs.Item>
-                        <Tabs.Item
-                          title="Shopify"
-                          active={
-                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify
-                          }
-                        >
-                          <span className="py-3">
-                            Navigate to any
-                            <a
-                              target="_blank"
-                              href="https://rye-test-store.myshopify.com/"
-                              className={linkClasses}
-                              rel="noreferrer"
-                            >
-                              {' '}
-                              Shopify store
-                            </a>{' '}
-                            and find an item you want to request, and copy the URL.
-                          </span>
-                        </Tabs.Item>
-                      </Tabs.Group>
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div className="py-1">
-                        <Label htmlFor="item_url" value="Enter product URL" />
-                        <div className="mt-3 flex">
-                          <TextInput
-                            type="url"
-                            value={data.requestedProduct.productURL}
-                            icon={LinkIcon}
-                            className="w-full"
-                            id="item_url"
-                            placeholder={marketPlaceSelector(
-                              'https://www.some-store.shopify.com/products/cool-product',
-                              'https://www.amazon.com/Neosporin-Maximum-Strength-Antibiotic-Protection-Bacitracin/dp/B000NQ10FK',
-                            )}
-                            onChange={onProductURLChange}
-                          ></TextInput>
-                          <Button
-                            style={{ width: 150, height: 40, maxHeight: 40 }}
-                            onClick={requestProduct}
-                            className="mx-3"
-                            disabled={isRequestingProduct}
-                          >
-                            {!isRequestingProduct ? (
-                              'Request'
-                            ) : (
-                              <Spinner style={{ maxHeight: 30 }} />
-                            )}
-                          </Button>
-                        </div>
-                        <RequestResponseCodeBlock
-                          response={requestProductResponse}
-                          currentTheme={currentTheme}
-                        />
-                      </div>
-                    </CustomTimelineBody>
-                  </Card>
-                  <div className="mx-3 max-w-xl overflow-scroll">
-                    <CustomCodeBlock
-                      showLineNumbers={true}
-                      currentTheme={currentTheme}
-                      startingLineNumber={requestedProductSnippetLineNumber}
-                      codeString={requestedProductSnippet}
-                    ></CustomCodeBlock>
-                  </div>
-                </div>
-              </Timeline.Content>
-            </Timeline.Item>
-            <Timeline.Item>
-              <Timeline.Content>
-                <div className="flex">
-                  <Card className="max-w-xl self-baseline">
-                    <Timeline.Title>Fetch an item from the Rye API</Timeline.Title>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div className="py-1">
-                        Once an item is requested, it can be retrieved using the Rye API
-                      </div>
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <Tabs.Group
-                        aria-label="Full width tabs"
-                        // eslint-disable-next-line react/style-prop-object
-                        style="underline"
-                        onClick={onMarketplaceChange}
-                      >
-                        <Tabs.Item
-                          title="Amazon"
-                          active={
-                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Amazon
-                          }
-                        >
-                          <div className="mt-3">
-                            The Amazon Standard identification Number (ASIN) can be used to fetch an
-                            item from Amazon. You can find the item ID for an amazon item by using
-                            the ID after <InlineCodeSnippet>dp/</InlineCodeSnippet> in the URL.
-                            Example:
-                          </div>
-                          <span className="text-amber-700">
-                            https://amazon.com/neo-sporin/dp/
-                            <span className="rounded-lg bg-red-500 px-2 text-amber-300">
-                              B000NQ10FK
-                            </span>
-                          </span>
-                          <div className="mt-3">
-                            It is also returned in the response by the{' '}
-                            <InlineCodeSnippet>requestProduct</InlineCodeSnippet> mutation.
-                          </div>
-                        </Tabs.Item>
-                        <Tabs.Item
-                          title="Shopify"
-                          active={
-                            data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify
-                          }
-                        >
-                          <div className="py-3">
-                            The Shopify product ID can be found in the response of the{' '}
-                            <InlineCodeSnippet>requestProduct</InlineCodeSnippet> mutation.
-                          </div>
-                        </Tabs.Item>
-                      </Tabs.Group>
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <div>
-                        <Label htmlFor="marketplace_request" value="Marketplace" />
-                        <TextInput
-                          disabled
-                          className="my-3 w-full"
-                          id="marketplace_request"
-                          value={data.requestedProduct.selectedMarketplace}
-                        ></TextInput>
-                        <Timeline.Point />
-                        <Label
-                          htmlFor="fetch_product_id"
-                          value="Enter product ID"
-                          className="mt-10"
-                        />
-                        <div className="my-3 flex">
-                          <TextInput
-                            value={selectedProductID || ''}
-                            // @ts-expect-error - TS2322 - "color props are not compatible with exactOptionalPropertyTypes: true" - shouldn't really matter, as long as js is checking for truthiness
-                            icon={BarcodeIcon}
-                            className="w-full"
-                            id="fetch_product_id"
-                            placeholder={marketPlaceSelector('2863039381604', 'B000NQ10FK')}
-                            onChange={onProductIDChange}
-                          ></TextInput>
-                          <Button
-                            style={{ width: 150, height: 40, maxHeight: 40 }}
-                            onClick={fetchProduct}
-                            className="mx-3"
-                            disabled={isFetchingProduct}
-                          >
-                            {!isFetchingProduct ? 'Fetch' : <Spinner style={{ maxHeight: 30 }} />}
-                          </Button>
-                        </div>
-                        <RequestResponseCodeBlock
-                          response={fetchProductResponse}
-                          currentTheme={currentTheme}
-                        />
-                      </div>
-                    </CustomTimelineBody>
-                  </Card>
-                  <div className="mx-3 max-w-xl overflow-scroll">
-                    <CustomCodeBlock
-                      showLineNumbers={true}
-                      startingLineNumber={productFetchSnippetLineNumber}
-                      currentTheme={currentTheme}
-                      codeString={productFetchSnippet}
-                    ></CustomCodeBlock>
-                  </div>
-                </div>
-              </Timeline.Content>
-            </Timeline.Item>
-            <Timeline.Item>
-              <Timeline.Content>
-                <div className="flex">
-                  <Card className="max-w-xl self-baseline">
-                    <Timeline.Title>Fetch offers on the item from the Rye API</Timeline.Title>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div className="py-1">
-                        You can use the offers query to display a sample checkout for the item. This
-                        is useful for showing estimated taxes, and any shipping costs
-                      </div>
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div>
-                        {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
-                        <div className="mt-3 flex">
-                          <div>
-                            <Label htmlFor="city" value="City" />
-                            <TextInput
-                              className="mt-3 w-64"
-                              id="city"
-                              onChange={onCityChange}
-                              value={data.address.city}
-                              placeholder="San Francisco"
-                            ></TextInput>
-                          </div>
-                          <div className="ml-3">
-                            <Label className="mt-3" htmlFor="product_id_offers" value="State" />
-                            <Select
-                              onChange={onStateCodeChange}
-                              value={data.address.stateCode}
-                              className="mt-3 w-24"
-                            >
-                              {SelectStateOptions}
-                            </Select>
-                          </div>
-                          <div className="flex w-full">
-                            <Button
-                              style={{ width: 150, height: 40, maxHeight: 40 }}
-                              onClick={fetchProductOffers}
-                              className="mx-3 self-end"
-                              disabled={isFetchingProduct}
-                            >
-                              {!isFetchingProductOffers ? (
-                                'Fetch'
-                              ) : (
-                                <Spinner style={{ maxHeight: 30 }} />
-                              )}
-                            </Button>
-                          </div>
-                        </div>
-                        <RequestResponseCodeBlock
-                          response={fetchProductOffersResponse}
-                          currentTheme={currentTheme}
-                        />
-                      </div>
-                    </CustomTimelineBody>
-                  </Card>
-                  <div className="mx-3 max-w-xl overflow-scroll">
-                    <CustomCodeBlock
-                      showLineNumbers={true}
-                      currentTheme={currentTheme}
-                      startingLineNumber={productOfferSnippetLineNumber}
-                      codeString={productOfferSnippet}
-                    ></CustomCodeBlock>
-                  </div>
-                </div>
-              </Timeline.Content>
-            </Timeline.Item>
-            <Timeline.Item>
-              <Timeline.Content>
-                <div className="flex">
-                  <Card className="max-w-xl self-baseline">
-                    <Timeline.Title>Fetch payment intent to perform Stripe checkout</Timeline.Title>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div className="py-1">
-                        You can use the offers query to display a sample checkout for the item. This
-                        is useful for showing estimated taxes, and any shipping costs
-                      </div>
-                    </CustomTimelineBody>
-                    <CustomTimelineBody>
-                      <Timeline.Point />
-                      <div>
-                        {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
-                        <div className="mt-3 flex">
-                          <div>
-                            <Label htmlFor="first_name" value="First Name" />
-                            <TextInput
-                              className="mt-3 w-64"
-                              id="first_name"
-                              onChange={onFirstNameChange}
-                              value={data.address.firstName}
-                              placeholder="Will"
-                            />
-                          </div>
-                          <div className="mx-3">
-                            <Label htmlFor="last_name" value="Last Name" />
-                            <TextInput
-                              className="mt-3 w-64"
-                              id="last_name"
-                              onChange={onLastNameChange}
-                              value={data.address.lastName}
-                              placeholder="Smith"
-                            />
-                          </div>
-                        </div>
-                        <div className="mt-3">
-                          <Label htmlFor="address_one" value="Address Line 1" />
-                          <TextInput
-                            className="mt-3 w-full"
-                            id="address_one"
-                            onChange={onAddressOneChange}
-                            value={data.address.address1}
-                            placeholder="Bel Air Mansion"
-                          />
-                        </div>
-                        <div className="flex">
-                          <div className="mt-3">
-                            <Label htmlFor="address_two" value="Address Line 2" />
-                            <TextInput
-                              className="mt-3 w-64"
-                              id="address_two"
-                              onChange={onAddressTwoChange}
-                              value={data.address.address2}
-                              placeholder="Apt 212"
-                            />
-                          </div>
-                          <div className="mx-3 mt-3">
-                            <Label htmlFor="zip_code" value="Zip Code" />
-                            <TextInput
-                              type="text"
-                              className="mt-3 w-64"
-                              id="zip_code"
-                              onChange={onZipCodeChange}
-                              value={data.address.zipCode}
-                              placeholder="94103"
-                            />
-                          </div>
-                        </div>
-                        <div className="mt-3 flex">
-                          <div>
-                            <Label htmlFor="email" value="Email" />
-                            <TextInput
-                              type="email"
-                              className="mt-3 w-64"
-                              id="email"
-                              onChange={onEmailChange}
-                              value={data.address.email}
-                              placeholder="jane-smith@email.com"
-                            />
-                          </div>
-                          <div className="mx-3">
-                            <Label htmlFor="phone" value="Phone" />
-                            <TextInput
-                              type="tel"
-                              className="mt-3 w-64"
-                              id="phone"
-                              onChange={onPhoneChange}
-                              value={data.address.phone}
-                              placeholder="123-456-7890"
-                            />
-                          </div>
-                        </div>
-                        <div className="mt-3 flex">
-                          <div>
-                            <Label htmlFor="city" value="City" />
-                            <TextInput
-                              className="mt-3 w-64"
-                              id="city"
-                              onChange={onCityChange}
-                              value={data.address.city}
-                              placeholder="San Francisco"
-                            ></TextInput>
-                          </div>
-                          <div className="ml-3">
-                            <Label className="mt-3" htmlFor="product_id_offers" value="State" />
-                            <Select
-                              onChange={onStateCodeChange}
-                              value={data.address.stateCode}
-                              className="mt-3 w-24"
-                            >
-                              {SelectStateOptions}
-                            </Select>
-                          </div>
-                          <div className="flex w-full">
-                            <Button
-                              style={{ width: 150, height: 40, maxHeight: 40 }}
-                              onClick={fetchPaymentIntent}
-                              className="mx-3 self-end"
-                              disabled={isFetchingProduct}
-                            >
-                              {!isFetchingPaymentIntent ? (
-                                'Fetch'
-                              ) : (
-                                <Spinner style={{ maxHeight: 30 }} />
-                              )}
-                            </Button>
-                          </div>
-                        </div>
-                        <RequestResponseCodeBlock
-                          response={fetchPaymentIntentResponse}
-                          currentTheme={currentTheme}
-                        />
-                      </div>
-                    </CustomTimelineBody>
-                  </Card>
-                  <div className="mx-3 max-w-xl overflow-scroll">
-                    <CustomCodeBlock
-                      showLineNumbers={true}
-                      currentTheme={currentTheme}
-                      startingLineNumber={paymentIntentSnippetLineNumber}
-                      codeString={paymentIntentSnippet}
-                    ></CustomCodeBlock>
-                  </div>
-                </div>
-              </Timeline.Content>
-            </Timeline.Item>
-            <Timeline.Item>
-              <Timeline.Content>
-                <div className="flex">
-                  <Card className="max-w-xl self-baseline">
-                    <Timeline.Title>Perform checkout</Timeline.Title>
-                    <CustomTimelineBody>
-                      <div className="py-1">
-                        Given a payment intent from the previous step, a stripe payment form will
-                        load here.
-                      </div>
-                      <div className="py-1">
-                        This uses Rye's Stripe account to accept payment for the item.
-                      </div>
-                      <Timeline.Point />
-                      <StripeCheckout
-                        stripePromise={stripePromise}
-                        clientSecret={clientSecret}
-                        currentTheme={currentTheme}
-                      />
-                    </CustomTimelineBody>
-                  </Card>
-                  <div className="mx-3 max-w-2xl overflow-scroll">
-                    <CustomCodeBlock
-                      showLineNumbers={true}
-                      currentTheme={currentTheme}
-                      startingLineNumber={1}
-                      codeString={checkoutFormCode}
-                    ></CustomCodeBlock>
-                  </div>
-                </div>
-              </Timeline.Content>
-            </Timeline.Item>
+            {enterApiKey(
+              currentTheme,
+              data,
+              onAPIKeyChange,
+              isCheckingAPIKey,
+              isValidAPIKey,
+              initClientSnippet,
+            )}
+            {requestScrape(
+              onMarketplaceChange,
+              data,
+              marketPlaceSelector,
+              onProductURLChange,
+              requestProduct,
+              isRequestingProduct,
+              requestProductResponse,
+              currentTheme,
+              requestedProductSnippetLineNumber,
+              requestedProductSnippet,
+            )}
+            {requestProductData(
+              onMarketplaceChange,
+              data,
+              selectedProductID,
+              marketPlaceSelector,
+              onProductIDChange,
+              fetchProduct,
+              isFetchingProduct,
+              fetchProductResponse,
+              currentTheme,
+              productFetchSnippetLineNumber,
+              productFetchSnippet,
+            )}
+            {fetchOffers(
+              marketPlaceSelector,
+              shopifyOfferFields,
+              amazonOfferFields,
+              onCityChange,
+              data,
+              onStateCodeChange,
+              fetchProductOffers,
+              isFetchingProduct,
+              isFetchingProductOffers,
+              fetchProductOffersResponse,
+              currentTheme,
+              productOfferSnippetLineNumber,
+              productOfferSnippet,
+            )}
+            {stripePaymentIntentExample(
+              marketPlaceSelector,
+              shopifyOfferFields,
+              amazonOfferFields,
+              onFirstNameChange,
+              data,
+              onLastNameChange,
+              onAddressOneChange,
+              onAddressTwoChange,
+              onZipCodeChange,
+              onEmailChange,
+              onPhoneChange,
+              onCityChange,
+              onStateCodeChange,
+              fetchPaymentIntent,
+              isFetchingProduct,
+              isFetchingPaymentIntent,
+              fetchPaymentIntentResponse,
+              currentTheme,
+              paymentIntentSnippetLineNumber,
+              paymentIntentSnippet,
+            )}
+            {performCheckoutStep(stripePromise, clientSecret, currentTheme)}
           </Timeline>
         </div>
       </Flowbite>
