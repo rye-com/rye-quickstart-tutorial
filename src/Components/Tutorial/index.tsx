@@ -66,7 +66,7 @@ const trackAddressFieldChanges = debounce((fieldName: string, fieldValue: string
       },
     },
   });
-}, 800);
+}, 1500);
 
 const trackProductURLChange = debounce((productURL: string) => {
   ryelytics.track({
@@ -77,7 +77,7 @@ const trackProductURLChange = debounce((productURL: string) => {
       productURL,
     },
   });
-}, 800);
+}, 1500);
 
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
