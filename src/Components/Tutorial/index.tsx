@@ -501,15 +501,25 @@ export default function Index() {
       button = otherTabButtons.iterateNext();
     }
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
+  };
+
+  const selectedMarketplace = data.requestedProduct.selectedMarketplace;
+
+  // This .track call in not inside onMarketplaceChange because
+  // it's firing 5 times when you click a Shopify/Amazon tab.
+  // Debouncing could be used, but is just a hack.
+  // This is ALSO a hack, but it'll track users that repeatedly click between two tabs (perhaps in confusion, idk)
+  // The current tabs implementation should probably be tossed and replaced with something better.
+  useMemo(() => {
     ryelytics.track({
       // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
       // Need to refactor code to be able to track this accurately.
       source: SOURCE.REQUEST_SCRAPE_STEP,
       action: ACTION.CLICK,
       noun: 'marketplace_tab',
-      properties: { selected_marketplace: marketplace },
+      properties: { selectedMarketplace },
     });
-  };
+  }, [selectedMarketplace]);
 
   const onProductIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const update = marketPlaceSelector(
