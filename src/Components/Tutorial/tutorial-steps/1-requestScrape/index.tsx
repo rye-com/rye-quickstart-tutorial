@@ -6,7 +6,7 @@ import type { ThemeEnum } from '../../types';
 import { CustomTimelineBody } from '../../helper-components/CustomTimelineBody';
 import { CustomCodeBlock } from '../../helper-components/CustomCodeBlock';
 import { RequestResponseCodeBlock } from '../../helper-components/ResponseCodeBlock';
-import { linkClasses } from '../../index';
+import { linkClasses } from '../../../../utils/linkClasses';
 
 export function requestScrape(
   onMarketplaceChange: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
