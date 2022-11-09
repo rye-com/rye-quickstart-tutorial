@@ -519,6 +519,8 @@ export default function Index() {
       noun: 'marketplace_tab',
       properties: { selectedMarketplace },
     });
+    // NOTE:
+    //  This triggers twice per tab click, probably because clicking one tab changes the other tab.
   }, [selectedMarketplace]);
 
   const onProductIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
