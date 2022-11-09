@@ -55,6 +55,19 @@ export const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
+const trackProductIDChange = debounce((update: any) => {
+  ryelytics.track({
+    // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
+    // Need to refactor code to be able to track this accurately.
+    source: SOURCE.FETCH_PRODUCT_DATA_STEP,
+    action: ACTION.UPDATE,
+    noun: 'product_id_input',
+    properties: {
+      productUpdate: update,
+    },
+  });
+}, 1500);
+
 const trackAddressFieldChanges = debounce((fieldName: string, fieldValue: string) => {
   ryelytics.track({
     source: SOURCE.PAYMENT_INTENT_STEP,
@@ -493,16 +506,7 @@ export default function Index() {
       { amazonProductID: e.target.value },
     );
     updateData({ requestedProduct: update });
-    ryelytics.track({
-      // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
-      // Need to refactor code to be able to track this accurately.
-      source: SOURCE.FETCH_PRODUCT_DATA_STEP,
-      action: ACTION.UPDATE,
-      noun: 'product_id_input',
-      properties: {
-        productUpdate: update,
-      },
-    });
+    trackProductIDChange(update);
   };
 
   useDebouncedEffect(checkRyeAPIKey, [data.apiConfig.key], 500);
