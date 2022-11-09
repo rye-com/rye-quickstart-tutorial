@@ -192,15 +192,8 @@ export const shopifyProductOfferSnippet = (
   );
 };
 
-export const amazonProductOfferQuery = `query AmazonOffer {
-  amazonOffer(input: {
-    productID: "B08C1W5N87",
-    location: {
-      city: "Berkeley",
-      stateCode: "CA",
-      countryCode: "US",
-    }
-  }) {
+export const amazonProductOfferQuery = `query AmazonOffer($input: AmazonOfferInput!) {
+  amazonOffer(input: $input) {
     offer {
       productID
       subtotal {
