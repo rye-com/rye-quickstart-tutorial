@@ -57,4 +57,9 @@ export const getRyelytics = () => {
   };
 };
 
+/**
+ * Global ryelytics instance (shared across app)
+ */
+export const ryelytics = getRyelytics();
+
 export type Ryelytics = ReturnType<typeof getRyelytics>;
