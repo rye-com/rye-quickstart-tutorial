@@ -39,8 +39,13 @@ const writeKey = window.location.origin === 'https://tutorial.rye.com' ? prodKey
 const analytics = AnalyticsBrowser.load({ writeKey });
 analytics.page();
 
-export const getRyelytics = () => {
-  const enableLogging = sessionStorage.getItem('enableRyelyticsLogging') === '1';
+export const getRyelytics = (
+  options?: Partial<{
+    /** Defaults to checking if `sessionStorage.getItem('enableRyelyticsLogging')` is truthy/defined */
+    enableLogging: boolean | string | null;
+  }>,
+) => {
+  const enableLogging = options?.enableLogging ?? sessionStorage.getItem('enableRyelyticsLogging');
 
   return {
     identify: ({ uid, ...userInfoModel }: Partial<UserModel>) => {
@@ -78,6 +83,15 @@ export const getRyelytics = () => {
 
 /**
  * Global ryelytics instance (shared across app)
+ *
+ * You can also have your own local instance by doing:
+ * ```tsx
+ * import { getRyelytics } from 'shared-analytics/getRyelytics';
+ *
+ * const ryelytics = getRyelytics({ enableLogging: true });
+ * ```
+ *
+ * This allows you enable analytics logging for only certain parts of the codebase.
  */
 export const ryelytics = getRyelytics();
 
