@@ -38,7 +38,7 @@ import { ThemeEnum, MarketplaceEnum } from './types';
 import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
 import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
 import type { StripeProp } from './types/StripeProp';
-import type { Ryelytics } from '../../shared-analytics/getRyelytics';
+import { ryelytics } from '../../shared-analytics/getRyelytics';
 import { ACTION, SOURCE } from '../../shared-analytics/constants';
 import { enterApiKey } from './tutorial-steps/0-enterApiKey';
 import { requestScrape } from './tutorial-steps/1-requestScrape';
@@ -53,7 +53,7 @@ export const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
-export default function Index({ ryelytics }: { ryelytics: Ryelytics }) {
+export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
 
   const [isRequestingProduct, setIsRequestingProduct] = useState<boolean>(false);
