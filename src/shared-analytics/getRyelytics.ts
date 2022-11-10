@@ -32,7 +32,9 @@ type RyelyticsProperties = {
 
 // Based on: https://github.com/rye-com/dev-console/blob/ccdaf725d7a9782cdd1a020b7b97399e4aaa4528/src/app/utils.ts#L59
 // TODO: Turn this into a shareable library
+// cspell:disable-next-line
 const devKey = 'yv3GSCG8FGnDawBWNCRYbKDRjvLHDqdx';
+// cspell:disable-next-line
 const prodKey = 'bN1nSWedUvp3WNAB9baPCNG87RrEkrSk';
 const writeKey = window.location.origin === 'https://tutorial.rye.com' ? prodKey : devKey;
 
