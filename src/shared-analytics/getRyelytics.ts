@@ -39,20 +39,12 @@ export const getRyelytics = () => {
       action: ACTION,
       noun: string,
       properties?: Parameters<Analytics['track']>[1],
-      // Not used yet. Uncomment if you need these.
-      // _options?: Parameters<Analytics['track']>[2],
-      // _callback?: Parameters<Analytics['track']>[3],
     ) => {
       const eventName = [source, action, noun].join('_');
       if (enableLogging) {
         console.log('ryelytics.track', eventName, properties);
       }
-      return analytics.track(
-        eventName,
-        properties,
-        // _options,
-        // _callback,
-      );
+      return analytics.track(eventName, properties);
     },
   };
 };
