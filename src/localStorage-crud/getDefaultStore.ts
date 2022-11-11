@@ -7,7 +7,7 @@ export const getDefaultStore = (): Store => {
     apiConfig: JSON.parse(window.localStorage.getItem('apiConfig') || '{}'),
     appTheme: detectThemePreference(),
     requestedProduct: JSON.parse(
-      window.localStorage.getItem('requestedProduct') ||
+      window.sessionStorage.getItem('requestedProduct') ||
         JSON.stringify({
           shopifyProductID: '',
           amazonProductID: 'B08SKZ7WDP',

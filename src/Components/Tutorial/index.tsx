@@ -213,7 +213,11 @@ export default function Index() {
     const newData: Store = merge(cloneDeep(data), dataUpdate);
     let key: keyof Store;
     for (key in newData) {
-      window.localStorage.setItem(key, JSON.stringify(newData[key]));
+      if (key === 'requestedProduct') {
+        window.sessionStorage.setItem(key, JSON.stringify(newData[key]));
+      } else {
+        window.localStorage.setItem(key, JSON.stringify(newData[key]));
+      }
     }
     setData(newData);
   }
