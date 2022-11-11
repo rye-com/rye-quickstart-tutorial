@@ -439,7 +439,18 @@ export default function Index() {
   };
 
   const onShopifyProductVariantChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedShopifyProductVariant(e.target.value);
+    const productVariant = e.target.value;
+    setSelectedShopifyProductVariant(productVariant);
+    ryelytics.track({
+      // TODO: SOURCE.FETCH_OFFERS is not accurate, sometimes it's SOURCE.STRIPE_PAYMENT_INTENT_EXAMPLE
+      // Need to refactor code to be able to track this accurately.
+      source: SOURCE.FETCH_OFFERS_STEP,
+      action: ACTION.UPDATE,
+      noun: 'product_variant_dropdown',
+      properties: {
+        productVariant: productVariant,
+      },
+    });
   };
 
   const onMarketplaceChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
