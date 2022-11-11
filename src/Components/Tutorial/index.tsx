@@ -69,6 +69,17 @@ const trackAddressFieldChanges = debounce((fieldName: string, fieldValue: string
   });
 }, 800);
 
+const trackProductURLChange = debounce((productURL: string) => {
+  ryelytics.track({
+    source: SOURCE.REQUEST_SCRAPE_STEP,
+    action: ACTION.UPDATE,
+    noun: 'product_url_input',
+    properties: {
+      productURL,
+    },
+  });
+}, 800);
+
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
 
@@ -420,7 +431,11 @@ export default function Index() {
   const onEmailChange = onAddressFieldChangeFn('email');
 
   const onProductURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateData({ requestedProduct: { productURL: e.target.value } });
+    const productURL = e.target.value;
+    trackProductURLChange(productURL);
+
+    // Maybe we should debounce this whole event handler?
+    updateData({ requestedProduct: { productURL } });
   };
 
   const onProductVariantChange = (e: ChangeEvent<HTMLSelectElement>) => {
