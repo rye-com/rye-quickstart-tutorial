@@ -29,6 +29,8 @@ import {
   amazonPaymentIntentQuery,
 } from './code_snippets';
 import { cloneDeep, merge } from 'lodash';
+import snakeCase from 'lodash/snakeCase';
+import debounce from 'lodash/debounce';
 import { GraphQLClient } from 'graphql-request';
 import type { Variables } from 'graphql-request';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
@@ -53,6 +55,19 @@ const defaultStore = getDefaultStore();
 export const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
+
+const trackAddressFieldChanges = debounce((fieldName: string, fieldValue: string) => {
+  ryelytics.track({
+    source: SOURCE.PAYMENT_INTENT_STEP,
+    action: ACTION.UPDATE,
+    noun: snakeCase(fieldName) + '_input',
+    properties: {
+      address: {
+        [fieldName]: fieldValue,
+      },
+    },
+  });
+}, 800);
 
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
@@ -388,7 +403,9 @@ export default function Index() {
   };
 
   const onAddressFieldChangeFn = (field: keyof Address) => (e: React.ChangeEvent) => {
-    const data = { address: { [field]: (e.target as HTMLInputElement).value } };
+    const fieldValue = (e.target as HTMLInputElement).value;
+    const data = { address: { [field]: fieldValue } };
+    trackAddressFieldChanges(field, fieldValue);
     updateData(data);
   };
 
