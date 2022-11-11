@@ -477,6 +477,14 @@ export default function Index() {
       button = otherTabButtons.iterateNext();
     }
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
+    ryelytics.track({
+      // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
+      // Need to refactor code to be able to track this accurately.
+      source: SOURCE.REQUEST_SCRAPE_STEP,
+      action: ACTION.CLICK,
+      noun: 'marketplace_tab',
+      properties: { selected_marketplace: marketplace },
+    });
   };
 
   const onProductIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
