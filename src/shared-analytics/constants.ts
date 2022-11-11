@@ -5,6 +5,8 @@ export const enum SOURCE {
   API_KEY_STEP = 'api_key_step',
   /** step 1 */
   REQUEST_SCRAPE_STEP = 'request_scrape_step',
+  /** step 2 */
+  FETCH_PRODUCT_DATA_STEP = 'request_product_data_step',
 }
 
 export const enum ACTION {

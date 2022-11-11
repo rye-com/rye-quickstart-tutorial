@@ -237,6 +237,7 @@ export default function Index() {
       selectedProductID,
       data.requestedProduct.selectedMarketplace.toUpperCase(),
     );
+    let didSucceed = true;
     makeGQLRequest(
       marketPlaceSelector(shopifyProductFetchQuery, amazonProductFetchQuery),
       variables,
@@ -249,9 +250,17 @@ export default function Index() {
       })
       .catch((error) => {
         setFetchProductResponse(error);
+        didSucceed = false;
       })
       .finally(() => {
         setIsFetchingProduct(false);
+        ryelytics.track({
+          source: SOURCE.FETCH_PRODUCT_DATA_STEP,
+          action: ACTION.CLICK,
+          noun: 'fetch_product_data_button',
+          params: variables.input,
+          success: didSucceed,
+        });
       });
   };
 
