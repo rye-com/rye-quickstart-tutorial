@@ -27,9 +27,16 @@ export function requestScrape(
           <Card className="max-w-xl self-baseline">
             <Timeline.Title>
               <Timeline.Point />
-              Request an item to be requested by the Rye API
+              Request page scrape
             </Timeline.Title>
             <CustomTimelineBody>
+              <div className="py-1">
+                Adding product data to inventory may take a few seconds, but the product id will be
+                returned immediately.
+              </div>
+              <div className="py-1">
+                You can then use this product id to fetch product data in the next step.
+              </div>
               <div className="py-1">
                 You can also do this via the
                 <a href="https://console.rye.com/requests" className={linkClasses}>
