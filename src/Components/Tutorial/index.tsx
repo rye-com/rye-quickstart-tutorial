@@ -654,6 +654,13 @@ export default function Index() {
             Try out Rye API to make a purchase from Shopify or Amazon
           </h2>
           <Timeline>
+            {/*
+              Refactoring TODO:
+                - Breakup `updateData` into singular react state atoms
+                - Then embed some of these utility functions into respective tutorial step components
+                - Avoid passing `updateData` down into children components
+                - Turn these into proper jsx components w/props
+            */}
             {enterApiKey(
               currentTheme,
               data,
