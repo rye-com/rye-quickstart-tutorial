@@ -438,7 +438,7 @@ export default function Index() {
     updateData({ requestedProduct: { productURL } });
   };
 
-  const onProductVariantChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const onShopifyProductVariantChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedShopifyProductVariant(e.target.value);
   };
 
@@ -552,7 +552,7 @@ export default function Index() {
       <Label htmlFor="product_id_offers" value="Select product variant" />
       <Select
         value={selectedShopifyProductVariant}
-        onChange={onProductVariantChange}
+        onChange={onShopifyProductVariantChange}
         className="mt-3 w-full"
         disabled={shopifyVariants === null}
       >
