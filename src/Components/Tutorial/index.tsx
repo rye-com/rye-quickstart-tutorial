@@ -138,11 +138,14 @@ export default function Index() {
         // If we later get the users real uid, we can tie all the data together using that uid.
         apiKey,
       });
-      ryelytics.track(
-        SOURCE.TUTORIAL_MODULE,
-        ACTION.UPDATE,
-        'api_key_' + isApiKeyValid ? 'valid' : 'invalid',
-      );
+      ryelytics.track({
+        source: SOURCE.TUTORIAL_MODULE,
+        action: ACTION.UPDATE,
+        noun: 'api_key_input',
+        meta: {
+          isValid: isApiKeyValid,
+        },
+      });
     };
     makeGQLRequest(amazonProductFetchQuery, variables)
       .then((_result) => {
