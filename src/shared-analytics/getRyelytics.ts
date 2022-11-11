@@ -24,7 +24,7 @@ type RyelyticsProperties = {
   params?: Record<string, StringLike | Record<string, StringLike>>;
 
   /** Miscellaneous metadata associated with this event */
-  properties?: Record<string, StringLike>;
+  properties?: Record<string, StringLike | Record<string, StringLike>>;
 
   /**
    * Was the users action successful or not?

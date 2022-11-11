@@ -48,7 +48,6 @@ import { requestProductData } from './tutorial-steps/2-requestProductData';
 import { fetchOffers } from './tutorial-steps/3-fetchOffers';
 import { stripePaymentIntentExample } from './tutorial-steps/4-stripePaymentIntentExample';
 import { performCheckoutStep } from './tutorial-steps/5-performCheckoutStep';
-import { snakeCaseKeys } from '../../shared-analytics/snakeCaseKeys';
 
 const defaultStore = getDefaultStore();
 
@@ -493,6 +492,16 @@ export default function Index() {
       { amazonProductID: e.target.value },
     );
     updateData({ requestedProduct: update });
+    ryelytics.track({
+      // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
+      // Need to refactor code to be able to track this accurately.
+      source: SOURCE.FETCH_PRODUCT_DATA_STEP,
+      action: ACTION.UPDATE,
+      noun: 'product_id_input',
+      properties: {
+        productUpdate: update,
+      },
+    });
   };
 
   useDebouncedEffect(checkRyeAPIKey, [data.apiConfig.key], 500);
