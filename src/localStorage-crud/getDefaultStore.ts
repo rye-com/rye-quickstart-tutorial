@@ -9,7 +9,6 @@ export const getDefaultStore = (): Store => {
     requestedProduct: JSON.parse(
       window.sessionStorage.getItem('requestedProduct') ||
         JSON.stringify({
-          shopifyProductID: '',
           amazonProductID: 'B08SKZ7WDP',
           selectedMarketplace: MarketplaceEnum.Amazon,
           productURL: 'https://www.amazon.com/dp/B08SKZ7WDP/',
