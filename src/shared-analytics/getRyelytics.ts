@@ -12,11 +12,11 @@ export const getRyelytics = () => {
   const analytics = AnalyticsBrowser.load({ writeKey });
   analytics.page();
 
-  const logAnalyticsEvents = sessionStorage.getItem('logAnalyticsEvents') === '1';
+  const enableLogging = sessionStorage.getItem('enableRyelyticsLogging') === '1';
 
   return {
     identify: ({ uid, ...userInfoModel }: Partial<UserModel>) => {
-      if (logAnalyticsEvents) {
+      if (enableLogging) {
         console.log('ryelytics.identify', userInfoModel);
       }
       // https://segment.com/docs/connections/sources/catalog/libraries/website/javascript/#identify
@@ -28,7 +28,7 @@ export const getRyelytics = () => {
     },
 
     page: (pageName: string) => {
-      if (logAnalyticsEvents) {
+      if (enableLogging) {
         console.log('ryelytics.page', pageName);
       }
       return analytics.page(pageName);
@@ -44,7 +44,7 @@ export const getRyelytics = () => {
       // _callback?: Parameters<Analytics['track']>[3],
     ) => {
       const eventName = [source, action, noun].join('_');
-      if (logAnalyticsEvents) {
+      if (enableLogging) {
         console.log('ryelytics.track', eventName, properties);
       }
       return analytics.track(
