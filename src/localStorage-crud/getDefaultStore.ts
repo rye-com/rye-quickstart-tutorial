@@ -10,9 +10,9 @@ export const getDefaultStore = (): Store => {
       window.localStorage.getItem('requestedProduct') ||
         JSON.stringify({
           shopifyProductID: '',
-          amazonProductID: '',
+          amazonProductID: 'B08SKZ7WDP',
           selectedMarketplace: MarketplaceEnum.Amazon,
-          productURL: '',
+          productURL: 'https://www.amazon.com/dp/B08SKZ7WDP/',
         }),
     ),
     address: JSON.parse(
