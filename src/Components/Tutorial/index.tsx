@@ -28,7 +28,8 @@ import {
   shopifyPaymentIntentQuery,
   amazonPaymentIntentQuery,
 } from './code_snippets';
-import { cloneDeep, merge } from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import merge from 'lodash/merge';
 import snakeCase from 'lodash/snakeCase';
 import debounce from 'lodash/debounce';
 import { GraphQLClient } from 'graphql-request';
