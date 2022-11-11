@@ -3,6 +3,8 @@ import type { ACTION, SOURCE } from './constants';
 import { AnalyticsBrowser } from '@segment/analytics-next';
 import { isProd } from '../utils/env/isProd';
 
+type StringLike = string | boolean | number;
+
 type RyelyticsProperties = {
   /** Feel free to add new SOURCE values to shared-analytics/constants */
   source: SOURCE;
@@ -19,10 +21,10 @@ type RyelyticsProperties = {
   noun: string;
 
   /** User inputs or request parameters */
-  params?: Record<string, string | boolean | number>;
+  params?: Record<string, StringLike>;
 
   /** Miscellaneous metadata associated with this event */
-  properties?: Record<string, string | boolean | number>;
+  properties?: Record<string, StringLike>;
 
   /**
    * Was the users action successful or not?
