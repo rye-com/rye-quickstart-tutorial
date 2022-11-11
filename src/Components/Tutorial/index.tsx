@@ -46,6 +46,7 @@ import { requestProductData } from './tutorial-steps/2-requestProductData';
 import { fetchOffers } from './tutorial-steps/3-fetchOffers';
 import { stripePaymentIntentExample } from './tutorial-steps/4-stripePaymentIntentExample';
 import { performCheckoutStep } from './tutorial-steps/5-performCheckoutStep';
+import { snakeCaseKeys } from '../../shared-analytics/snakeCaseKeys';
 
 const defaultStore = getDefaultStore();
 
@@ -281,6 +282,7 @@ export default function Index() {
         selectedProductID,
       ),
     );
+    let didSucceed = true;
     makeGQLRequest(
       marketPlaceSelector(shopifyProductOfferQuery, amazonProductOfferQuery),
       variables,
@@ -290,9 +292,17 @@ export default function Index() {
       })
       .catch((error) => {
         setFetchProductOffersResponse(error);
+        didSucceed = false;
       })
       .finally(() => {
         setIsFetchingProductOffers(false);
+        ryelytics.track({
+          source: SOURCE.FETCH_OFFERS_STEP,
+          action: ACTION.CLICK,
+          noun: 'fetch_offers_button',
+          params: variables.input,
+          success: didSucceed,
+        });
       });
   };
 

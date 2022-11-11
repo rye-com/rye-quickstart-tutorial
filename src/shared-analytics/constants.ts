@@ -7,6 +7,8 @@ export const enum SOURCE {
   REQUEST_SCRAPE_STEP = 'request_scrape_step',
   /** step 2 */
   FETCH_PRODUCT_DATA_STEP = 'request_product_data_step',
+  /** step 3 */
+  FETCH_OFFERS_STEP = 'fetch_offers_step',
 }
 
 export const enum ACTION {

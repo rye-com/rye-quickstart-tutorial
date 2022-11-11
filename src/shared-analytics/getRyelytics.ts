@@ -21,7 +21,7 @@ type RyelyticsProperties = {
   noun: string;
 
   /** User inputs or request parameters */
-  params?: Record<string, StringLike>;
+  params?: Record<string, StringLike | Record<string, StringLike>>;
 
   /** Miscellaneous metadata associated with this event */
   properties?: Record<string, StringLike>;
