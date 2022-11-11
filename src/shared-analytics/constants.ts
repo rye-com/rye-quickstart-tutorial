@@ -9,6 +9,8 @@ export const enum SOURCE {
   FETCH_PRODUCT_DATA_STEP = 'request_product_data_step',
   /** step 3 */
   FETCH_OFFERS_STEP = 'fetch_offers_step',
+  /** step 4 */
+  PAYMENT_INTENT_STEP = 'payment_intent_step',
 }
 
 export const enum ACTION {

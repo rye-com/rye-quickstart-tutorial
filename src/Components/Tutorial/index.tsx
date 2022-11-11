@@ -326,7 +326,7 @@ export default function Index() {
 
     const variables = marketPlaceSelector(
       shopifyPaymentIntentVariables(
-        selectedShopifyProductVariant,
+        selectedShopifyProductVariant, // This accounts for product id (I think)
         {
           firstName: data.address.firstName,
           lastName: data.address.lastName,
@@ -352,6 +352,7 @@ export default function Index() {
         zipCode: data.address.zipCode,
       }),
     );
+    let didSucceed = true;
     makeGQLRequest(
       marketPlaceSelector(shopifyPaymentIntentQuery, amazonPaymentIntentQuery),
       variables,
@@ -363,8 +364,18 @@ export default function Index() {
       })
       .catch((error) => {
         setFetchPaymentIntentResponse(error);
+        didSucceed = false;
       })
       .finally(() => {
+        ryelytics.track({
+          source: SOURCE.PAYMENT_INTENT_STEP,
+          action: ACTION.CLICK,
+          noun: 'fetch_payment_intent_button',
+          // TODO: remove any, improve `undefined` handling in `RyelyticsProperties` type
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          params: { ...variables.input } as Record<string, any>,
+          success: didSucceed,
+        });
         setIsFetchingPaymentIntent(false);
       });
   };
