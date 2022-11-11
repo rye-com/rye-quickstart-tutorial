@@ -171,6 +171,14 @@ export default function Index() {
 
   const onChangeTheme = (checked: boolean) => {
     const theme = checked ? ThemeEnum.Dark : ThemeEnum.Light;
+    ryelytics.track({
+      source: SOURCE.TOP_NAV_BAR,
+      action: ACTION.CLICK,
+      noun: 'change_theme_button',
+      properties: {
+        theme,
+      },
+    });
     updateData({ appTheme: theme });
   };
 
