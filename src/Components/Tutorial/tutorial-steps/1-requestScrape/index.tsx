@@ -27,7 +27,7 @@ export function requestScrape(
           <Card className="max-w-xl self-baseline">
             <Timeline.Title>
               <Timeline.Point />
-              Request page scrape
+              Add external product to Rye inventory
             </Timeline.Title>
             <CustomTimelineBody>
               <div className="py-1">
