@@ -3,6 +3,8 @@ export const enum SOURCE {
   TOP_NAV_BAR = 'top_nav_bar',
   /** step 0 */
   API_KEY_STEP = 'api_key_step',
+  /** step 1 */
+  REQUEST_SCRAPE_STEP = 'request_scrape_step',
 }
 
 export const enum ACTION {

@@ -24,6 +24,13 @@ type RyelyticsProperties = {
   /** Miscellaneous metadata associated with this event */
   properties?: Record<string, string | boolean | number>;
 
+  /**
+   * Was the users action successful or not?
+   *
+   * Discussion on user vs programmer errors: https://github.com/rye-com/rye-quickstart-tutorial/pull/21#discussion_r1019604268
+   */
+  success?: boolean;
+
   // In google BigQuery (segment integration) nested data gets flattened out: { params: { id } } becomes { params_id }.
   // Therefore, we want to avoid nesting in a way that is "too" noisy.
   // Some nesting makes reading/writing code easier.

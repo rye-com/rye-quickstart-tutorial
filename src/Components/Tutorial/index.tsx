@@ -188,23 +188,43 @@ export default function Index() {
       data.requestedProduct.productURL,
       data.requestedProduct.selectedMarketplace.toUpperCase(),
     );
+    const isShopify = data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify;
+    let productID = isShopify
+      ? data.requestedProduct.shopifyProductID
+      : data.requestedProduct.amazonProductID;
+    let didSucceed = true;
     makeGQLRequest(requestProductQuery, variables)
       .then((res) => {
         setRequestProductResponse(res);
         const requestedProduct: Partial<Store['requestedProduct']> = {};
-        if (data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify) {
+        if (isShopify) {
           requestedProduct['shopifyProductID'] = res['requestProductByURL'].productID;
         } else {
           requestedProduct['amazonProductID'] = res['requestProductByURL'].productID;
         }
+        productID = res['requestProductByURL'].productID;
         updateData({ requestedProduct: requestedProduct });
       })
       .catch((error) => {
         // TODO: test this path
         setRequestProductResponse(error);
+        didSucceed = false;
       })
       .finally(() => {
         setIsRequestingProduct(false);
+        const newRequestedProduct = {
+          ...variables.input,
+          productID: productID ?? 'undefined',
+        };
+        ryelytics.track({
+          source: SOURCE.REQUEST_SCRAPE_STEP,
+          action: ACTION.CLICK,
+          noun: 'request_scrape_button',
+          params: newRequestedProduct,
+          success: didSucceed,
+        });
+        // TODO: refactor `updateData` and do something like this?
+        // if (didSucceed) setRequestedProduct(newRequestedProduct);
       });
   };
 
