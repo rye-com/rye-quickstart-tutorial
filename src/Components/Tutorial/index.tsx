@@ -74,7 +74,6 @@ export default function Index() {
   const [isValidAPIKey, setIsValidAPIKey] = useState<boolean>(false);
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(false);
   const [selectedShopifyProductVariant, setSelectedShopifyProductVariant] = useState<string>('');
-  const [shopifyStoreCanonicalURL, setShopifyStoreCanonicalURL] = useState<string>('');
 
   const clientSecret =
     fetchPaymentIntentResponse?.createShopifyPaymentIntent?.clientSecret ||
@@ -219,9 +218,6 @@ export default function Index() {
         if (res['product']?.variants && res['product'].variants.length > 0) {
           setSelectedShopifyProductVariant(res['product'].variants[0].id);
         }
-        if (res['product']?.storeCanonicalURL) {
-          setShopifyStoreCanonicalURL(res['product'].storeCanonicalURL);
-        }
       })
       .catch((error) => {
         setFetchProductResponse(error);
@@ -239,7 +235,7 @@ export default function Index() {
     // Add more field validation here to skip request on validation failures
     //
     const variables = marketPlaceSelector(
-      shopifyProductOfferVariables(shopifyStoreCanonicalURL, selectedShopifyProductVariant, {
+      shopifyProductOfferVariables(selectedShopifyProductVariant, {
         city: data.address.city,
         stateCode: data.address.stateCode,
       }),
@@ -283,7 +279,6 @@ export default function Index() {
 
     const variables = marketPlaceSelector(
       shopifyPaymentIntentVariables(
-        shopifyStoreCanonicalURL,
         selectedShopifyProductVariant,
         {
           firstName: data.address.firstName,
@@ -296,7 +291,6 @@ export default function Index() {
           stateCode: data.address.stateCode,
           zipCode: data.address.zipCode,
         },
-        '',
         '',
       ),
       amazonPaymentIntentVariables(data.requestedProduct.amazonProductID, {
@@ -392,10 +386,6 @@ export default function Index() {
     updateData({ requestedProduct: update });
   };
 
-  const onShopifyStoreCanonicalURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShopifyStoreCanonicalURL(e.target.value);
-  };
-
   useDebouncedEffect(checkRyeAPIKey, [data.apiConfig.key], 500);
 
   const shopifyProductVariantOptions = (): Array<{ id: string; title: string }> | null => {
@@ -419,7 +409,7 @@ export default function Index() {
     requestedProductSnippet.split('\n').length + requestedProductSnippetLineNumber;
 
   const productOfferSnippet = marketPlaceSelector(
-    shopifyProductOfferSnippet(shopifyStoreCanonicalURL, selectedShopifyProductVariant, {
+    shopifyProductOfferSnippet(selectedShopifyProductVariant, {
       city: data.address.city,
       stateCode: data.address.stateCode,
     }),
@@ -435,7 +425,6 @@ export default function Index() {
     productFetchSnippet.split('\n').length + productFetchSnippetLineNumber;
   const paymentIntentSnippet = marketPlaceSelector(
     shopifyPaymentIntentSnippet(
-      shopifyStoreCanonicalURL,
       selectedShopifyProductVariant,
       {
         firstName: data.address.firstName,
@@ -448,7 +437,6 @@ export default function Index() {
         stateCode: data.address.stateCode,
         zipCode: data.address.zipCode,
       },
-      '',
       '',
     ),
     amazonPaymentIntentSnippet(
@@ -471,13 +459,6 @@ export default function Index() {
 
   const shopifyOfferFields = () => (
     <div>
-      <Label htmlFor="shopify_store_canonical_url" value="Store Canonical URL" />
-      <TextInput
-        className="my-3 w-full"
-        id="shopify_store_canonical_url"
-        value={shopifyStoreCanonicalURL}
-        onChange={onShopifyStoreCanonicalURLChange}
-      ></TextInput>
       <Label htmlFor="product_id_offers" value="Select product variant" />
       <Select
         value={selectedShopifyProductVariant}

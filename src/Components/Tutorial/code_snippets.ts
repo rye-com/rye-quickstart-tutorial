@@ -127,47 +127,41 @@ export const shopifyProductFetchSnippet = (productID?: string) => {
 
 export const shopifyProductOfferQuery = `query ShopifyOffer($input: ShopifyOfferInput!) {
   shopifyOffer(input: $input) {
-    offer {
-      storeURL
-      variantID
-      subtotal {
-        value
-        currency
-        displayValue
-      }
-      digitalItemTaxes {
-        value
-        currency
-        displayValue
-      }
-      isDigitalItem
-      shippingMethods {
-        id
-        label
-        price {
-          value
-          currency
-          displayValue
-        }
-        taxes {
-          value
-          currency
-          displayValue
-        }
-      }
+    subtotal {
+      value
+      currency
+      displayValue
+    }
+    taxes {
+      value
+      currency
+      displayValue
+    }
+    shipping {
+      value
+      currency
+      displayValue
+    }
+    margin {
+      value
+      currency
+      displayValue
+    }
+    total {
+      value
+      currency
+      displayValue
     }
   }
 }`;
 
 export const shopifyProductOfferVariables = (
-  storeCanonicalURL: string,
   productVariantID: string,
   { city, stateCode }: { city: string; stateCode: string },
 ) => {
   return {
     input: {
       variantID: productVariantID,
-      storeURL: storeCanonicalURL,
       location: {
         city: city,
         stateCode: stateCode,
@@ -177,7 +171,6 @@ export const shopifyProductOfferVariables = (
   };
 };
 export const shopifyProductOfferSnippet = (
-  storeCanonicalURL: string,
   productVariantID: string,
   { city, stateCode }: { city: string; stateCode: string },
 ) => {
@@ -185,7 +178,6 @@ export const shopifyProductOfferSnippet = (
     'fetchProductOffer',
     shopifyProductOfferQuery,
     shopifyProductOfferVariables(
-      storeCanonicalURL || '<SHOPIFY_STORE_CANONICAL_URL>',
       productVariantID || '<SHOPIFY_PRODUCT_VARIANT_ID>',
       { city, stateCode },
     ),
@@ -194,28 +186,30 @@ export const shopifyProductOfferSnippet = (
 
 export const amazonProductOfferQuery = `query AmazonOffer($input: AmazonOfferInput!) {
   amazonOffer(input: $input) {
-    offer {
-      productID
-      subtotal {
-        value
-        currency
-        displayValue
-      }
-      taxes {
-        value
-        currency
-        displayValue
-      }
-      shipping {
-        value
-        currency
-        displayValue
-      }
-      total {
-        value
-        currency
-        displayValue
-      }
+    subtotal {
+      value
+      currency
+      displayValue
+    }
+    taxes {
+      value
+      currency
+      displayValue
+    }
+    shipping {
+      value
+      currency
+      displayValue
+    }
+    margin {
+      value
+      currency
+      displayValue
+    }
+    total {
+      value
+      currency
+      displayValue
     }
   }
 }`;
@@ -235,6 +229,7 @@ export const amazonProductOfferVariables = (
     },
   };
 };
+
 export const amazonProductOfferSnippet = (
   { city, stateCode }: { city: string; stateCode: string },
   productID?: string,
@@ -247,15 +242,12 @@ export const amazonProductOfferSnippet = (
 };
 
 export const shopifyPaymentIntentVariables = (
-  storeCanonicalURL: string,
   productVariantID: string,
   { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address,
   promoCode?: string,
-  shippingID?: string,
 ) => {
   return {
     input: {
-      storeURL: storeCanonicalURL,
       variantID: productVariantID,
       address: {
         firstName: firstName,
@@ -269,7 +261,6 @@ export const shopifyPaymentIntentVariables = (
         countryCode: 'US',
         zip: zipCode,
       },
-      shippingID: shippingID,
       promoCode: promoCode,
     },
   };
@@ -284,21 +275,17 @@ export const shopifyPaymentIntentQuery = `mutation DemoShopifyPaymentIntent(
 }`;
 
 export const shopifyPaymentIntentSnippet = (
-  storeCanonicalURL: string,
   productVariantID: string,
   { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode }: Address,
   promoCode?: string,
-  shippingID?: string,
 ) => {
   return formatQueryCode(
     'createPaymentIntent',
     shopifyPaymentIntentQuery,
     shopifyPaymentIntentVariables(
-      storeCanonicalURL || '<SHOPIFY_STORE_CANONICAL_URL>',
       productVariantID || '<SHOPIFY_PRODUCT_VARIANT_ID>',
       { firstName, lastName, email, phone, address1, address2, city, stateCode, zipCode },
       promoCode,
-      shippingID,
     ),
   );
 };
