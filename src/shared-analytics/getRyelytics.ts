@@ -1,6 +1,7 @@
 import type { UserModel } from './UserModel';
 import type { ACTION, SOURCE } from './constants';
 import { AnalyticsBrowser } from '@segment/analytics-next';
+import { isProd } from '../utils/env/isProd';
 
 type RyelyticsProperties = {
   /** Feel free to add new SOURCE values to shared-analytics/constants */
@@ -36,7 +37,7 @@ type RyelyticsProperties = {
 const devKey = 'yv3GSCG8FGnDawBWNCRYbKDRjvLHDqdx';
 // cspell:disable-next-line
 const prodKey = 'bN1nSWedUvp3WNAB9baPCNG87RrEkrSk';
-const writeKey = window.location.origin === 'https://tutorial.rye.com' ? prodKey : devKey;
+const writeKey = isProd ? prodKey : devKey;
 
 const analytics = AnalyticsBrowser.load({ writeKey });
 analytics.page();
