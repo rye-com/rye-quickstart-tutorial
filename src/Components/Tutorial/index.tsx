@@ -138,7 +138,7 @@ export default function Index() {
         apiKey,
       });
       ryelytics.track({
-        source: SOURCE.TUTORIAL_MODULE,
+        source: SOURCE.API_KEY_STEP,
         action: ACTION.UPDATE,
         noun: 'api_key_input',
         properties: {

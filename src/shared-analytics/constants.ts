@@ -2,7 +2,7 @@
 export const enum SOURCE {
   TUTORIAL_MODULE = 'tutorial',
   /** step 0 */
-  API_KEY = 'api_key',
+  API_KEY_STEP = 'api_key_step',
 }
 
 export const enum ACTION {
