@@ -141,7 +141,7 @@ export default function Index() {
         source: SOURCE.TUTORIAL_MODULE,
         action: ACTION.UPDATE,
         noun: 'api_key_input',
-        meta: {
+        properties: {
           isValid: isApiKeyValid,
         },
       });
