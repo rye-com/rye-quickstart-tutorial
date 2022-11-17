@@ -7,7 +7,7 @@ export const enum SOURCE {
 
 export const enum ACTION {
   /** Paste, manual typing, dropdown/select, etc */
-  UPDATE = 'update_field',
+  UPDATE = 'update',
   CLICK = 'click',
   ERROR = 'error',
 }
