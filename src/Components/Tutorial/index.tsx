@@ -55,6 +55,30 @@ export const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
+const trackProductIDChange = debounce(
+  (
+    update:
+      | {
+          shopifyProductID: string;
+        }
+      | {
+          amazonProductID: string;
+        },
+  ) => {
+    ryelytics.track({
+      // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
+      // Need to refactor code to be able to track this accurately.
+      source: SOURCE.FETCH_PRODUCT_DATA_STEP,
+      action: ACTION.UPDATE,
+      noun: 'product_id_input',
+      properties: {
+        productUpdate: update,
+      },
+    });
+  },
+  1500,
+);
+
 const trackAddressFieldChanges = debounce((fieldName: string, fieldValue: string) => {
   ryelytics.track({
     source: SOURCE.PAYMENT_INTENT_STEP,
@@ -66,7 +90,7 @@ const trackAddressFieldChanges = debounce((fieldName: string, fieldValue: string
       },
     },
   });
-}, 800);
+}, 1500);
 
 const trackProductURLChange = debounce((productURL: string) => {
   ryelytics.track({
@@ -77,7 +101,7 @@ const trackProductURLChange = debounce((productURL: string) => {
       productURL,
     },
   });
-}, 800);
+}, 1500);
 
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
@@ -412,12 +436,13 @@ export default function Index() {
     }
   };
 
-  const onAddressFieldChangeFn = (field: keyof Address) => (e: React.ChangeEvent) => {
-    const fieldValue = (e.target as HTMLInputElement).value;
-    const data = { address: { [field]: fieldValue } };
-    trackAddressFieldChanges(field, fieldValue);
-    updateData(data);
-  };
+  const onAddressFieldChangeFn =
+    (field: keyof Address) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+      const fieldValue = e.target.value;
+      const data = { address: { [field]: fieldValue } };
+      trackAddressFieldChanges(field, fieldValue);
+      updateData(data);
+    };
 
   const onCityChange = onAddressFieldChangeFn('city');
   const onStateCodeChange = onAddressFieldChangeFn('stateCode');
@@ -476,32 +501,35 @@ export default function Index() {
       button = otherTabButtons.iterateNext();
     }
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
+  };
+
+  const selectedMarketplace = data.requestedProduct.selectedMarketplace;
+
+  // This .track call in not inside onMarketplaceChange because
+  // it's firing 5 times when you click a Shopify/Amazon tab.
+  // Debouncing could be used, but is just a hack.
+  // This is ALSO a hack, but it'll track users that repeatedly click between two tabs (perhaps in confusion, idk)
+  // The current tabs implementation should probably be tossed and replaced with something better.
+  useMemo(() => {
     ryelytics.track({
       // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
       // Need to refactor code to be able to track this accurately.
       source: SOURCE.REQUEST_SCRAPE_STEP,
       action: ACTION.CLICK,
       noun: 'marketplace_tab',
-      properties: { selected_marketplace: marketplace },
+      properties: { selectedMarketplace },
     });
-  };
+    // NOTE:
+    //  This triggers twice per tab click, probably because clicking one tab changes the other tab.
+  }, [selectedMarketplace]);
 
   const onProductIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const update: Partial<Store['requestedProduct']> = marketPlaceSelector(
+    const update = marketPlaceSelector(
       { shopifyProductID: e.target.value },
       { amazonProductID: e.target.value },
     );
     updateData({ requestedProduct: update });
-    ryelytics.track({
-      // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
-      // Need to refactor code to be able to track this accurately.
-      source: SOURCE.FETCH_PRODUCT_DATA_STEP,
-      action: ACTION.UPDATE,
-      noun: 'product_id_input',
-      properties: {
-        productUpdate: update,
-      },
-    });
+    trackProductIDChange(update);
   };
 
   useDebouncedEffect(checkRyeAPIKey, [data.apiConfig.key], 500);
@@ -654,6 +682,13 @@ export default function Index() {
             Try out Rye API to make a purchase from Shopify or Amazon
           </h2>
           <Timeline>
+            {/*
+              Refactoring TODO:
+                - Breakup `updateData` into singular react state atoms
+                - Then embed some of these utility functions into respective tutorial step components
+                - Avoid passing `updateData` down into children components
+                - Turn these into proper jsx components w/props
+            */}
             {enterApiKey(
               currentTheme,
               data,
