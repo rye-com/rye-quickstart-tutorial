@@ -2,6 +2,8 @@ import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { Button, Spinner } from 'flowbite-react';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
+import { ACTION, SOURCE } from '../../shared-analytics/constants';
+import { ryelytics } from '../../shared-analytics/getRyelytics';
 import { linkClasses } from '../../utils/linkClasses';
 
 export const CheckoutForm = () => {
@@ -33,6 +35,12 @@ export const CheckoutForm = () => {
     } else {
       setPaymentSucceeded(true);
     }
+    ryelytics.track({
+      source: SOURCE.CHECKOUT_STEP,
+      action: ACTION.CLICK,
+      noun: 'final_pay_button',
+      success: !!result.error,
+    });
     setPaymentInProgress(false);
   };
 

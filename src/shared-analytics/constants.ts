@@ -11,6 +11,8 @@ export const enum SOURCE {
   FETCH_OFFERS_STEP = 'fetch_offers_step',
   /** step 4 */
   PAYMENT_INTENT_STEP = 'payment_intent_step',
+  /** step 5 */
+  CHECKOUT_STEP = 'checkout_step',
 }
 
 export const enum ACTION {
