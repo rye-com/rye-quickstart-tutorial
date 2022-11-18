@@ -6,7 +6,7 @@ import type { Store } from '../../types';
 import { ThemeEnum } from '../../types';
 import { CustomTimelineBody } from '../../helper-components/CustomTimelineBody';
 import { CustomCodeBlock } from '../../helper-components/CustomCodeBlock';
-import { linkClasses } from '../../index';
+import { linkClasses } from '../../../../utils/linkClasses';
 
 export function enterApiKey(
   currentTheme: ThemeEnum,

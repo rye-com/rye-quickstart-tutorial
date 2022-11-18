@@ -51,8 +51,6 @@ import { performCheckoutStep } from './tutorial-steps/5-performCheckoutStep';
 
 const defaultStore = getDefaultStore();
 
-export const linkClasses = 'text-indigo-500 dark:text-rye-lime';
-
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
 const trackProductIDChange = debounce(

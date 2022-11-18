@@ -2,6 +2,7 @@ import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js'
 import { Button, Spinner } from 'flowbite-react';
 import type { FormEvent } from 'react';
 import { useState } from 'react';
+import { linkClasses } from '../../utils/linkClasses';
 
 export const CheckoutForm = () => {
   const [paymentError, setPaymentError] = useState<string | undefined>();
@@ -44,6 +45,15 @@ export const CheckoutForm = () => {
       <div>
         <div className="text-lg">Payment failed</div>
         <div>{paymentError}</div>
+        <button
+          type="button"
+          className={linkClasses}
+          onClick={() => {
+            setPaymentError(undefined);
+          }}
+        >
+          Try again
+        </button>
       </div>
     );
   }
