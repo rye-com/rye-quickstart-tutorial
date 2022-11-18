@@ -1,5 +1,6 @@
 import type { Store } from '../Components/Tutorial/types';
 import { MarketplaceEnum } from '../Components/Tutorial/types';
+import { getNextRandomProduct } from '../Components/Tutorial/utils/getNextRandomProduct';
 import { detectThemePreference } from './detectThemePreference';
 
 export const getDefaultStore = (): Store => {
@@ -7,13 +8,14 @@ export const getDefaultStore = (): Store => {
     apiConfig: JSON.parse(window.localStorage.getItem('apiConfig') || '{}'),
     appTheme: detectThemePreference(),
     requestedProduct: JSON.parse(
-      window.localStorage.getItem('requestedProduct') ||
-        JSON.stringify({
-          shopifyProductID: '',
-          amazonProductID: '',
-          selectedMarketplace: MarketplaceEnum.Amazon,
-          productURL: '',
-        }),
+      window.sessionStorage.getItem('requestedProduct') ||
+        (() => {
+          const nextProduct = getNextRandomProduct(MarketplaceEnum.Amazon);
+          // I like seeing a new product every page load,
+          // but we could stick to one random product per tab by uncommenting this:
+          // window.sessionStorage.setItem('requestedProduct', JSON.stringify(nextProduct));
+          return JSON.stringify(nextProduct);
+        })(),
     ),
     address: JSON.parse(
       window.localStorage.getItem('address') ||
