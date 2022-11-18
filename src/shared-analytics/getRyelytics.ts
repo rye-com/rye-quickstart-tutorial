@@ -3,6 +3,8 @@ import type { ACTION, SOURCE } from './constants';
 import { AnalyticsBrowser } from '@segment/analytics-next';
 import { isProd } from '../utils/env/isProd';
 
+type StringLike = string | boolean | number;
+
 type RyelyticsProperties = {
   /** Feel free to add new SOURCE values to shared-analytics/constants */
   source: SOURCE;
@@ -19,10 +21,17 @@ type RyelyticsProperties = {
   noun: string;
 
   /** User inputs or request parameters */
-  params?: Record<string, string | boolean | number>;
+  params?: Record<string, StringLike | Record<string, StringLike>>;
 
   /** Miscellaneous metadata associated with this event */
-  meta?: Record<string, string | boolean | number>;
+  properties?: Record<string, StringLike | Record<string, StringLike>>;
+
+  /**
+   * Was the users action successful or not?
+   *
+   * Discussion on user vs programmer errors: https://github.com/rye-com/rye-quickstart-tutorial/pull/21#discussion_r1019604268
+   */
+  success?: boolean;
 
   // In google BigQuery (segment integration) nested data gets flattened out: { params: { id } } becomes { params_id }.
   // Therefore, we want to avoid nesting in a way that is "too" noisy.

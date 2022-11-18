@@ -29,6 +29,8 @@ import {
   amazonPaymentIntentQuery,
 } from './code_snippets';
 import { cloneDeep, merge } from 'lodash';
+import snakeCase from 'lodash/snakeCase';
+import debounce from 'lodash/debounce';
 import { GraphQLClient } from 'graphql-request';
 import type { Variables } from 'graphql-request';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
@@ -52,6 +54,30 @@ const defaultStore = getDefaultStore();
 export const linkClasses = 'text-indigo-500 dark:text-rye-lime';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
+
+const trackAddressFieldChanges = debounce((fieldName: string, fieldValue: string) => {
+  ryelytics.track({
+    source: SOURCE.PAYMENT_INTENT_STEP,
+    action: ACTION.UPDATE,
+    noun: snakeCase(fieldName) + '_input',
+    properties: {
+      address: {
+        [fieldName]: fieldValue,
+      },
+    },
+  });
+}, 800);
+
+const trackProductURLChange = debounce((productURL: string) => {
+  ryelytics.track({
+    source: SOURCE.REQUEST_SCRAPE_STEP,
+    action: ACTION.UPDATE,
+    noun: 'product_url_input',
+    properties: {
+      productURL,
+    },
+  });
+}, 800);
 
 export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
@@ -138,10 +164,10 @@ export default function Index() {
         apiKey,
       });
       ryelytics.track({
-        source: SOURCE.TUTORIAL_MODULE,
+        source: SOURCE.API_KEY_STEP,
         action: ACTION.UPDATE,
         noun: 'api_key_input',
-        meta: {
+        properties: {
           isValid: isApiKeyValid,
         },
       });
@@ -171,6 +197,14 @@ export default function Index() {
 
   const onChangeTheme = (checked: boolean) => {
     const theme = checked ? ThemeEnum.Dark : ThemeEnum.Light;
+    ryelytics.track({
+      source: SOURCE.TOP_NAV_BAR,
+      action: ACTION.CLICK,
+      noun: 'change_theme_button',
+      properties: {
+        theme,
+      },
+    });
     updateData({ appTheme: theme });
   };
 
@@ -180,23 +214,43 @@ export default function Index() {
       data.requestedProduct.productURL,
       data.requestedProduct.selectedMarketplace.toUpperCase(),
     );
+    const isShopify = data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify;
+    let productID = isShopify
+      ? data.requestedProduct.shopifyProductID
+      : data.requestedProduct.amazonProductID;
+    let didSucceed = true;
     makeGQLRequest(requestProductQuery, variables)
       .then((res) => {
         setRequestProductResponse(res);
         const requestedProduct: Partial<Store['requestedProduct']> = {};
-        if (data.requestedProduct.selectedMarketplace === MarketplaceEnum.Shopify) {
+        if (isShopify) {
           requestedProduct['shopifyProductID'] = res['requestProductByURL'].productID;
         } else {
           requestedProduct['amazonProductID'] = res['requestProductByURL'].productID;
         }
+        productID = res['requestProductByURL'].productID;
         updateData({ requestedProduct: requestedProduct });
       })
       .catch((error) => {
         // TODO: test this path
         setRequestProductResponse(error);
+        didSucceed = false;
       })
       .finally(() => {
         setIsRequestingProduct(false);
+        const newRequestedProduct = {
+          ...variables.input,
+          productID: productID ?? 'undefined',
+        };
+        ryelytics.track({
+          source: SOURCE.REQUEST_SCRAPE_STEP,
+          action: ACTION.CLICK,
+          noun: 'request_scrape_button',
+          params: newRequestedProduct,
+          success: didSucceed,
+        });
+        // TODO: refactor `updateData` and do something like this?
+        // if (didSucceed) setRequestedProduct(newRequestedProduct);
       });
   };
 
@@ -209,6 +263,7 @@ export default function Index() {
       selectedProductID,
       data.requestedProduct.selectedMarketplace.toUpperCase(),
     );
+    let didSucceed = true;
     makeGQLRequest(
       marketPlaceSelector(shopifyProductFetchQuery, amazonProductFetchQuery),
       variables,
@@ -221,9 +276,17 @@ export default function Index() {
       })
       .catch((error) => {
         setFetchProductResponse(error);
+        didSucceed = false;
       })
       .finally(() => {
         setIsFetchingProduct(false);
+        ryelytics.track({
+          source: SOURCE.FETCH_PRODUCT_DATA_STEP,
+          action: ACTION.CLICK,
+          noun: 'fetch_product_data_button',
+          params: variables.input,
+          success: didSucceed,
+        });
       });
   };
 
@@ -244,6 +307,7 @@ export default function Index() {
         selectedProductID,
       ),
     );
+    let didSucceed = true;
     makeGQLRequest(
       marketPlaceSelector(shopifyProductOfferQuery, amazonProductOfferQuery),
       variables,
@@ -253,9 +317,17 @@ export default function Index() {
       })
       .catch((error) => {
         setFetchProductOffersResponse(error);
+        didSucceed = false;
       })
       .finally(() => {
         setIsFetchingProductOffers(false);
+        ryelytics.track({
+          source: SOURCE.FETCH_OFFERS_STEP,
+          action: ACTION.CLICK,
+          noun: 'fetch_offers_button',
+          params: variables.input,
+          success: didSucceed,
+        });
       });
   };
 
@@ -279,7 +351,7 @@ export default function Index() {
 
     const variables = marketPlaceSelector(
       shopifyPaymentIntentVariables(
-        selectedShopifyProductVariant,
+        selectedShopifyProductVariant, // This accounts for product id (I think)
         {
           firstName: data.address.firstName,
           lastName: data.address.lastName,
@@ -305,6 +377,7 @@ export default function Index() {
         zipCode: data.address.zipCode,
       }),
     );
+    let didSucceed = true;
     makeGQLRequest(
       marketPlaceSelector(shopifyPaymentIntentQuery, amazonPaymentIntentQuery),
       variables,
@@ -316,8 +389,18 @@ export default function Index() {
       })
       .catch((error) => {
         setFetchPaymentIntentResponse(error);
+        didSucceed = false;
       })
       .finally(() => {
+        ryelytics.track({
+          source: SOURCE.PAYMENT_INTENT_STEP,
+          action: ACTION.CLICK,
+          noun: 'fetch_payment_intent_button',
+          // TODO: remove any, improve `undefined` handling in `RyelyticsProperties` type
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          params: { ...variables.input } as Record<string, any>,
+          success: didSucceed,
+        });
         setIsFetchingPaymentIntent(false);
       });
   };
@@ -330,7 +413,9 @@ export default function Index() {
   };
 
   const onAddressFieldChangeFn = (field: keyof Address) => (e: React.ChangeEvent) => {
-    const data = { address: { [field]: (e.target as HTMLInputElement).value } };
+    const fieldValue = (e.target as HTMLInputElement).value;
+    const data = { address: { [field]: fieldValue } };
+    trackAddressFieldChanges(field, fieldValue);
     updateData(data);
   };
 
@@ -345,11 +430,26 @@ export default function Index() {
   const onEmailChange = onAddressFieldChangeFn('email');
 
   const onProductURLChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    updateData({ requestedProduct: { productURL: e.target.value } });
+    const productURL = e.target.value;
+    trackProductURLChange(productURL);
+
+    // Maybe we should debounce this whole event handler?
+    updateData({ requestedProduct: { productURL } });
   };
 
-  const onProductVariantChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedShopifyProductVariant(e.target.value);
+  const onShopifyProductVariantChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const productVariant = e.target.value;
+    setSelectedShopifyProductVariant(productVariant);
+    ryelytics.track({
+      // TODO: SOURCE.FETCH_OFFERS is not accurate, sometimes it's SOURCE.STRIPE_PAYMENT_INTENT_EXAMPLE
+      // Need to refactor code to be able to track this accurately.
+      source: SOURCE.FETCH_OFFERS_STEP,
+      action: ACTION.UPDATE,
+      noun: 'product_variant_dropdown',
+      properties: {
+        productVariant: productVariant,
+      },
+    });
   };
 
   const onMarketplaceChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -376,6 +476,14 @@ export default function Index() {
       button = otherTabButtons.iterateNext();
     }
     updateData({ requestedProduct: { selectedMarketplace: marketplace } });
+    ryelytics.track({
+      // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
+      // Need to refactor code to be able to track this accurately.
+      source: SOURCE.REQUEST_SCRAPE_STEP,
+      action: ACTION.CLICK,
+      noun: 'marketplace_tab',
+      properties: { selected_marketplace: marketplace },
+    });
   };
 
   const onProductIDChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -384,6 +492,16 @@ export default function Index() {
       { amazonProductID: e.target.value },
     );
     updateData({ requestedProduct: update });
+    ryelytics.track({
+      // TODO: SOURCE.REQUEST_SCRAPE is not accurate, sometimes it's SOURCE.FETCH_PRODUCT_DATA
+      // Need to refactor code to be able to track this accurately.
+      source: SOURCE.FETCH_PRODUCT_DATA_STEP,
+      action: ACTION.UPDATE,
+      noun: 'product_id_input',
+      properties: {
+        productUpdate: update,
+      },
+    });
   };
 
   useDebouncedEffect(checkRyeAPIKey, [data.apiConfig.key], 500);
@@ -462,7 +580,7 @@ export default function Index() {
       <Label htmlFor="product_id_offers" value="Select product variant" />
       <Select
         value={selectedShopifyProductVariant}
-        onChange={onProductVariantChange}
+        onChange={onShopifyProductVariantChange}
         className="mt-3 w-full"
         disabled={shopifyVariants === null}
       >
