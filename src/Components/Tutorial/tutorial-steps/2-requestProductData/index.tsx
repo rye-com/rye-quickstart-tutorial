@@ -25,7 +25,7 @@ export function requestProductData(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl self-baseline">
+          <Card className="max-w-xl self-baseline flex-1">
             <Timeline.Title>Fetch product data from Rye inventory</Timeline.Title>
             <CustomTimelineBody>
               <Timeline.Point />
@@ -101,7 +101,7 @@ export function requestProductData(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className="mx-3 max-w-xl overflow-scroll">
+          <div className="mx-3 max-w-xl overflow-scroll flex-1">
             <CustomCodeBlock
               showLineNumbers={true}
               startingLineNumber={productFetchSnippetLineNumber}

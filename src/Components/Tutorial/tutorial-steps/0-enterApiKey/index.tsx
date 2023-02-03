@@ -20,7 +20,7 @@ export function enterApiKey(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl">
+          <Card className="max-w-xl flex-1">
             <Timeline.Point icon={KeyIcon} />
             <Timeline.Title>Grab your API Key</Timeline.Title>
             <CustomTimelineBody>
@@ -71,7 +71,7 @@ export function enterApiKey(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className="mx-3 max-w-2xl overflow-scroll">
+          <div className="flex-1 mx-3 max-w-2xl overflow-scroll">
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}

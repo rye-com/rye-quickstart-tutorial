@@ -32,7 +32,7 @@ export function stripePaymentIntentExample(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl self-baseline">
+          <Card className="max-w-xl self-baseline flex-1">
             <Timeline.Title>Fetch payment intent to perform Stripe checkout</Timeline.Title>
             <CustomTimelineBody>
               <Timeline.Point />
@@ -46,20 +46,20 @@ export function stripePaymentIntentExample(
               <div>
                 {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
                 <div className="mt-3 flex">
-                  <div>
+                  <div className="flex-1">
                     <Label htmlFor="first_name" value="First Name" />
                     <TextInput
-                      className="mt-3 w-64"
+                      className="mt-3"
                       id="first_name"
                       onChange={onFirstNameChange}
                       value={data.address.firstName}
                       placeholder="Will"
                     />
                   </div>
-                  <div className="mx-3">
+                  <div className="ml-3 flex-1">
                     <Label htmlFor="last_name" value="Last Name" />
                     <TextInput
-                      className="mt-3 w-64"
+                      className="mt-3"
                       id="last_name"
                       onChange={onLastNameChange}
                       value={data.address.lastName}
@@ -78,21 +78,21 @@ export function stripePaymentIntentExample(
                   />
                 </div>
                 <div className="flex">
-                  <div className="mt-3">
+                  <div className="mt-3 flex-1">
                     <Label htmlFor="address_two" value="Address Line 2" />
                     <TextInput
-                      className="mt-3 w-64"
+                      className="mt-3"
                       id="address_two"
                       onChange={onAddressTwoChange}
                       value={data.address.address2}
                       placeholder="Apt 212"
                     />
                   </div>
-                  <div className="mx-3 mt-3">
+                  <div className="ml-3 mt-3 flex-1">
                     <Label htmlFor="zip_code" value="Zip Code" />
                     <TextInput
                       type="text"
-                      className="mt-3 w-64"
+                      className="mt-3"
                       id="zip_code"
                       onChange={onZipCodeChange}
                       value={data.address.zipCode}
@@ -101,22 +101,22 @@ export function stripePaymentIntentExample(
                   </div>
                 </div>
                 <div className="mt-3 flex">
-                  <div>
+                  <div className="flex-1">
                     <Label htmlFor="email" value="Email" />
                     <TextInput
                       type="email"
-                      className="mt-3 w-64"
+                      className="mt-3"
                       id="email"
                       onChange={onEmailChange}
                       value={data.address.email}
                       placeholder="jane-smith@email.com"
                     />
                   </div>
-                  <div className="mx-3">
+                  <div className="ml-3 flex-1">
                     <Label htmlFor="phone" value="Phone" />
                     <TextInput
                       type="tel"
-                      className="mt-3 w-64"
+                      className="mt-3"
                       id="phone"
                       onChange={onPhoneChange}
                       value={data.address.phone}
@@ -125,10 +125,10 @@ export function stripePaymentIntentExample(
                   </div>
                 </div>
                 <div className="mt-3 flex">
-                  <div>
+                  <div className="flex-1">
                     <Label htmlFor="city" value="City" />
                     <TextInput
-                      className="mt-3 w-64"
+                      className="mt-3"
                       id="city"
                       onChange={onCityChange}
                       value={data.address.city}
@@ -140,14 +140,14 @@ export function stripePaymentIntentExample(
                     <Select
                       onChange={onStateCodeChange}
                       value={data.address.stateCode}
-                      className="mt-3 w-24"
+                      className="mt-3"
                     >
                       {SelectStateOptions}
                     </Select>
                   </div>
-                  <div className="flex w-full">
+                  <div className="flex">
                     <Button
-                      style={{ width: 150, height: 40, maxHeight: 40 }}
+                      style={{ width: 150, height: 40, maxHeight: 40, marginRight: 0,  marginLeft: 10}}
                       onClick={fetchPaymentIntent}
                       className="mx-3 self-end"
                       disabled={isFetchingProduct}
@@ -163,7 +163,7 @@ export function stripePaymentIntentExample(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className="mx-3 max-w-xl overflow-scroll">
+          <div className="mx-3 max-w-xl overflow-scroll flex-1">
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}

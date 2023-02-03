@@ -25,7 +25,7 @@ export function fetchOffers(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl self-baseline">
+          <Card className="max-w-xl self-baseline flex-1">
             <Timeline.Title>Fetch offers on the item from the Rye API</Timeline.Title>
             <CustomTimelineBody>
               <Timeline.Point />
@@ -39,10 +39,10 @@ export function fetchOffers(
               <div>
                 {marketPlaceSelector(shopifyOfferFields(), amazonOfferFields())}
                 <div className="mt-3 flex">
-                  <div>
+                  <div className="flex-1">
                     <Label htmlFor="city" value="City" />
                     <TextInput
-                      className="mt-3 w-64"
+                      className="mt-3"
                       id="city"
                       onChange={onCityChange}
                       value={data.address.city}
@@ -54,14 +54,14 @@ export function fetchOffers(
                     <Select
                       onChange={onStateCodeChange}
                       value={data.address.stateCode}
-                      className="mt-3 w-24"
+                      className="mt-3"
                     >
                       {SelectStateOptions}
                     </Select>
                   </div>
-                  <div className="flex w-full">
+                  <div className="flex">
                     <Button
-                      style={{ width: 150, height: 40, maxHeight: 40 }}
+                      style={{ width: 150, height: 40, maxHeight: 40, marginRight: 0,  marginLeft: 10 }}
                       onClick={fetchProductOffers}
                       className="mx-3 self-end"
                       disabled={isFetchingProduct}
@@ -77,7 +77,7 @@ export function fetchOffers(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className="mx-3 max-w-xl overflow-scroll">
+          <div className="mx-3 max-w-xl overflow-scroll flex-1">
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}
