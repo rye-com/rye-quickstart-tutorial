@@ -681,7 +681,7 @@ export default function Index(props: tutorialProps) {
       >
         <div className="mx-10 mt-5">
 
-          {(props.isInIFrame) ? '' :
+          {!props.isInIFrame &&
           <>
             <div className="font-200 flex items-center justify-end">
             <DarkModeSwitch checked={currentTheme === ThemeEnum.Dark} onChange={onChangeTheme} />
