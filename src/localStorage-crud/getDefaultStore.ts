@@ -1,12 +1,15 @@
-import type { Store } from '../Components/Tutorial/types';
+import type { Store, ThemeEnum } from '../Components/Tutorial/types';
 import { MarketplaceEnum } from '../Components/Tutorial/types';
 import { getNextRandomProduct } from '../Components/Tutorial/utils/getNextRandomProduct';
+import { queryParameters } from '../utils/getParams.utils';
 import { detectThemePreference } from './detectThemePreference';
 
 export const getDefaultStore = (): Store => {
+  const queryTheme = queryParameters.get('theme') as ThemeEnum;
+
   return {
     apiConfig: JSON.parse(window.localStorage.getItem('apiConfig') || '{}'),
-    appTheme: detectThemePreference(),
+    appTheme: queryTheme || detectThemePreference(),
     requestedProduct: JSON.parse(
       window.sessionStorage.getItem('requestedProduct') ||
         (() => {

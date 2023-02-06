@@ -1,13 +1,11 @@
 import './App.css';
 import Tutorial from './Components/Tutorial';
-import type { ThemeEnum } from './Components/Tutorial/types';
+import { queryParameters } from './utils/getParams.utils';
 
 function App() {
-  const queryParameters = new URLSearchParams(window.location.search);
-  const compact = !!Number(queryParameters.get("compact"));
-  const theme = queryParameters.get("theme") as ThemeEnum;
+  const compact = !!Number(queryParameters.get('compact'));
 
-  return <Tutorial isInIFrame={compact} theme={theme} />;
+  return <Tutorial compact={compact} />;
 }
 
 export default App;
