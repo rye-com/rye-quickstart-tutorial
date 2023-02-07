@@ -24,7 +24,7 @@ export function requestScrape(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl self-baseline">
+          <Card className="max-w-xl self-baseline flex-1">
             <Timeline.Title>
               <Timeline.Point />
               Add external product to Rye inventory
@@ -123,7 +123,7 @@ export function requestScrape(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className="mx-3 max-w-xl overflow-scroll">
+          <div className="mx-3 max-w-xl overflow-scroll flex-1">
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}

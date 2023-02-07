@@ -15,7 +15,7 @@ export function performCheckoutStep(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl self-baseline">
+          <Card className="max-w-xl self-baseline flex-1">
             <Timeline.Title>Perform checkout</Timeline.Title>
             <CustomTimelineBody>
               <div className="py-1">
@@ -32,7 +32,7 @@ export function performCheckoutStep(
               />
             </CustomTimelineBody>
           </Card>
-          <div className="mx-3 max-w-2xl overflow-scroll">
+          <div className="mx-3 max-w-2xl overflow-scroll flex-1">
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}

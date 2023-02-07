@@ -49,6 +49,7 @@ import { requestProductData } from './tutorial-steps/2-requestProductData';
 import { fetchOffers } from './tutorial-steps/3-fetchOffers';
 import { stripePaymentIntentExample } from './tutorial-steps/4-stripePaymentIntentExample';
 import { performCheckoutStep } from './tutorial-steps/5-performCheckoutStep';
+import classNames from 'classnames';
 
 const defaultStore = getDefaultStore();
 
@@ -102,7 +103,11 @@ const trackProductURLChange = debounce((productURL: string) => {
   });
 }, 1500);
 
-export default function Index() {
+export type TutorialProps = {
+  compact?: boolean;
+};
+
+export default function Index(props: TutorialProps) {
   const [data, setData] = useState<Store>(defaultStore);
 
   const [isRequestingProduct, setIsRequestingProduct] = useState<boolean>(false);
@@ -642,14 +647,15 @@ export default function Index() {
     </div>
   );
 
+  const isThemeDark = currentTheme === ThemeEnum.Dark;
+
   return (
     <div
-      className={
-        'flex ' +
-        (currentTheme === ThemeEnum.Dark
-          ? 'dark bg-black text-white'
-          : 'bg-light-pastel text-black')
-      }
+      className={classNames(
+        { flex: !props.compact },
+        { 'dark bg-black text-white': isThemeDark },
+        { 'bg-light-pastel text-black': !isThemeDark },
+      )}
     >
       <Flowbite
         theme={{
@@ -675,15 +681,23 @@ export default function Index() {
         }}
       >
         <div className="mx-10 mt-5">
-          <div className="font-200 flex items-center justify-end">
-            <DarkModeSwitch checked={currentTheme === ThemeEnum.Dark} onChange={onChangeTheme} />
-          </div>
-          <h1 className="font-200 flex items-center justify-between text-5xl">
-            Rye API Quick Start
-          </h1>
-          <h2 className="text-1xl my-2">
-            Try out Rye API to make a purchase from Shopify or Amazon
-          </h2>
+          {!props.compact && (
+            <>
+              <div className="font-200 flex items-center justify-end">
+                <DarkModeSwitch
+                  checked={isThemeDark}
+                  onChange={onChangeTheme}
+                />
+              </div>
+              <h1 className="font-200 flex items-center justify-between text-5xl">
+                Rye API Quick Start
+              </h1>
+              <h2 className="text-1xl my-2">
+                Try out Rye API to make a purchase from Shopify or Amazon
+              </h2>
+            </>
+          )}
+
           <Timeline>
             {/*
               Refactoring TODO:

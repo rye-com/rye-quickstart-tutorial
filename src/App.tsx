@@ -1,8 +1,11 @@
 import './App.css';
 import Tutorial from './Components/Tutorial';
+import { queryParameters } from './utils/getParams.utils';
 
 function App() {
-  return <Tutorial />;
+  const compact = !!Number(queryParameters.get('compact'));
+
+  return <Tutorial compact={compact} />;
 }
 
 export default App;
