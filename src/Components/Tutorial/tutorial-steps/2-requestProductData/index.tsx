@@ -7,6 +7,7 @@ import { CustomTimelineBody } from '../../helper-components/CustomTimelineBody';
 import { InlineCodeSnippet } from '../../helper-components/InlineCodeSnippet';
 import { CustomCodeBlock } from '../../helper-components/CustomCodeBlock';
 import { RequestResponseCodeBlock } from '../../helper-components/ResponseCodeBlock';
+import classNames from 'classnames';
 
 export function requestProductData(
   onMarketplaceChange: (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
@@ -25,7 +26,10 @@ export function requestProductData(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl self-baseline flex-1">
+          <Card className={classNames('self-baseline',
+            {'max-w-xl flex-1': !data.compactView},
+            {'max-w-[50%]': data.compactView}
+          )}>
             <Timeline.Title>Fetch product data from Rye inventory</Timeline.Title>
             <CustomTimelineBody>
               <Timeline.Point />
@@ -101,7 +105,10 @@ export function requestProductData(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className="mx-3 max-w-xl overflow-scroll flex-1">
+          <div className={classNames('overflow-scroll mx-3',
+            {'max-w-xl flex-1': !data.compactView},
+            {'max-w-[50%]': data.compactView}
+          )}>
             <CustomCodeBlock
               showLineNumbers={true}
               startingLineNumber={productFetchSnippetLineNumber}

@@ -17,6 +17,7 @@ export const enum MarketplaceEnum {
 
 export type Store = {
   appTheme: string;
+  compactView?: boolean;
   /** Must use Partial, because this starts off as an empty object. */
   apiConfig: Partial<APIConfiguration>;
   requestedProduct: {

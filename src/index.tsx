@@ -6,6 +6,7 @@ import { BrowserTracing } from '@sentry/tracing';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { isProd } from './utils/env/isProd';
+import { queryParameters } from './utils/getParams.utils';
 
 Sentry.init({
   dsn: 'https://c562accb379a48369cd1eeb950a00f8a@o4504131870916608.ingest.sentry.io/4504131892805632',
@@ -18,6 +19,19 @@ Sentry.init({
 
   environment: isProd ? 'production' : 'development',
 });
+
+if (!!Number(queryParameters.get('compact'))) {
+  const resizeObserver = new ResizeObserver((entries) => {
+    window.parent.postMessage(
+      {
+        message: 'tutorial-window-height',
+        data: entries[0]?.target.clientHeight,
+      },
+      '*', // mostly used by console.rye.com to display this page in IFrame for the Onboarding Dashboard page
+    );
+  });
+  resizeObserver.observe(document.body);
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

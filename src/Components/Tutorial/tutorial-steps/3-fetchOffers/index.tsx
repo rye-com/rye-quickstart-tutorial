@@ -5,6 +5,7 @@ import type { ThemeEnum } from '../../types';
 import { CustomTimelineBody } from '../../helper-components/CustomTimelineBody';
 import { CustomCodeBlock } from '../../helper-components/CustomCodeBlock';
 import { RequestResponseCodeBlock } from '../../helper-components/ResponseCodeBlock';
+import classNames from 'classnames';
 
 export function fetchOffers(
   marketPlaceSelector: <T, V>(shopifyVar: T, amazonVar: V) => T | V,
@@ -25,7 +26,13 @@ export function fetchOffers(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl self-baseline flex-1">
+          <Card
+            className={classNames(
+              'self-baseline',
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <Timeline.Title>Fetch offers on the item from the Rye API</Timeline.Title>
             <CustomTimelineBody>
               <Timeline.Point />
@@ -49,25 +56,33 @@ export function fetchOffers(
                       placeholder="San Francisco"
                     ></TextInput>
                   </div>
-                  <div className="ml-3">
-                    <Label className="mt-3" htmlFor="product_id_offers" value="State" />
-                    <Select
-                      onChange={onStateCodeChange}
-                      value={data.address.stateCode}
-                      className="mt-3"
-                    >
-                      {SelectStateOptions}
-                    </Select>
-                  </div>
-                  <div className="flex">
-                    <Button
-                      style={{ width: 150, height: 40, maxHeight: 40, marginRight: 0,  marginLeft: 10 }}
-                      onClick={fetchProductOffers}
-                      className="mx-3 self-end"
-                      disabled={isFetchingProduct}
-                    >
-                      {!isFetchingProductOffers ? 'Fetch' : <Spinner style={{ maxHeight: 30 }} />}
-                    </Button>
+                  <div className="flex flex-1">
+                    <div className="ml-3 flex-1">
+                      <Label className="mt-3" htmlFor="product_id_offers" value="State" />
+                      <Select
+                        onChange={onStateCodeChange}
+                        value={data.address.stateCode}
+                        className="mt-3"
+                      >
+                        {SelectStateOptions}
+                      </Select>
+                    </div>
+                    <div className="flex flex-1">
+                      <Button
+                        style={{
+                          width: 150,
+                          height: 40,
+                          maxHeight: 40,
+                          marginRight: 0,
+                          marginLeft: 10,
+                        }}
+                        onClick={fetchProductOffers}
+                        className="mx-3 self-end"
+                        disabled={isFetchingProduct}
+                      >
+                        {!isFetchingProductOffers ? 'Fetch' : <Spinner style={{ maxHeight: 30 }} />}
+                      </Button>
+                    </div>
                   </div>
                 </div>
                 <RequestResponseCodeBlock
@@ -77,7 +92,13 @@ export function fetchOffers(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className="mx-3 max-w-xl overflow-scroll flex-1">
+          <div
+            className={classNames(
+              'mx-3 overflow-scroll',
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}

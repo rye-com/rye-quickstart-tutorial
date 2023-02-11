@@ -1,13 +1,15 @@
 import { Card, Timeline } from 'flowbite-react';
 import { checkoutFormCode } from '../../code_snippets';
 import { StripeCheckout } from '../../primary-components/StripeCheckout';
-import type { ThemeEnum } from '../../types';
+import type { Store, ThemeEnum } from '../../types';
 import { CustomTimelineBody } from '../../helper-components/CustomTimelineBody';
 import { CustomCodeBlock } from '../../helper-components/CustomCodeBlock';
 import type { StripeProp } from '../../types/StripeProp';
+import classNames from 'classnames';
 
 export function performCheckoutStep(
   stripePromise: StripeProp,
+  data: Store,
   clientSecret: string | undefined,
   currentTheme: ThemeEnum,
 ) {
@@ -15,7 +17,10 @@ export function performCheckoutStep(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl self-baseline flex-1">
+          <Card className={classNames('self-baseline',
+            {'max-w-xl flex-1': !data.compactView},
+            {'max-w-[50%]': data.compactView}
+          )}>
             <Timeline.Title>Perform checkout</Timeline.Title>
             <CustomTimelineBody>
               <div className="py-1">
@@ -32,7 +37,10 @@ export function performCheckoutStep(
               />
             </CustomTimelineBody>
           </Card>
-          <div className="mx-3 max-w-2xl overflow-scroll flex-1">
+          <div className={classNames('overflow-scroll mx-3',
+            {'max-w-xl flex-1': !data.compactView},
+            {'max-w-[50%]': data.compactView}
+          )}>
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}
