@@ -684,10 +684,7 @@ export default function Index(props: TutorialProps) {
           {!props.compact && (
             <>
               <div className="font-200 flex items-center justify-end">
-                <DarkModeSwitch
-                  checked={isThemeDark}
-                  onChange={onChangeTheme}
-                />
+                <DarkModeSwitch checked={isThemeDark} onChange={onChangeTheme} />
               </div>
               <h1 className="font-200 flex items-center justify-between text-5xl">
                 Rye API Quick Start
@@ -776,7 +773,7 @@ export default function Index(props: TutorialProps) {
               paymentIntentSnippetLineNumber,
               paymentIntentSnippet,
             )}
-            {performCheckoutStep(stripePromise, clientSecret, currentTheme)}
+            {performCheckoutStep(stripePromise, data, clientSecret, currentTheme)}
           </Timeline>
         </div>
       </Flowbite>

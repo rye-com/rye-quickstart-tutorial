@@ -7,6 +7,7 @@ import { ThemeEnum } from '../../types';
 import { CustomTimelineBody } from '../../helper-components/CustomTimelineBody';
 import { CustomCodeBlock } from '../../helper-components/CustomCodeBlock';
 import { linkClasses } from '../../../../utils/linkClasses';
+import classNames from 'classnames';
 
 export function enterApiKey(
   currentTheme: ThemeEnum,
@@ -20,7 +21,10 @@ export function enterApiKey(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className="max-w-xl flex-1">
+          <Card className={classNames(
+            {'max-w-xl flex-1': !data.compactView},
+            {'max-w-[50%]': data.compactView}
+          )}>
             <Timeline.Point icon={KeyIcon} />
             <Timeline.Title>Grab your API Key</Timeline.Title>
             <CustomTimelineBody>
@@ -71,7 +75,10 @@ export function enterApiKey(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className="flex-1 mx-3 max-w-2xl overflow-scroll">
+          <div className={classNames('mx-3 overflow-scroll',
+            {'max-w-xl flex-1': !data.compactView},
+            {'max-w-[50%]': data.compactView}
+          )}>
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}

@@ -6,8 +6,10 @@ import { detectThemePreference } from './detectThemePreference';
 
 export const getDefaultStore = (): Store => {
   const queryTheme = queryParameters.get('theme') as ThemeEnum;
+  const queryCompactView = Boolean(Number(queryParameters.get('compact')));
 
   return {
+    compactView: queryCompactView,
     apiConfig: JSON.parse(window.localStorage.getItem('apiConfig') || '{}'),
     appTheme: queryTheme || detectThemePreference(),
     requestedProduct: JSON.parse(
