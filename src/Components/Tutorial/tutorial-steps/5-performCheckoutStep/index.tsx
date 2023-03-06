@@ -1,7 +1,12 @@
 import { Card, Timeline } from 'flowbite-react';
 import { checkoutFormCode } from '../../code_snippets';
 import { StripeCheckout } from '../../primary-components/StripeCheckout';
-import type { Store, ThemeEnum } from '../../types';
+import type {
+  Store,
+  ThemeEnum,
+  FetchProductResponse,
+  FetchProductOffersResponse,
+} from '../../types';
 import { CustomTimelineBody } from '../../helper-components/CustomTimelineBody';
 import { CustomCodeBlock } from '../../helper-components/CustomCodeBlock';
 import type { StripeProp } from '../../types/StripeProp';
@@ -12,24 +17,53 @@ export function performCheckoutStep(
   data: Store,
   clientSecret: string | undefined,
   currentTheme: ThemeEnum,
+  fetchProductOffersResponse: FetchProductOffersResponse | null,
+  fetchProductResponse: FetchProductResponse | null,
 ) {
+  const product = fetchProductResponse?.product;
+  const { url } = product?.images?.[0] || {};
+  const { title, price } = product || {};
+
+
+  //TODO: will need to refactor once Cart API is supported and multiple offers will need to be displayed
+  const amazonOffer = fetchProductOffersResponse?.amazonOffer;
+  const shopifyOffer = fetchProductOffersResponse?.shopifyOffer;
+  const itemTotal = amazonOffer?.total.displayValue || shopifyOffer?.total.displayValue || '';
+
   return (
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className={classNames('self-baseline',
-            {'max-w-xl flex-1': !data.compactView},
-            {'max-w-[50%]': data.compactView}
-          )}>
+          <Card
+            className={classNames(
+              'self-baseline',
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <Timeline.Title>Perform checkout</Timeline.Title>
             <CustomTimelineBody>
               <div className="py-1">
                 Given a payment intent from the previous step, a stripe payment form will load here.
               </div>
-              <div className="py-1">
+              <div className="mb-2 py-1">
                 This uses Rye's Stripe account to accept payment for the item.
               </div>
               <Timeline.Point />
+              <div className="mb-4 grid grid-cols-2 gap-3">
+                <div className="flex items-center">
+                  <img
+                    src={url}
+                    alt="product"
+                    className=" rounded border border-slate-200 dark:border-rye-lime"
+                  />
+                </div>
+                <section>
+                  <h3 className="mb-3 font-semibold">{title}</h3>
+                  <p>Subtotal: {price?.displayValue || ''}</p>
+                  <p>Total (includes shipping, taxes, and fees): {itemTotal || ''}</p>
+                </section>
+              </div>
               <StripeCheckout
                 stripePromise={stripePromise}
                 clientSecret={clientSecret}
@@ -37,10 +71,13 @@ export function performCheckoutStep(
               />
             </CustomTimelineBody>
           </Card>
-          <div className={classNames('overflow-scroll mx-3',
-            {'max-w-xl flex-1': !data.compactView},
-            {'max-w-[50%]': data.compactView}
-          )}>
+          <div
+            className={classNames(
+              'mx-3 overflow-scroll',
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}
