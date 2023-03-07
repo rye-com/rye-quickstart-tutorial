@@ -36,7 +36,12 @@ import { GraphQLClient } from 'graphql-request';
 import type { Variables } from 'graphql-request';
 import type { RecursivePartial } from '../../types/utils/RecursivePartial';
 import type { Address } from '../../types/api-data/Address';
-import type { Store, FetchProductResponse, FetchPaymentIntentResponse } from './types';
+import type {
+  Store,
+  FetchProductResponse,
+  FetchPaymentIntentResponse,
+  FetchProductOffersResponse,
+} from './types';
 import { ThemeEnum, MarketplaceEnum } from './types';
 import { useDebouncedEffect } from '../../hooks/useDebouncedEffect';
 import { getDefaultStore } from '../../localStorage-crud/getDefaultStore';
@@ -119,9 +124,8 @@ export default function Index(props: TutorialProps) {
   const [fetchProductResponse, setFetchProductResponse] = useState<FetchProductResponse | null>(
     null,
   );
-  const [fetchProductOffersResponse, setFetchProductOffersResponse] = useState<unknown | null>(
-    null,
-  );
+  const [fetchProductOffersResponse, setFetchProductOffersResponse] =
+    useState<FetchProductOffersResponse | null>(null);
   const [fetchPaymentIntentResponse, setFetchPaymentIntentResponse] =
     useState<FetchPaymentIntentResponse | null>(null);
 
@@ -773,7 +777,14 @@ export default function Index(props: TutorialProps) {
               paymentIntentSnippetLineNumber,
               paymentIntentSnippet,
             )}
-            {performCheckoutStep(stripePromise, data, clientSecret, currentTheme)}
+            {performCheckoutStep(
+              stripePromise,
+              data,
+              clientSecret,
+              currentTheme,
+              fetchProductOffersResponse,
+              fetchProductResponse,
+            )}
           </Timeline>
         </div>
       </Flowbite>

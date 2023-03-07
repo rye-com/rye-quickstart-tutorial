@@ -36,6 +36,28 @@ export type FetchProductResponse = {
       id: string;
       title: string;
     }>;
+    images: null | Array<{
+      url: string;
+    }>;
+    title: string;
+    price: null | {
+      displayValue: string;
+    };
+  };
+};
+
+export type FetchProductOffersResponse = {
+  amazonOffer?: {
+    total: {
+      currency: string;
+      displayValue: string;
+    };
+  };
+  shopifyOffer?: {
+    total: {
+      currency: string;
+      displayValue: string;
+    };
   };
 };
 
