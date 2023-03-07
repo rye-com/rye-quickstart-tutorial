@@ -39,9 +39,9 @@ export type FetchProductResponse = {
     images: null | Array<{
       url: string;
     }>;
-    title: null | string;
-    price: null | {
-      displayValue: null | string;
+    title: string;
+    price: {
+      displayValue: string;
     };
   };
 };

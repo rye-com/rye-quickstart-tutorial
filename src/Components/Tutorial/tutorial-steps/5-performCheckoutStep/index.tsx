@@ -24,7 +24,6 @@ export function performCheckoutStep(
   const { url } = product?.images?.[0] || {};
   const { title, price } = product || {};
 
-
   //TODO: will need to refactor once Cart API is supported and multiple offers will need to be displayed
   const amazonOffer = fetchProductOffersResponse?.amazonOffer;
   const shopifyOffer = fetchProductOffersResponse?.shopifyOffer;
@@ -50,20 +49,22 @@ export function performCheckoutStep(
                 This uses Rye's Stripe account to accept payment for the item.
               </div>
               <Timeline.Point />
-              <div className="mb-4 grid grid-cols-2 gap-3">
-                <div className="flex items-center">
-                  <img
-                    src={url}
-                    alt="product"
-                    className=" rounded border border-slate-200 dark:border-rye-lime"
-                  />
+              {url && price?.displayValue && itemTotal && (
+                <div className="mb-4 grid grid-cols-2 gap-3">
+                  <div className="flex items-center">
+                    <img
+                      src={url}
+                      alt="product"
+                      className=" rounded border border-slate-200 dark:border-rye-lime"
+                    />
+                  </div>
+                  <section>
+                    <h3 className="mb-3 font-semibold">{title}</h3>
+                    <p>Subtotal: {price?.displayValue || ''}</p>
+                    <p>Total (includes shipping, taxes, and fees): {itemTotal || ''}</p>
+                  </section>
                 </div>
-                <section>
-                  <h3 className="mb-3 font-semibold">{title}</h3>
-                  <p>Subtotal: {price?.displayValue || ''}</p>
-                  <p>Total (includes shipping, taxes, and fees): {itemTotal || ''}</p>
-                </section>
-              </div>
+              )}
               <StripeCheckout
                 stripePromise={stripePromise}
                 clientSecret={clientSecret}
