@@ -17,10 +17,13 @@ export function performCheckoutStep(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className={classNames('self-baseline',
-            {'max-w-xl flex-1': !data.compactView},
-            {'max-w-[50%]': data.compactView}
-          )}>
+          <Card
+            className={classNames(
+              'self-baseline',
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <Timeline.Title>Perform checkout</Timeline.Title>
             <CustomTimelineBody>
               <div className="py-1">
@@ -37,10 +40,13 @@ export function performCheckoutStep(
               />
             </CustomTimelineBody>
           </Card>
-          <div className={classNames('overflow-scroll mx-3',
-            {'max-w-xl flex-1': !data.compactView},
-            {'max-w-[50%]': data.compactView}
-          )}>
+          <div
+            className={classNames(
+              'mx-3 overflow-scroll scrollbar-hide',
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}

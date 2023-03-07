@@ -2,6 +2,7 @@
 // const colors = require('tailwindcss/colors');
 
 const flowbitePlugin = require('flowbite/plugin');
+const tailwindScrollbarHide = require('tailwind-scrollbar-hide');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -86,5 +87,5 @@ module.exports = {
       },
     },
   },
-  plugins: [flowbitePlugin],
+  plugins: [flowbitePlugin, tailwindScrollbarHide],
 };

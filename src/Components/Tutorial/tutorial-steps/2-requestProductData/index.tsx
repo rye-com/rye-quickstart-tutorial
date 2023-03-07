@@ -26,10 +26,13 @@ export function requestProductData(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className={classNames('self-baseline',
-            {'max-w-xl flex-1': !data.compactView},
-            {'max-w-[50%]': data.compactView}
-          )}>
+          <Card
+            className={classNames(
+              'self-baseline',
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <Timeline.Title>Fetch product data from Rye inventory</Timeline.Title>
             <CustomTimelineBody>
               <Timeline.Point />
@@ -105,10 +108,13 @@ export function requestProductData(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className={classNames('overflow-scroll mx-3',
-            {'max-w-xl flex-1': !data.compactView},
-            {'max-w-[50%]': data.compactView}
-          )}>
+          <div
+            className={classNames(
+              'mx-3 overflow-scroll scrollbar-hide',
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <CustomCodeBlock
               showLineNumbers={true}
               startingLineNumber={productFetchSnippetLineNumber}
