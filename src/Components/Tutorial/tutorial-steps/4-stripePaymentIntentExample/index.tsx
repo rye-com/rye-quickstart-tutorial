@@ -180,7 +180,7 @@ export function stripePaymentIntentExample(
           </Card>
           <div
             className={classNames(
-              'mx-3 overflow-scroll',
+              'mx-3 overflow-auto',
               { 'max-w-xl flex-1': !data.compactView },
               { 'max-w-[50%]': data.compactView },
             )}
