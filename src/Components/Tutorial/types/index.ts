@@ -40,7 +40,7 @@ export type FetchProductResponse = {
       url: string;
     }>;
     title: string;
-    price: {
+    price: null | {
       displayValue: string;
     };
   };
