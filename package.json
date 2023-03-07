@@ -68,10 +68,11 @@
     "prettier-plugin-tailwindcss": "^0.1.13"
   },
   "engines": {
-    "node": "16.16.0",
+    "node": "16.19.1",
     "yarn": "1.22.19"
   },
   "volta": {
-    "node": "16.19.1"
+    "node": "16.19.1",
+    "yarn": "1.22.19"
   }
 }
