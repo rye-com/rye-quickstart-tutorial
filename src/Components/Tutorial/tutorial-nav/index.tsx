@@ -1,11 +1,11 @@
 import classNames from 'classnames';
 import type { Dispatch, SetStateAction } from 'react';
 import { TUTORIAL_STEPS } from '../constants';
-import type { TutorialStepName } from '../types';
+import type { TutorialStep } from '../types';
 
 export type TutorialProps = {
-  currentStep: TutorialStepName;
-  setCurrentStep: Dispatch<SetStateAction<TutorialStepName>>;
+  currentStep: TutorialStep;
+  setCurrentStep: Dispatch<SetStateAction<TutorialStep>>;
 };
 
 export default function TutorialNav(props: TutorialProps) {
@@ -13,13 +13,13 @@ export default function TutorialNav(props: TutorialProps) {
   const { currentStep, setCurrentStep } = props;
 
   return (
-    <ol className="h-100 sticky col-span-1 flex flex-col pl-[48px] pt-[40px]">
+    <ol className="h-100 sticky col-span-1 flex flex-col pr-[24px] pl-[24px] pt-[40px]">
       {TUTORIAL_STEPS.map((step) => {
         return (
           <li>
             <button
               className={classNames(
-                'w-full rounded-xl pt-[16px] pb-[16px] pl-[24px] text-left text-lg font-semibold',
+                'w-full rounded-xl pt-[16px] pb-[16px] pl-[24px] pr-[24px] text-left text-lg font-semibold',
                 { 'bg-choice-active': currentStep === step },
                 { 'hover:bg-choice-hover': currentStep !== step },
               )}
@@ -28,7 +28,7 @@ export default function TutorialNav(props: TutorialProps) {
                 setCurrentStep(step);
               }}
             >
-              {step}
+              {step.title}
             </button>
           </li>
         );
