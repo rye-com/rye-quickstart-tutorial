@@ -21,10 +21,12 @@ export function enterApiKey(
     <Timeline.Item>
       <Timeline.Content>
         <div className="flex">
-          <Card className={classNames(
-            {'max-w-xl flex-1': !data.compactView},
-            {'max-w-[50%]': data.compactView}
-          )}>
+          <Card
+            className={classNames(
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <Timeline.Point icon={KeyIcon} />
             <Timeline.Title>Grab your API Key</Timeline.Title>
             <CustomTimelineBody>
@@ -75,10 +77,13 @@ export function enterApiKey(
               </div>
             </CustomTimelineBody>
           </Card>
-          <div className={classNames('mx-3 overflow-scroll',
-            {'max-w-xl flex-1': !data.compactView},
-            {'max-w-[50%]': data.compactView}
-          )}>
+          <div
+            className={classNames(
+              'mx-3 overflow-auto',
+              { 'max-w-xl flex-1': !data.compactView },
+              { 'max-w-[50%]': data.compactView },
+            )}
+          >
             <CustomCodeBlock
               showLineNumbers={true}
               currentTheme={currentTheme}

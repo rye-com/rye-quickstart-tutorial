@@ -31,7 +31,8 @@ const API_KEY = '${RYE_API_TOKEN}'
 const endpoint = 'https://graphql.api.rye.com/v1/query'
 const client = new GraphQLClient(endpoint)
 const headers = {
-  'Authorization': 'Basic ' + Buffer.from(API_KEY + ':').toString('base64'),
+  'Authorization': 'Basic ' + 
+    Buffer.from(API_KEY + ':').toString('base64'),
 }`;
 
 export const requestProductQuery = `mutation RequestProductByURL(
@@ -177,10 +178,10 @@ export const shopifyProductOfferSnippet = (
   return formatQueryCode(
     'fetchProductOffer',
     shopifyProductOfferQuery,
-    shopifyProductOfferVariables(
-      productVariantID || '<SHOPIFY_PRODUCT_VARIANT_ID>',
-      { city, stateCode },
-    ),
+    shopifyProductOfferVariables(productVariantID || '<SHOPIFY_PRODUCT_VARIANT_ID>', {
+      city,
+      stateCode,
+    }),
   );
 };
 
