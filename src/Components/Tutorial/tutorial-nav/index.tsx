@@ -1,32 +1,20 @@
-import { useState } from 'react';
 import classNames from 'classnames';
 import type { Dispatch, SetStateAction } from 'react';
+import { TUTORIAL_STEPS } from '../constants';
+import type { TutorialStepName } from '../types';
 
 export type TutorialProps = {
-  currentStep: string;
-  setCurrentStep: Dispatch<SetStateAction<string>>;
+  currentStep: TutorialStepName;
+  setCurrentStep: Dispatch<SetStateAction<TutorialStepName>>;
 };
 
 export default function TutorialNav(props: TutorialProps) {
   console.log(props);
-  const dummySteps = [
-    'Getting started',
-    'Obtaining Rye API key',
-    'Fetch product data',
-    'Add product to Rye',
-    'Add product to a user’s cart',
-    'Fetch a user’s cart',
-    'Display cart to user',
-    'Update buyer info',
-    'Show payment form',
-    'Display transaction results',
-  ];
-
-  const [currentStep, setCurrentStep] = useState<string>('Getting started');
+  const { currentStep, setCurrentStep } = props;
 
   return (
     <ol className="h-100 sticky col-span-1 flex flex-col pl-[48px] pt-[40px]">
-      {dummySteps.map((step) => {
+      {TUTORIAL_STEPS.map((step) => {
         return (
           <li>
             <button

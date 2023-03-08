@@ -1,4 +1,5 @@
 import type { Address } from '../../../types/api-data/Address';
+import type { TUTORIAL_STEPS } from '../constants';
 
 type APIConfiguration = {
   key: string;
@@ -70,3 +71,5 @@ export type FetchPaymentIntentResponse = {
   createShopifyPaymentIntent?: ApiAccessData;
   createAmazonPaymentIntent?: ApiAccessData;
 };
+
+export type TutorialStepName = typeof TUTORIAL_STEPS[keyof typeof TUTORIAL_STEPS];
