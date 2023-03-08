@@ -11,6 +11,8 @@ module.exports = {
       colors: {
         'light-pastel': '#F4F5F4',
         'rye-lime': '#C8FE62',
+        'choice-active': '#EFEFF5',
+        'choice-hover': '#F1F1F3',
         base: {
           50: '#f4f8fd',
           100: '#e8f1fb',
