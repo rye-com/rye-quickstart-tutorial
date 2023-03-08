@@ -1,6 +1,6 @@
 export default function GettingStarted() {
   return (
-    <ol className="list-decimal text-paragraph-medium font-semibold">
+    <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
       <li>CONTENT HERE</li>
     </ol>
   );
