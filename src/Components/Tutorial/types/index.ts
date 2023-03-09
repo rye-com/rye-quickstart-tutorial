@@ -75,4 +75,6 @@ export type FetchPaymentIntentResponse = {
 export type TutorialStep = {
   title: StepEnum;
   description: string;
+  url: string;
+  component: React.ElementType;
 };

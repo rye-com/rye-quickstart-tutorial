@@ -26,6 +26,7 @@ export default function TutorialNav(props: TutorialProps) {
               type="button"
               onClick={() => {
                 setCurrentStep(step);
+                window.history.pushState({}, '', step.url);
               }}
             >
               {step.title}
