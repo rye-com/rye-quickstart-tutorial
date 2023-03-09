@@ -2,6 +2,7 @@ import RyeApiKeyV2 from '../../../assets/rye-key-v2.png';
 import ListItem from '../styled-components/list-item';
 import ExternalLink from '../styled-components/external-link';
 import { LinkType } from '../constants';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 
 export default function GettingStarted() {
   return (
@@ -15,6 +16,7 @@ export default function GettingStarted() {
                 href="https://console.rye.com"
                 text="console.rye.com"
                 type={LinkType.Pill}
+                startEnhancer={ArrowTopRightOnSquareIcon}
               />
             </span>
           </p>
