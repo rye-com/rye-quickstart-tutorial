@@ -16,7 +16,7 @@ export default function TutorialNav(props: TutorialProps) {
     <ol className="h-100 sticky col-span-1 flex flex-col pr-[24px] pl-[24px] pt-[40px]">
       {TUTORIAL_STEPS.map((step) => {
         return (
-          <li>
+          <li key={step.title}>
             <button
               className={classNames(
                 'w-full rounded-xl pt-[16px] pb-[16px] pl-[24px] pr-[24px] text-left text-lg font-semibold',
