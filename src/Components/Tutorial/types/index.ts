@@ -1,5 +1,5 @@
 import type { Address } from '../../../types/api-data/Address';
-import type { TUTORIAL_STEPS } from '../constants';
+import type { StepEnum } from '../constants';
 
 type APIConfiguration = {
   key: string;
@@ -72,4 +72,9 @@ export type FetchPaymentIntentResponse = {
   createAmazonPaymentIntent?: ApiAccessData;
 };
 
-export type TutorialStepName = typeof TUTORIAL_STEPS[keyof typeof TUTORIAL_STEPS];
+export type TutorialStep = {
+  title: StepEnum;
+  description: string;
+  url: string;
+  component: React.ElementType;
+};

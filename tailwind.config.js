@@ -8,8 +8,14 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', 'node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontSize: {
+        'heading-large': ['48px', '52px'],
+        'paragraph-small': ['14px', '24px'],
+        'paragraph-medium': ['16px', '28px'],
+      },
       colors: {
         'light-pastel': '#F4F5F4',
+        'ghost-white': '#F8F8FA',
         'rye-lime': '#C8FE62',
         'choice-active': '#EFEFF5',
         'choice-hover': '#F1F1F3',
