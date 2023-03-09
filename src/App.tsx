@@ -1,5 +1,5 @@
 import './App.css';
-import Tutorial from './Components/Tutorial/index';
+import Tutorial from './Components/Tutorial';
 import { queryParameters } from './utils/getParams.utils';
 
 function App() {
