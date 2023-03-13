@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { isProd } from './utils/env/isProd';
 import { queryParameters } from './utils/getParams.utils';
+import { RouterProvider } from 'react-router-dom';
+import router from './routes';
 
 Sentry.init({
   dsn: 'https://c562accb379a48369cd1eeb950a00f8a@o4504131870916608.ingest.sentry.io/4504131892805632',
@@ -36,7 +37,7 @@ if (!!Number(queryParameters.get('compact'))) {
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 );
 

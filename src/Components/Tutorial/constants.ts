@@ -1,4 +1,3 @@
-import GettingStarted from './tutorial-content/getting-started';
 import type { TutorialStep } from './types';
 
 export type NonEmptyArray<T> = [T, ...T[]];
@@ -17,25 +16,23 @@ export const enum StepEnum {
 }
 
 export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
-  { title: StepEnum.Step0, description: 'test', url: '/start', component: GettingStarted },
+  { title: StepEnum.Step0, description: 'test', url: '/start' },
   {
     title: StepEnum.Step1,
     description: 'To make requests to the Rye GraphQL API, you will need to get an API access key',
     url: '/get-key',
-    component: GettingStarted,
   },
-  { title: StepEnum.Step2, description: 'test', url: '/product-data', component: GettingStarted },
-  { title: StepEnum.Step3, description: 'test', url: '/add-product', component: GettingStarted },
-  { title: StepEnum.Step4, description: 'test', url: '/add-to-cart', component: GettingStarted },
-  { title: StepEnum.Step5, description: 'test', url: '/fetch-cart', component: GettingStarted },
-  { title: StepEnum.Step6, description: 'test', url: '/display-cart', component: GettingStarted },
-  { title: StepEnum.Step7, description: 'test', url: '/update-info', component: GettingStarted },
-  { title: StepEnum.Step8, description: 'test', url: '/payment-form', component: GettingStarted },
+  { title: StepEnum.Step2, description: 'test', url: '/product-data' },
+  { title: StepEnum.Step3, description: 'test', url: '/add-product' },
+  { title: StepEnum.Step4, description: 'test', url: '/add-to-cart' },
+  { title: StepEnum.Step5, description: 'test', url: '/fetch-cart' },
+  { title: StepEnum.Step6, description: 'test', url: '/display-cart' },
+  { title: StepEnum.Step7, description: 'test', url: '/update-info' },
+  { title: StepEnum.Step8, description: 'test', url: '/payment-form' },
   {
     title: StepEnum.Step9,
     description: 'test',
     url: '/display-transaction',
-    component: GettingStarted,
   },
 ];
 
