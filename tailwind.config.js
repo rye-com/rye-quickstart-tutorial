@@ -19,6 +19,7 @@ module.exports = {
         'rye-lime': '#C8FE62',
         'choice-active': '#EFEFF5',
         'choice-hover': '#F1F1F3',
+        'brand-green': '#CDFF77',
         base: {
           50: '#f4f8fd',
           100: '#e8f1fb',

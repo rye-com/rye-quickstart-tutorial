@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 
 type Props = {
   children?: ReactNode;
-  content?: string;
+  content?: string | ReactNode;
   styleOverrides?: {
     list?: string;
     paragraph?: string;

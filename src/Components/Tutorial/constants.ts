@@ -38,3 +38,7 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
     component: GettingStarted,
   },
 ];
+
+export const enum LinkType {
+  Pill = 'pill',
+}
