@@ -1,5 +1,6 @@
 import { LinkType } from '../constants';
 import type { ComponentProps } from 'react';
+import { useMemo } from 'react';
 
 type Props = {
   href: string;
@@ -10,11 +11,14 @@ type Props = {
 
 export default function ExternalLink(props: Props) {
   const { href, text, type, startEnhancer: StartEnhancer } = props;
-  const linkClass = {
-    [LinkType.Pill]: 'rounded-2xl bg-brand-green pr-[12px] pl-[12px] pt-[8px] pb-[8px]',
-  };
+  const linkClass = useMemo(
+    () => ({
+      [LinkType.Pill]: 'rounded-2xl bg-brand-green pr-[12px] pl-[12px] pt-[8px] pb-[8px]',
+    }),
+    [],
+  );
   return (
-    <a className={linkClass[type]} href={href}>
+    <a target="_blank" className={linkClass[type]} href={href} rel="noreferrer">
       {StartEnhancer ? <StartEnhancer className="mb-[4px] mr-[4px] inline h-4 w-4" /> : null}
       {text}
     </a>
