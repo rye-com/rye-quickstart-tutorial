@@ -5,8 +5,12 @@ import { LinkType } from '../constants';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 import Input from '../styled-components/input';
 import { KeyIcon } from '@heroicons/react/24/outline';
+import { useContext } from 'react';
+import { TutorialContext } from '../constants';
 
 export default function GettingStarted() {
+  const context = useContext(TutorialContext);
+  console.log(context);
   return (
     <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
       <ListItem

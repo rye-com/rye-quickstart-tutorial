@@ -1,4 +1,5 @@
 import type { TutorialStep } from './types';
+import { createContext } from 'react';
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
@@ -39,3 +40,5 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
 export const enum LinkType {
   Pill = 'pill',
 }
+
+export const TutorialContext = createContext({});
