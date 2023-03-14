@@ -6,11 +6,12 @@ type Props = {
   startEnhancer?: React.FC<ComponentProps<'svg'>>;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  value?: string | undefined;
 };
 
 //TODO(RYE-1994): implement accessibility props
 export default function Input(props: Props) {
-  const { startEnhancer: StartEnhancer, onChange, placeholder } = props;
+  const { startEnhancer: StartEnhancer, onChange, placeholder, value } = props;
   return (
     <div
       className={classNames(
@@ -28,6 +29,7 @@ export default function Input(props: Props) {
 
       <input
         onChange={onChange}
+        value={value}
         placeholder={placeholder}
         className="w-full max-w-full pl-[10px] pr-[10px] pt-[8px] pb-[8px] focus:outline-none"
       />

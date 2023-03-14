@@ -41,4 +41,13 @@ export const enum LinkType {
   Pill = 'pill',
 }
 
-export const TutorialContext = createContext({});
+type TutorialContextType = {
+  apiKey: {
+    setApiKey?: (key: string) => void;
+    currentApiKey?: string;
+    apiKeyCheckIsLoading?: boolean;
+    apiKeyCheckError?: boolean;
+  };
+};
+
+export const TutorialContext = createContext<TutorialContextType>({ apiKey: {} });

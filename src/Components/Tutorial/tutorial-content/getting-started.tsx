@@ -10,7 +10,9 @@ import { TutorialContext } from '../constants';
 
 export default function GettingStarted() {
   const context = useContext(TutorialContext);
-  console.log(context);
+  const {
+    apiKey: { setApiKey, currentApiKey },
+  } = context;
   return (
     <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
       <ListItem
@@ -42,8 +44,9 @@ export default function GettingStarted() {
           <Input
             startEnhancer={KeyIcon}
             onChange={(e) => {
-              console.log(e.target.value);
+              setApiKey && setApiKey(e.target.value);
             }}
+            value={currentApiKey}
           />
         </div>
       </ListItem>

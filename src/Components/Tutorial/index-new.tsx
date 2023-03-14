@@ -4,6 +4,9 @@ import { TUTORIAL_STEPS, TutorialContext } from './constants';
 import type { NonEmptyArray } from './constants';
 import { Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { useRequest } from './utils/fetch';
+import { useDebouncedCallback } from 'use-debounce';
 
 type UrlMapType = {
   [url: string]: TutorialStep;
@@ -22,13 +25,28 @@ const urlMap = createUrlToTutorialMap(TUTORIAL_STEPS);
 export default function Index() {
   const location = useLocation();
   const step = urlMap[location.pathname] || urlMap['/start'] || TUTORIAL_STEPS[0];
-  function setApiKey(key: any) {
-    console.log('key: ', key);
+
+  //API key related logic
+  const [currentApiKey, setCurrentApiKey] = useState('');
+  const { callback, error, loading } = useRequest();
+  const debouncedApiKeyCheck = useDebouncedCallback(callback, 500);
+  function setApiKey(key: string) {
+    setCurrentApiKey(key);
+    debouncedApiKeyCheck(key);
   }
 
   return (
     <div className="grid grid-cols-4">
-      <TutorialContext.Provider value={{ setApiKey }}>
+      <TutorialContext.Provider
+        value={{
+          apiKey: {
+            setApiKey,
+            currentApiKey,
+            apiKeyCheckIsLoading: loading,
+            apiKeyCheckError: !!error,
+          },
+        }}
+      >
         <TutorialNav currentStep={step} />
         <section className="col-span-3 h-full min-h-screen bg-ghost-white pl-[142px] pr-[142px] pt-[48px]">
           <h2 className="mb-[12px] text-heading-large font-bold">{step.title}</h2>
