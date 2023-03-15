@@ -130,7 +130,6 @@ export default function Index() {
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(false);
   const [selectedShopifyProductVariant, setSelectedShopifyProductVariant] = useState<string>('');
   const compact = !!Number(queryParameters.get('compact'));
-  console.log('??', compact);
   const clientSecret =
     fetchPaymentIntentResponse?.createShopifyPaymentIntent?.clientSecret ||
     fetchPaymentIntentResponse?.createAmazonPaymentIntent?.clientSecret;
