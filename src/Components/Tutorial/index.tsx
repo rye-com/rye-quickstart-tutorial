@@ -653,7 +653,7 @@ export default function Index() {
   return (
     <div
       className={classNames(
-        { flex: compact },
+        { flex: !compact },
         { 'dark bg-black text-white': isThemeDark },
         { 'bg-light-pastel text-black': !isThemeDark },
       )}
@@ -682,7 +682,7 @@ export default function Index() {
         }}
       >
         <div className="mx-10 mt-5">
-          {compact && (
+          {!compact && (
             <>
               <div className="font-200 flex items-center justify-end">
                 <DarkModeSwitch checked={isThemeDark} onChange={onChangeTheme} />
