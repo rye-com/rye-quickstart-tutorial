@@ -55,6 +55,7 @@ import { fetchOffers } from './tutorial-steps/3-fetchOffers';
 import { stripePaymentIntentExample } from './tutorial-steps/4-stripePaymentIntentExample';
 import { performCheckoutStep } from './tutorial-steps/5-performCheckoutStep';
 import classNames from 'classnames';
+import { queryParameters } from '../../utils/getParams.utils';
 
 const defaultStore = getDefaultStore();
 
@@ -108,11 +109,7 @@ const trackProductURLChange = debounce((productURL: string) => {
   });
 }, 1500);
 
-export type TutorialProps = {
-  compact?: boolean;
-};
-
-export default function Index(props: TutorialProps) {
+export default function Index() {
   const [data, setData] = useState<Store>(defaultStore);
 
   const [isRequestingProduct, setIsRequestingProduct] = useState<boolean>(false);
@@ -132,7 +129,8 @@ export default function Index(props: TutorialProps) {
   const [isValidAPIKey, setIsValidAPIKey] = useState<boolean>(false);
   const [isCheckingAPIKey, setIsCheckingAPIKey] = useState<boolean>(false);
   const [selectedShopifyProductVariant, setSelectedShopifyProductVariant] = useState<string>('');
-
+  const compact = !!Number(queryParameters.get('compact'));
+  console.log('??', compact);
   const clientSecret =
     fetchPaymentIntentResponse?.createShopifyPaymentIntent?.clientSecret ||
     fetchPaymentIntentResponse?.createAmazonPaymentIntent?.clientSecret;
@@ -656,7 +654,7 @@ export default function Index(props: TutorialProps) {
   return (
     <div
       className={classNames(
-        { flex: !props.compact },
+        { flex: compact },
         { 'dark bg-black text-white': isThemeDark },
         { 'bg-light-pastel text-black': !isThemeDark },
       )}
@@ -685,7 +683,7 @@ export default function Index(props: TutorialProps) {
         }}
       >
         <div className="mx-10 mt-5">
-          {!props.compact && (
+          {compact && (
             <>
               <div className="font-200 flex items-center justify-end">
                 <DarkModeSwitch checked={isThemeDark} onChange={onChangeTheme} />
