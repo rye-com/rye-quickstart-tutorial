@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { Variables } from 'graphql-request';
 import { GraphQLClient } from 'graphql-request';
-import { amazonProductFetchQuery } from '../../code_snippets';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
@@ -16,32 +15,27 @@ const makeGQLRequest = (
   return gqlClient.request(query, variables, headers);
 };
 
-export const useRequest = () => {
+export const useRequest = (graphQLQuery: string, variables: Variables) => {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
-  const variables = {
-    input: {
-      id: 'B073K14CVB',
-      marketplace: 'AMAZON',
-    },
-  };
 
   function callback(key: string) {
     let ignore = false;
-    const fetchProduct = async () => {
+    const request = async () => {
       setLoading(true);
       try {
         setError({});
-        const response = await makeGQLRequest(amazonProductFetchQuery, variables, key);
+        const response = await makeGQLRequest(graphQLQuery, variables, key);
         if (!ignore) setData(response);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setError(err);
         setData({});
       }
       setLoading(false);
     };
-    fetchProduct();
+    request();
     return () => {
       ignore = true;
     };

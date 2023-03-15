@@ -7,6 +7,8 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useRequest } from './utils/fetch';
 import { useDebouncedCallback } from 'use-debounce';
+import { amazonProductFetchQuery, productFetchVariables } from './code_snippets';
+import { MarketplaceEnum } from './types';
 
 type UrlMapType = {
   [url: string]: TutorialStep;
@@ -27,8 +29,11 @@ export default function Index() {
   const step = urlMap[location.pathname] || urlMap['/start'] || TUTORIAL_STEPS[0];
 
   //API key related logic
-  const [currentApiKey, setCurrentApiKey] = useState('');
-  const { callback, error, loading } = useRequest();
+  const [currentApiKey, setCurrentApiKey] = useState(''); //will set default from localStorage
+  const { callback, error, loading } = useRequest(
+    amazonProductFetchQuery,
+    productFetchVariables('B073K14CVB', MarketplaceEnum.Amazon),
+  );
   const debouncedApiKeyCheck = useDebouncedCallback(callback, 500);
   function setApiKey(key: string) {
     setCurrentApiKey(key);
