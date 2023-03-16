@@ -5,8 +5,23 @@ import FetchProductScreenV2 from '../../../assets/fetch-product-v2.png';
 import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
 import ListItem from '../styled-components/list-item';
 import Input from '../styled-components/input';
+import { useContext, useState } from 'react';
+import { TutorialContext } from '../constants';
+import { productFetchVariables } from '../code_snippets';
+import { MarketplaceEnum } from '../types';
 
 export default function FetchProduct() {
+  const context = useContext(TutorialContext);
+  const {
+    fetchProduct: {
+      fetchProductCallback,
+      setCurrentFetchedProductId,
+      currentFetchedProductId,
+      fetchProductError,
+    },
+    apiKey: { currentApiKey },
+  } = context;
+  const [fetchError, setFetchError] = useState(false);
   return (
     <section>
       <div className="mb-[12px] flex">
@@ -40,18 +55,64 @@ export default function FetchProduct() {
             The Shopify product ID can be found in the response of the{' '}
             <InlineCodeSnippet version="v2redText">requestProduct</InlineCodeSnippet> mutation.
           </p>
-          <div className="w-3/4">
+          <div className="flex w-3/4 items-center">
             <Input
               onChange={(e) => {
                 console.log(e);
               }}
-              value="test"
+              value="B08KHY1PKR"
               internalLabel="Sample product ID"
             />
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText('B08KHY1PKR');
+              }}
+              className="mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
+            >
+              Copy
+            </button>
           </div>
         </ListItem>
         <ListItem content="Use the item ID in the following function to fetch product info">
           {/* Add terminal */}
+        </ListItem>
+        <ListItem content="Run the function to fetch product information, prices, and more.">
+          <p className="mb-[4px] text-paragraph-small font-normal">
+            Try out our tool below, which fetches product information from Amazon or Shopify based
+            on a specific product ID. It's a demo we created for you to experiment with.
+          </p>
+          <div className="flex">
+            <Input
+              onChange={(e) => {
+                setCurrentFetchedProductId && setCurrentFetchedProductId(e.target.value);
+              }}
+              internalLabel="Product ID"
+              value={currentFetchedProductId}
+            />
+            <button
+              onClick={() => {
+                if (fetchProductCallback && currentApiKey && currentFetchedProductId) {
+                  fetchProductCallback(
+                    currentApiKey,
+                    productFetchVariables(currentFetchedProductId, MarketplaceEnum.Amazon),
+                  );
+                  setFetchError(false);
+                } else {
+                  setFetchError(true);
+                }
+              }}
+              className="my-[6px] mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
+            >
+              Fetch
+            </button>
+          </div>
+          {(fetchError || fetchProductError) && (
+            <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
+              There was an issue with the request. Please double check your Rye API key connection
+              within the 'Obtaining Rye API key' step and that the product ID above is properly
+              copied.
+            </p>
+          )}
         </ListItem>
       </ol>
     </section>

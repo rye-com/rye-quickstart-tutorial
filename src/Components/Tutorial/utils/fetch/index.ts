@@ -15,18 +15,18 @@ const makeGQLRequest = (
   return gqlClient.request(query, variables, headers);
 };
 
-export const useRequest = (graphQLQuery: string, variables: Variables) => {
+export const useRequest = (graphQLQuery: string) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [data, setData] = useState<any>(null); //data could be in various forms
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({});
+  const [error, setError] = useState(null);
 
-  function callback(key: string) {
+  function callback(key: string, variables: Variables) {
     let ignore = false;
     const request = async () => {
       setLoading(true);
       try {
-        setError({});
+        setError(null);
         const response = await makeGQLRequest(graphQLQuery, variables, key);
         if (!ignore) setData(response);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

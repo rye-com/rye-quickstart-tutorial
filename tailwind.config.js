@@ -26,6 +26,8 @@ module.exports = {
         'alerts-success': '#01B71C',
         'alerts-danger': '#D90C1F',
         'neutral-content-grey': '#7E7F98',
+        'brand-hover-green': '#b8e56b',
+        'brand-active-green': '#a5ce60',
         base: {
           50: '#f4f8fd',
           100: '#e8f1fb',

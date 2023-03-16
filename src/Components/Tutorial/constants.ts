@@ -1,5 +1,6 @@
 import type { TutorialStep } from './types';
 import { createContext } from 'react';
+import type { Variables } from 'graphql-request';
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
@@ -53,6 +54,14 @@ type TutorialContextType = {
     apiKeyCheckIsLoading?: boolean;
     isApiKeyValid?: boolean;
   };
+  fetchProduct: {
+    fetchProductCallback?: (key: string, variables: Variables) => void;
+    fetchProductData?: string;
+    fetchProductLoading?: boolean;
+    setCurrentFetchedProductId?: (key: string) => void;
+    currentFetchedProductId?: string;
+    fetchProductError?: any;
+  };
 };
 
-export const TutorialContext = createContext<TutorialContextType>({ apiKey: {} });
+export const TutorialContext = createContext<TutorialContextType>({ apiKey: {}, fetchProduct: {} });
