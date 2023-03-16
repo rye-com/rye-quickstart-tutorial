@@ -110,7 +110,7 @@ export default function FetchProduct() {
             <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
               There was an issue with the request. Please double check your Rye API key connection
               within the 'Obtaining Rye API key' step and that the product ID above is properly
-              copied.
+              copied
             </p>
           )}
         </ListItem>
