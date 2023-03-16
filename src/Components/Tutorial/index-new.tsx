@@ -1,14 +1,9 @@
 import TutorialNav from './tutorial-nav';
 import type { TutorialStep } from './types';
-import { TUTORIAL_STEPS, TutorialContext } from './constants';
+import { TUTORIAL_STEPS } from './constants';
 import type { NonEmptyArray } from './constants';
 import { Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
-import { useRequest } from './utils/fetch';
-import { useDebouncedCallback } from 'use-debounce';
-import { amazonProductFetchQuery, productFetchVariables } from './code_snippets';
-import { MarketplaceEnum } from './types';
 
 type UrlMapType = {
   [url: string]: TutorialStep;
@@ -27,37 +22,14 @@ const urlMap = createUrlToTutorialMap(TUTORIAL_STEPS);
 export default function Index() {
   const location = useLocation();
   const step = urlMap[location.pathname] || urlMap['/start'] || TUTORIAL_STEPS[0];
-
-  //API key related logic
-  const [currentApiKey, setCurrentApiKey] = useState(''); //will set default from localStorage
-  const { callback, data, loading } = useRequest(
-    amazonProductFetchQuery,
-    productFetchVariables('B073K14CVB', MarketplaceEnum.Amazon),
-  );
-  const debouncedApiKeyCheck = useDebouncedCallback(callback, 500);
-  function setApiKey(key: string) {
-    setCurrentApiKey(key);
-    debouncedApiKeyCheck(key);
-  }
   return (
-    <div className="grid grid-cols-4">
-      <TutorialContext.Provider
-        value={{
-          apiKey: {
-            setApiKey,
-            currentApiKey,
-            apiKeyCheckIsLoading: loading,
-            isApiKeyValid: !!data,
-          },
-        }}
-      >
-        <TutorialNav currentStep={step} />
-        <section className="col-span-3 h-full min-h-screen bg-ghost-white pl-[142px] pr-[142px] pt-[48px]">
-          <h2 className="mb-[12px] text-heading-large font-bold">{step.title}</h2>
-          <p className="mb-[48px] text-paragraph-small">{step.description}</p>
-          <Outlet />
-        </section>
-      </TutorialContext.Provider>
+    <div className="grid grid-cols-4 gap-x-[24px]">
+      <TutorialNav currentStep={step} />
+      <section className="col-span-3 col-start-2 h-full min-h-screen bg-ghost-white pl-[142px] pr-[142px] pt-[48px]">
+        <h2 className="mb-[12px] text-heading-large font-bold">{step.title}</h2>
+        <p className="mb-[48px] text-paragraph-small">{step.description}</p>
+        <Outlet />
+      </section>
     </div>
   );
 }

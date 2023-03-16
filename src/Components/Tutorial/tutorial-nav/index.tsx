@@ -12,7 +12,7 @@ export default function TutorialNav(props: TutorialProps) {
   const { currentStep } = props;
 
   return (
-    <ol className="h-100 sticky col-span-1 flex flex-col pr-[24px] pl-[24px] pt-[40px]">
+    <ol className="h-100 fixed col-span-1 flex flex-col pr-[24px] pl-[24px] pt-[40px]">
       {TUTORIAL_STEPS.map((step) => {
         return (
           <li

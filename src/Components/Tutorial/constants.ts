@@ -23,7 +23,12 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
     description: 'To make requests to the Rye GraphQL API, you will need to get an API access key',
     url: '/get-key',
   },
-  { title: StepEnum.Step2, description: 'test', url: '/product-data' },
+  {
+    title: StepEnum.Step2,
+    description:
+      'Fetch product data in realtime with Rye’s API. This allows you to showcase products and display accurate, up-to-date information, and users to make informed purchasing decisions.',
+    url: '/product-data',
+  },
   { title: StepEnum.Step3, description: 'test', url: '/add-product' },
   { title: StepEnum.Step4, description: 'test', url: '/add-to-cart' },
   { title: StepEnum.Step5, description: 'test', url: '/fetch-cart' },

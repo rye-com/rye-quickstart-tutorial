@@ -11,7 +11,9 @@ module.exports = {
       fontSize: {
         'heading-large': ['48px', '52px'],
         'paragraph-small': ['14px', '24px'],
+        'paragraph-xsmall': ['14px', '18px'],
         'paragraph-medium': ['16px', '28px'],
+        'heading-small': ['24px', '32px'],
       },
       colors: {
         'light-pastel': '#F4F5F4',
@@ -22,6 +24,8 @@ module.exports = {
         'brand-green': '#CDFF77',
         'action-light-grey': '#DCDDE3',
         'alerts-success': '#01B71C',
+        'alerts-danger': '#D90C1F',
+        'neutral-content-grey': '#7E7F98',
         base: {
           50: '#f4f8fd',
           100: '#e8f1fb',

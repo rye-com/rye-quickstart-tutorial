@@ -9,7 +9,7 @@ type Props = {
 };
 
 const linkClass = {
-  [LinkType.Pill]: 'rounded-2xl bg-brand-green pr-[12px] pl-[12px] pt-[8px] pb-[8px]',
+  [LinkType.Pill]: 'rounded-2xl bg-brand-green pr-[12px] pl-[12px] pt-[8px] pb-[8px] font-semibold',
 };
 
 export default function ExternalLink(props: Props) {

@@ -14,7 +14,6 @@ export default function GettingStarted() {
   const {
     apiKey: { setApiKey, currentApiKey, isApiKeyValid, apiKeyCheckIsLoading },
   } = context;
-  console.log('?', isApiKeyValid);
   return (
     <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
       <ListItem
