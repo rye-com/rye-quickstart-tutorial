@@ -16,7 +16,8 @@ const makeGQLRequest = (
 };
 
 export const useRequest = (graphQLQuery: string, variables: Variables) => {
-  const [data, setData] = useState({});
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [data, setData] = useState<any>(null); //data could be in various forms
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
 
@@ -31,7 +32,7 @@ export const useRequest = (graphQLQuery: string, variables: Variables) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         setError(err);
-        setData({});
+        setData(null);
       }
       setLoading(false);
     };

@@ -30,7 +30,7 @@ export default function Index() {
 
   //API key related logic
   const [currentApiKey, setCurrentApiKey] = useState(''); //will set default from localStorage
-  const { callback, error, loading } = useRequest(
+  const { callback, data, loading } = useRequest(
     amazonProductFetchQuery,
     productFetchVariables('B073K14CVB', MarketplaceEnum.Amazon),
   );
@@ -39,7 +39,6 @@ export default function Index() {
     setCurrentApiKey(key);
     debouncedApiKeyCheck(key);
   }
-
   return (
     <div className="grid grid-cols-4">
       <TutorialContext.Provider
@@ -48,7 +47,7 @@ export default function Index() {
             setApiKey,
             currentApiKey,
             apiKeyCheckIsLoading: loading,
-            apiKeyCheckError: !!error,
+            isApiKeyValid: !!data,
           },
         }}
       >

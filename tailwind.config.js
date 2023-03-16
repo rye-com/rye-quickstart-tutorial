@@ -21,6 +21,7 @@ module.exports = {
         'choice-hover': '#F1F1F3',
         'brand-green': '#CDFF77',
         'action-light-grey': '#DCDDE3',
+        'alerts-success': '#01B71C',
         base: {
           50: '#f4f8fd',
           100: '#e8f1fb',

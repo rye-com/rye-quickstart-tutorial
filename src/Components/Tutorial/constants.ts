@@ -46,7 +46,7 @@ type TutorialContextType = {
     setApiKey?: (key: string) => void;
     currentApiKey?: string;
     apiKeyCheckIsLoading?: boolean;
-    apiKeyCheckError?: boolean;
+    isApiKeyValid?: boolean;
   };
 };
 
