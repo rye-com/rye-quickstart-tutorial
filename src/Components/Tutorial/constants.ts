@@ -60,6 +60,7 @@ type TutorialContextType = {
     fetchProductLoading?: boolean;
     setCurrentFetchedProductId?: (key: string) => void;
     currentFetchedProductId?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fetchProductError?: any;
   };
 };
