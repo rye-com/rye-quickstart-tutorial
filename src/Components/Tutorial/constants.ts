@@ -56,7 +56,7 @@ type TutorialContextType = {
   };
   fetchProduct: {
     fetchProductCallback?: (key: string, variables: Variables) => void;
-    fetchProductData?: unknown;
+    fetchProductData?: object | null;
     fetchProductLoading?: boolean;
     setCurrentFetchedProductId?: (key: string) => void;
     currentFetchedProductId?: string;

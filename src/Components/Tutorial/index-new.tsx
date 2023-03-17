@@ -45,7 +45,7 @@ export default function Index() {
     data: fetchProductData,
     loading: fetchProductLoading,
     error: fetchProductError,
-  } = useRequest(
+  } = useRequest<object>(
     amazonProductFetchQuery, //update query based on eventual dropdown value
   );
   return (
