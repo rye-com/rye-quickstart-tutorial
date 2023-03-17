@@ -56,12 +56,11 @@ type TutorialContextType = {
   };
   fetchProduct: {
     fetchProductCallback?: (key: string, variables: Variables) => void;
-    fetchProductData?: string;
+    fetchProductData?: unknown;
     fetchProductLoading?: boolean;
     setCurrentFetchedProductId?: (key: string) => void;
     currentFetchedProductId?: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    fetchProductError?: any;
+    fetchProductError?: boolean;
   };
 };
 

@@ -23,9 +23,9 @@ export default function Input(props: Props) {
       )}
     >
       {internalLabel && (
-        <p className="pl-[10px] pt-[4px] text-paragraph-xsmall text-neutral-content-grey">
+        <label className="pl-[10px] pt-[4px] text-paragraph-xsmall text-neutral-content-grey">
           {internalLabel}
-        </p>
+        </label>
       )}
       <div className="flex w-full">
         {StartEnhancer ? (

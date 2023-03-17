@@ -64,7 +64,7 @@ export default function Index() {
             fetchProductLoading,
             currentFetchedProductId,
             setCurrentFetchedProductId,
-            fetchProductError,
+            fetchProductError: !!fetchProductError,
           },
         }}
       >
