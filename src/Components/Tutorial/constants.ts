@@ -30,7 +30,12 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
       'Fetch product data in realtime with Rye’s API. This allows you to showcase products and display accurate, up-to-date information, and users to make informed purchasing decisions.',
     url: '/product-data',
   },
-  { title: StepEnum.Step3, description: 'test', url: '/add-product' },
+  {
+    title: StepEnum.Step3,
+    description:
+      'Some products on Amazon and Shopify may not be logged in the Rye inventory. You can use this function to add an external product. This step is optional but can be useful if you want to track inventory and orders within Rye.',
+    url: '/add-product',
+  },
   { title: StepEnum.Step4, description: 'test', url: '/add-to-cart' },
   { title: StepEnum.Step5, description: 'test', url: '/fetch-cart' },
   { title: StepEnum.Step6, description: 'test', url: '/display-cart' },
@@ -62,6 +67,14 @@ type TutorialContextType = {
     currentFetchedProductId?: string;
     fetchProductError?: boolean;
   };
+  addProduct: {
+    currentAddProductUrl?: string;
+    setCurrentAddProductUrl?: (key: string) => void;
+  };
 };
 
-export const TutorialContext = createContext<TutorialContextType>({ apiKey: {}, fetchProduct: {} });
+export const TutorialContext = createContext<TutorialContextType>({
+  apiKey: {},
+  fetchProduct: {},
+  addProduct: {},
+});
