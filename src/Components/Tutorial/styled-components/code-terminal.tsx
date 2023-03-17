@@ -1,4 +1,6 @@
 import SyntaxHighlighter from 'react-syntax-highlighter';
+import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+
 export default function Terminal({
   code,
   language = 'javascript',
@@ -26,6 +28,9 @@ export default function Terminal({
         }}
         customStyle={{
           backgroundColor: '#222222',
+        }}
+        style={{
+          ...atomOneDark,
         }}
       >
         {code}
