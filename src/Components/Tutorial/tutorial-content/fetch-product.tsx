@@ -9,12 +9,15 @@ import { useContext, useState } from 'react';
 import { TutorialContext } from '../constants';
 import { productFetchVariables } from '../code_snippets';
 import { MarketplaceEnum } from '../types';
+import Terminal from '../styled-components/code-terminal';
+import { amazonProductFetchSnippet } from '../code_snippets';
 
 export default function FetchProduct() {
   const context = useContext(TutorialContext);
   const {
     fetchProduct: {
       fetchProductCallback,
+      fetchProductData,
       setCurrentFetchedProductId,
       currentFetchedProductId,
       fetchProductError,
@@ -22,6 +25,9 @@ export default function FetchProduct() {
     apiKey: { currentApiKey },
   } = context;
   const [fetchError, setFetchError] = useState(false);
+  const fetchSnippet = amazonProductFetchSnippet('B08KHY1PKR');
+  const prettyJSON = JSON.stringify(fetchProductData, null, 2);
+
   return (
     <section>
       <div className="mb-[12px] flex">
@@ -74,10 +80,10 @@ export default function FetchProduct() {
           </div>
         </ListItem>
         <ListItem content="Use the item ID in the following function to fetch product info">
-          {/* Add terminal */}
+          <Terminal code={fetchSnippet} />
         </ListItem>
         <ListItem content="Run the function to fetch product information, prices, and more.">
-          <p className="mb-[4px] text-paragraph-small font-normal">
+          <p className="mb-[4px] font-poppins text-paragraph-small font-normal">
             Try out our tool below, which fetches product information from Amazon or Shopify based
             on a specific product ID. It's a demo we created for you to experiment with.
           </p>
@@ -113,6 +119,7 @@ export default function FetchProduct() {
               copied.
             </p>
           )}
+          {fetchProductData && <Terminal code={prettyJSON} language="json" />}
         </ListItem>
       </ol>
     </section>
