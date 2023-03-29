@@ -49,7 +49,7 @@ export default function Index() {
     amazonProductFetchQuery, //update query based on eventual dropdown value
   );
   return (
-    <div className="grid grid-cols-4 gap-x-[48px] font-poppins">
+    <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
         value={{
           apiKey: {
