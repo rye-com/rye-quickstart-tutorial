@@ -12,7 +12,7 @@ type Props = {
 export default function ListItem({ children, content, styleOverrides }: Props) {
   const { list, paragraph } = styleOverrides || {};
   const listStyles = list ?? 'mb-[28px]';
-  const paragraphStyles = paragraph ?? 'mb-[12px] inline';
+  const paragraphStyles = paragraph ?? 'mb-[12px] inline font-semibold';
 
   return (
     <li className={listStyles}>

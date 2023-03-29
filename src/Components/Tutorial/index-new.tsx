@@ -48,6 +48,10 @@ export default function Index() {
   } = useRequest<object>(
     amazonProductFetchQuery, //update query based on eventual dropdown value
   );
+
+  //Add Product
+  const [currentAddProductUrl, setCurrentAddProductUrl] = useState(''); //will set default from localStorage
+
   return (
     <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
@@ -65,6 +69,10 @@ export default function Index() {
             currentFetchedProductId,
             setCurrentFetchedProductId,
             fetchProductError: !!fetchProductError,
+          },
+          addProduct: {
+            currentAddProductUrl,
+            setCurrentAddProductUrl,
           },
         }}
       >
