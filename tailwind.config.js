@@ -11,7 +11,12 @@ module.exports = {
       fontSize: {
         'heading-large': ['48px', '52px'],
         'paragraph-small': ['14px', '24px'],
+        'paragraph-xsmall': ['14px', '18px'],
         'paragraph-medium': ['16px', '28px'],
+        'heading-small': ['24px', '32px'],
+      },
+      fontFamily: {
+        poppins: ['Poppins', 'ui-sans-serif', 'system-ui'],
       },
       colors: {
         'light-pastel': '#F4F5F4',
@@ -21,6 +26,12 @@ module.exports = {
         'choice-hover': '#F1F1F3',
         'brand-green': '#CDFF77',
         'action-light-grey': '#DCDDE3',
+        'alerts-success': '#01B71C',
+        'alerts-danger': '#D90C1F',
+        'neutral-content-grey': '#7E7F98',
+        'brand-hover-green': '#b8e56b',
+        'brand-active-green': '#a5ce60',
+        'terminal-black': '#222222',
         base: {
           50: '#f4f8fd',
           100: '#e8f1fb',

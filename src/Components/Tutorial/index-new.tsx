@@ -30,30 +30,46 @@ export default function Index() {
 
   //API key related logic
   const [currentApiKey, setCurrentApiKey] = useState(''); //will set default from localStorage
-  const { callback, error, loading } = useRequest(
-    amazonProductFetchQuery,
-    productFetchVariables('B073K14CVB', MarketplaceEnum.Amazon),
-  );
+  const { callback, data, loading } = useRequest(amazonProductFetchQuery);
   const debouncedApiKeyCheck = useDebouncedCallback(callback, 500);
   function setApiKey(key: string) {
     setCurrentApiKey(key);
-    debouncedApiKeyCheck(key);
+    debouncedApiKeyCheck(key, productFetchVariables('B073K14CVB', MarketplaceEnum.Amazon));
   }
 
+  //Fetch Product
+  const [currentFetchedProductId, setCurrentFetchedProductId] = useState(''); //will set default from localStorage
+
+  const {
+    callback: fetchProductCallback,
+    data: fetchProductData,
+    loading: fetchProductLoading,
+    error: fetchProductError,
+  } = useRequest<object>(
+    amazonProductFetchQuery, //update query based on eventual dropdown value
+  );
   return (
-    <div className="grid grid-cols-4">
+    <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
         value={{
           apiKey: {
             setApiKey,
             currentApiKey,
             apiKeyCheckIsLoading: loading,
-            apiKeyCheckError: !!error,
+            isApiKeyValid: !!data,
+          },
+          fetchProduct: {
+            fetchProductCallback,
+            fetchProductData,
+            fetchProductLoading,
+            currentFetchedProductId,
+            setCurrentFetchedProductId,
+            fetchProductError: !!fetchProductError,
           },
         }}
       >
         <TutorialNav currentStep={step} />
-        <section className="col-span-3 h-full min-h-screen bg-ghost-white pl-[142px] pr-[142px] pt-[48px]">
+        <section className="col-span-3 col-start-2 h-full min-h-screen bg-ghost-white pl-[142px] pr-[142px] pt-[48px]">
           <h2 className="mb-[12px] text-heading-large font-bold">{step.title}</h2>
           <p className="mb-[48px] text-paragraph-small">{step.description}</p>
           <Outlet />

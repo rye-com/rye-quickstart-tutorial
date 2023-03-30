@@ -4,34 +4,33 @@ import { GraphQLClient } from 'graphql-request';
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
-const makeGQLRequest = (
+const makeGQLRequest = <T>(
   query: string,
   variables: Variables, // using generic TVars for this causes a weird type error with client.request call
   apiKey: string,
-) => {
+): Promise<T> => {
   const headers = {
     Authorization: 'Basic ' + window.btoa(apiKey + ':'),
   };
-  return gqlClient.request(query, variables, headers);
+  return gqlClient.request<T>(query, variables, headers);
 };
 
-export const useRequest = (graphQLQuery: string, variables: Variables) => {
-  const [data, setData] = useState({});
+export const useRequest = <T>(graphQLQuery: string) => {
+  const [data, setData] = useState<T | null>(null); //data could be in various forms
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState({});
+  const [error, setError] = useState<unknown | null>(null);
 
-  function callback(key: string) {
+  function callback(key: string, variables: Variables) {
     let ignore = false;
     const request = async () => {
       setLoading(true);
       try {
-        setError({});
-        const response = await makeGQLRequest(graphQLQuery, variables, key);
+        setError(null);
+        const response = await makeGQLRequest<T>(graphQLQuery, variables, key);
         if (!ignore) setData(response);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (err: any) {
+      } catch (err: unknown) {
         setError(err);
-        setData({});
+        setData(null);
       }
       setLoading(false);
     };
