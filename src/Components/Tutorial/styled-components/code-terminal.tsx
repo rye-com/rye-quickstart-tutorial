@@ -1,6 +1,19 @@
 import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
+const lineNumberStyle = {
+  color: '#7E7F98'
+}
+
+const customStyle = {
+  backgroundColor: '#222222'
+};
+
+const codeTagPropsStyle = {
+  fontSize: '0.8rem',
+  color: '#7E7F98',
+};
+
 export default function Terminal({
   code,
   language = 'javascript',
@@ -18,17 +31,12 @@ export default function Terminal({
       <SyntaxHighlighter
         showLineNumbers={true}
         language={language}
-        lineNumberStyle={{ color: '#7E7F98' }}
+        lineNumberStyle={lineNumberStyle}
         startingLineNumber={1}
         codeTagProps={{
-          style: {
-            fontSize: '0.8rem',
-            color: '#7E7F98',
-          },
+          style: codeTagPropsStyle
         }}
-        customStyle={{
-          backgroundColor: '#222222',
-        }}
+        customStyle={customStyle}
         style={{
           ...atomOneDark,
         }}
