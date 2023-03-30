@@ -4,6 +4,7 @@ import Tutorial from './Components/Tutorial';
 import { createBrowserRouter } from 'react-router-dom';
 
 import GettingStarted from './Components/Tutorial/tutorial-content/getting-started';
+import FetchProduct from './Components/Tutorial/tutorial-content/fetch-product';
 
 //App is wrapper component. Children components are rendered in place of <Outline />
 const router = createBrowserRouter([
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'product-data',
-        element: <GettingStarted />,
+        element: <FetchProduct />,
       },
       {
         path: 'add-product',
