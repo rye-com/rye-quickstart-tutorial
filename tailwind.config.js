@@ -15,6 +15,9 @@ module.exports = {
         'paragraph-medium': ['16px', '28px'],
         'heading-small': ['24px', '32px'],
       },
+      fontFamily: {
+        poppins: ['Poppins', 'ui-sans-serif', 'system-ui'],
+      },
       colors: {
         'light-pastel': '#F4F5F4',
         'ghost-white': '#F8F8FA',
@@ -28,6 +31,7 @@ module.exports = {
         'neutral-content-grey': '#7E7F98',
         'brand-hover-green': '#b8e56b',
         'brand-active-green': '#a5ce60',
+        'terminal-black': '#222222',
         base: {
           50: '#f4f8fd',
           100: '#e8f1fb',

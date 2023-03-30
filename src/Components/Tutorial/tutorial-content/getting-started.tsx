@@ -8,12 +8,16 @@ import { KeyIcon } from '@heroicons/react/24/outline';
 import { useContext } from 'react';
 import { TutorialContext } from '../constants';
 import { Spinner } from 'flowbite-react';
+import Terminal from '../styled-components/code-terminal';
+import { initializeClientSnippet } from '../code_snippets';
 
 export default function GettingStarted() {
   const context = useContext(TutorialContext);
   const {
     apiKey: { setApiKey, currentApiKey, isApiKeyValid, apiKeyCheckIsLoading },
   } = context;
+  const initClientSnippet = initializeClientSnippet(currentApiKey || '<RYE_API_KEY>');
+
   return (
     <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
       <ListItem
@@ -63,6 +67,7 @@ export default function GettingStarted() {
         <p className="mb-[12px] text-paragraph-small font-normal">
           See below for the code snippet to call the Rye API:
         </p>
+        <Terminal code={initClientSnippet} />
       </ListItem>
     </ol>
   );
