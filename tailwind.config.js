@@ -17,6 +17,7 @@ module.exports = {
       },
       fontFamily: {
         poppins: ['Poppins', 'ui-sans-serif', 'system-ui'],
+        author: ['Author']
       },
       colors: {
         'light-pastel': '#F4F5F4',

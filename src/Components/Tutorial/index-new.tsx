@@ -70,7 +70,7 @@ export default function Index() {
       >
         <TutorialNav currentStep={step} />
         <section className="col-span-3 col-start-2 h-full min-h-screen bg-ghost-white pl-[142px] pr-[142px] pt-[48px]">
-          <h2 className="mb-[12px] text-heading-large font-bold">{step.title}</h2>
+          <h2 className="mb-[12px] text-heading-large font-bold font-author">{step.title}</h2>
           <p className="mb-[48px] text-paragraph-small">{step.description}</p>
           <Outlet />
         </section>
