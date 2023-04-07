@@ -11,7 +11,7 @@ import { Spinner } from 'flowbite-react';
 import Terminal from '../styled-components/code-terminal';
 import { initializeClientSnippet } from '../code_snippets';
 
-export default function GettingStarted() {
+export default function ObtainRyeApiKey() {
   const context = useContext(TutorialContext);
   const {
     apiKey: { setApiKey, currentApiKey, isApiKeyValid, apiKeyCheckIsLoading },
@@ -19,7 +19,7 @@ export default function GettingStarted() {
   const initClientSnippet = initializeClientSnippet(currentApiKey || '<RYE_API_KEY>');
 
   return (
-    <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
+    <ol className="list-inside list-decimal text-paragraph-medium font-semibold font-poppinsSemiBold">
       <ListItem
         content={
           <div className="inline">

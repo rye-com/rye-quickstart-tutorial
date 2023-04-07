@@ -3,7 +3,7 @@ import Tutorial from './Components/Tutorial';
 
 import { createBrowserRouter } from 'react-router-dom';
 
-import GettingStarted from './Components/Tutorial/tutorial-content/getting-started';
+import ObtainRyeApiKey from './Components/Tutorial/tutorial-content/obtain-rye-api-key';
 import FetchProduct from './Components/Tutorial/tutorial-content/fetch-product';
 
 //App is wrapper component. Children components are rendered in place of <Outline />
@@ -14,15 +14,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <GettingStarted />,
+        element: null,
       },
       {
         path: 'start',
-        element: <GettingStarted />,
+        element: null,
       },
       {
         path: 'get-key',
-        element: <GettingStarted />,
+        element: <ObtainRyeApiKey />,
       },
       {
         path: 'product-data',
@@ -30,31 +30,31 @@ const router = createBrowserRouter([
       },
       {
         path: 'add-product',
-        element: <GettingStarted />,
+        element: <ObtainRyeApiKey />,
       },
       {
         path: 'add-to-cart',
-        element: <GettingStarted />,
+        element: <ObtainRyeApiKey />,
       },
       {
         path: 'fetch-cart',
-        element: <GettingStarted />,
+        element: <ObtainRyeApiKey />,
       },
       {
         path: 'display-cart',
-        element: <GettingStarted />,
+        element: <ObtainRyeApiKey />,
       },
       {
         path: 'update-info',
-        element: <GettingStarted />,
+        element: <ObtainRyeApiKey />,
       },
       {
         path: 'payment-form',
-        element: <GettingStarted />,
+        element: <ObtainRyeApiKey />,
       },
       {
         path: 'display-transaction',
-        element: <GettingStarted />,
+        element: <ObtainRyeApiKey />,
       },
     ],
   },
