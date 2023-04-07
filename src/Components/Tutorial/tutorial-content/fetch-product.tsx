@@ -30,7 +30,7 @@ export default function FetchProduct() {
 
   return (
     <section>
-      <div className="mb-[12px] flex">
+      <div className="mb-[12px] flex font-poppinsBold">
         <h2 className="mr-[8px] text-heading-small font-bold">Example</h2>
         <ExternalLink
           href="https://console.rye.com"
@@ -45,8 +45,8 @@ export default function FetchProduct() {
         <InlineCodeSnippet version="v2">product</InlineCodeSnippet> query to fetch product
         information such as name, description, price, and any images associated with the product.
       </p>
-      <h3 className="mb-[24px] text-heading-small font-bold">How it works</h3>
-      <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
+      <h3 className="mb-[24px] text-heading-small font-bold font-poppinsBold">How it works</h3>
+      <ol className="list-inside list-decimal text-paragraph-medium font-semibold font-poppinsSemiBold">
         <ListItem content="Locate the item ID for a product on Amazon or Shopify">
           <p className="text-paragraph-small font-normal">
             The Amazon Standard identification Number (ASIN) can be used. You can find the item ID
