@@ -8,7 +8,9 @@ import Input from '../styled-components/input';
 import ListItem from '../styled-components/list-item';
 import Terminal from '../styled-components/code-terminal';
 
+// TODO: add support for Shopify products
 const amazonProduct = getNextRandomProduct(MarketplaceEnum.Amazon);
+const requestProductAmazonCodeSnippet = requestProductSnippet(amazonProduct.productURL, amazonProduct.selectedMarketplace);
 
 export default function AddProductToRye() {
   const context = useContext(TutorialContext);
@@ -22,10 +24,8 @@ export default function AddProductToRye() {
     },
     apiKey: { currentApiKey },
   } = context;
-
   const [fetchError, setFetchError] = useState(false);
-  const requestProductAmazonCodeSnippet = requestProductSnippet(amazonProduct.productURL, amazonProduct.selectedMarketplace);
-  const prettyJSON = JSON.stringify(requestProductData, null, 2);
+  const requestProductDataOutputJSON = JSON.stringify(requestProductData, null, 2);
 
   return (
       <section>
@@ -34,9 +34,6 @@ export default function AddProductToRye() {
           <ListItem content="Copy the URL from an Amazon or Shopify product page">
             <div className="flex w-3/4 items-center mt-[4px]">
               <Input
-                  onChange={(e) => {
-                    console.log(e);
-                  }}
                   value={amazonProduct.productURL}
                   internalLabel="Sample product URL"
               />
@@ -77,7 +74,7 @@ export default function AddProductToRye() {
                 if (requestProductCallback && currentApiKey && currentRequestedProductURL) {
                   requestProductCallback(
                       currentApiKey,
-                      requestProductVariables(currentRequestedProductURL, MarketplaceEnum.Amazon),
+                      requestProductVariables(currentRequestedProductURL, MarketplaceEnum.Amazon), // TODO: add support for Shopify
                   );
                   setFetchError(false);
                 } else {
@@ -96,7 +93,7 @@ export default function AddProductToRye() {
               copied.
             </p>
         )}
-        {requestProductData && <Terminal code={prettyJSON} language="json" />}
+        {requestProductData && <Terminal code={requestProductDataOutputJSON} language="json" />}
       </section>
   );
 }
