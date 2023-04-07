@@ -19,7 +19,7 @@ export default function ObtainRyeApiKey() {
   const initClientSnippet = initializeClientSnippet(currentApiKey || '<RYE_API_KEY>');
 
   return (
-    <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
+    <ol className="list-inside list-decimal text-paragraph-medium font-semibold font-poppinsSemiBold">
       <ListItem
         content={
           <div className="inline">

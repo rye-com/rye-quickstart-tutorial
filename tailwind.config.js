@@ -17,6 +17,7 @@ module.exports = {
       },
       fontFamily: {
         poppins: ['Poppins', 'ui-sans-serif', 'system-ui'],
+        poppinsSemiBold: ['Poppins-SemiBold', 'ui-sans-serif', 'system-ui'],
         author: ['Author'],
       },
       colors: {
