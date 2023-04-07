@@ -19,7 +19,7 @@ export const enum StepEnum {
 
 export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
   { title: StepEnum.Step0,
-    description: 'Greetings! In this tutorial, we will guide you through how to create a simple product checkout flow using rye. You will receive an outline of the necessary steps to establish a store that features products from Amazon and Shopify.\n',
+    description: 'Greetings! In this tutorial, we will guide you through how to create a simple product checkout flow using rye. You will receive an outline of the necessary steps to establish a store that features products from Amazon and Shopify.',
     url: '/start' },
   {
     title: StepEnum.Step1,
