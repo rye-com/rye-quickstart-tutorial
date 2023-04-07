@@ -1,10 +1,11 @@
 import './index.css';
-import Tutorial from './Components/Tutorial';
+import Tutorial from './Components/Tutorial/index-new';
 
 import { createBrowserRouter } from 'react-router-dom';
 
 import ObtainRyeApiKey from './Components/Tutorial/tutorial-content/obtain-rye-api-key';
 import FetchProduct from './Components/Tutorial/tutorial-content/fetch-product';
+import AddProductToRye from "./Components/Tutorial/tutorial-content/add-product-to-rye";
 
 //App is wrapper component. Children components are rendered in place of <Outline />
 const router = createBrowserRouter([
@@ -30,7 +31,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'add-product',
-        element: <ObtainRyeApiKey />,
+        element: <AddProductToRye />,
       },
       {
         path: 'add-to-cart',

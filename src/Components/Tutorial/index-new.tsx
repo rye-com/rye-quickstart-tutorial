@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useRequest } from './utils/fetch';
 import { useDebouncedCallback } from 'use-debounce';
-import { amazonProductFetchQuery, productFetchVariables } from './code_snippets';
+import { amazonProductFetchQuery, productFetchVariables, requestProductQuery } from './code_snippets';
 import { MarketplaceEnum } from './types';
 import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-intro.svg";
 
@@ -38,9 +38,8 @@ export default function Index() {
     debouncedApiKeyCheck(key, productFetchVariables('B073K14CVB', MarketplaceEnum.Amazon));
   }
 
-  //Fetch Product
+  // Fetch Product
   const [currentFetchedProductId, setCurrentFetchedProductId] = useState(''); //will set default from localStorage
-
   const {
     callback: fetchProductCallback,
     data: fetchProductData,
@@ -49,6 +48,18 @@ export default function Index() {
   } = useRequest<object>(
     amazonProductFetchQuery, //update query based on eventual dropdown value
   );
+
+  // Request Product
+  const [currentRequestedProductURL, setCurrentRequestedProductURL] = useState(''); //will set default from localStorage
+  const {
+    callback: requestProductCallback,
+    data: requestProductData,
+    loading: requestProductLoading,
+    error: requestProductError,
+  } = useRequest<object>(
+      requestProductQuery, //update query based on eventual dropdown value
+  );
+
   return (
     <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
@@ -67,6 +78,14 @@ export default function Index() {
             setCurrentFetchedProductId,
             fetchProductError: !!fetchProductError,
           },
+          requestProduct: {
+            requestProductCallback,
+            requestProductData,
+            requestProductLoading,
+            currentRequestedProductURL,
+            setCurrentRequestedProductURL,
+            requestProductError: !!requestProductError,
+          }
         }}
       >
         <TutorialNav currentStep={step} />
