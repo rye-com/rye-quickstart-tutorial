@@ -50,14 +50,14 @@ export default function Index() {
   );
 
   // Request Product
-  const [currentRequestedProductURL, setCurrentRequestedProductURL] = useState(''); //will set default from localStorage
+  const [currentRequestedProductURL, setCurrentRequestedProductURL] = useState('');
   const {
     callback: requestProductCallback,
     data: requestProductData,
     loading: requestProductLoading,
     error: requestProductError,
   } = useRequest<object>(
-      requestProductQuery, //update query based on eventual dropdown value
+      requestProductQuery,
   );
 
   return (

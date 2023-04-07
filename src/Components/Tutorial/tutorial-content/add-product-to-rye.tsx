@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react';
-import { getSampleProductFromMarketplace } from "../utils/getNextRandomProduct";
+import { getNextRandomProduct } from "../utils/getNextRandomProduct";
 import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
 import { TutorialContext } from '../constants';
 import { requestProductSnippet, requestProductVariables } from '../code_snippets';
@@ -8,8 +8,9 @@ import Input from '../styled-components/input';
 import ListItem from '../styled-components/list-item';
 import Terminal from '../styled-components/code-terminal';
 
+const amazonProduct = getNextRandomProduct(MarketplaceEnum.Amazon);
+
 export default function AddProductToRye() {
-  const amazonProduct = getSampleProductFromMarketplace(MarketplaceEnum.Amazon);
   const context = useContext(TutorialContext);
   const {
     requestProduct: {

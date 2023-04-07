@@ -46,31 +46,3 @@ export const getNextRandomProduct = (
     productURL: nextProduct.url,
   };
 };
-
-
-/**
- * Get the first product from the list of products
- */
-export const getSampleProductFromMarketplace = (
-    storeType: MarketplaceEnum,
-): ShopifyRequestedProduct | AmazonRequestedProduct => {
-
-  const productList =
-      storeType === MarketplaceEnum.Amazon ? randomAmazonProducts : randomShopifyProducts;
-
-  const product = productList[0]!;
-
-  if (storeType === MarketplaceEnum.Shopify) {
-    return {
-      shopifyProductID: product.id,
-      selectedMarketplace: MarketplaceEnum.Shopify,
-      productURL: product.url,
-    };
-  }
-
-  return {
-    amazonProductID: product.id,
-    selectedMarketplace: MarketplaceEnum.Amazon,
-    productURL: product.url,
-  };
-};
