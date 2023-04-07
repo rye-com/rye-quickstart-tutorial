@@ -71,7 +71,7 @@ export default function Index() {
       >
         <TutorialNav currentStep={step} />
         <section className="col-span-3 col-start-2 h-full min-h-screen bg-ghost-white pl-[142px] pr-[142px] pt-[48px]">
-          { step.title === StepEnum.Step0 && <GettingStartedImage className="mb-6" /> }
+          { step.title === StepEnum.Step0 && <GettingStartedImage className="mt-36 mb-6" /> }
           <h2 className="mb-[12px] text-heading-large font-bold font-author text-5xl">{step.title}</h2>
           <p className="mb-[48px] paragraph-medium">{step.description}</p>
           <Outlet />
