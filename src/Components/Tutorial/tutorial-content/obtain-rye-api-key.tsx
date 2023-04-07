@@ -11,7 +11,7 @@ import { Spinner } from 'flowbite-react';
 import Terminal from '../styled-components/code-terminal';
 import { initializeClientSnippet } from '../code_snippets';
 
-export default function GettingStarted() {
+export default function ObtainRyeApiKey() {
   const context = useContext(TutorialContext);
   const {
     apiKey: { setApiKey, currentApiKey, isApiKeyValid, apiKeyCheckIsLoading },

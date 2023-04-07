@@ -1,6 +1,6 @@
 import TutorialNav from './tutorial-nav';
 import type { TutorialStep } from './types';
-import { TUTORIAL_STEPS, TutorialContext } from './constants';
+import { StepEnum, TUTORIAL_STEPS, TutorialContext } from './constants';
 import type { NonEmptyArray } from './constants';
 import { Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { useRequest } from './utils/fetch';
 import { useDebouncedCallback } from 'use-debounce';
 import { amazonProductFetchQuery, productFetchVariables } from './code_snippets';
 import { MarketplaceEnum } from './types';
+import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-intro.svg";
 
 type UrlMapType = {
   [url: string]: TutorialStep;
@@ -70,8 +71,9 @@ export default function Index() {
       >
         <TutorialNav currentStep={step} />
         <section className="col-span-3 col-start-2 h-full min-h-screen bg-ghost-white pl-[142px] pr-[142px] pt-[48px]">
-          <h2 className="mb-[12px] text-heading-large font-bold font-author">{step.title}</h2>
-          <p className="mb-[48px] text-paragraph-small">{step.description}</p>
+          { step.title === StepEnum.Step0 && <GettingStartedImage className="mb-6" /> }
+          <h2 className="mb-[12px] text-heading-large font-bold font-author text-5xl">{step.title}</h2>
+          <p className="mb-[48px] paragraph-medium">{step.description}</p>
           <Outlet />
         </section>
       </TutorialContext.Provider>
