@@ -27,6 +27,18 @@ export default function AddProductToRye() {
   const [fetchError, setFetchError] = useState(false);
   const requestProductDataOutputJSON = JSON.stringify(requestProductData, null, 2);
 
+  const onClickFetch = () => {
+    if (requestProductCallback && currentApiKey && currentRequestedProductURL) {
+      requestProductCallback(
+          currentApiKey,
+          requestProductVariables(currentRequestedProductURL, MarketplaceEnum.Amazon), // TODO: add support for Shopify
+      );
+      setFetchError(false);
+    } else {
+      setFetchError(true);
+    }
+  }
+
   return (
       <section>
         <h3 className="mb-[24px] text-heading-small font-bold font-poppinsBold">How it works</h3>
@@ -70,17 +82,7 @@ export default function AddProductToRye() {
               value={currentRequestedProductURL}
           />
           <button
-              onClick={() => {
-                if (requestProductCallback && currentApiKey && currentRequestedProductURL) {
-                  requestProductCallback(
-                      currentApiKey,
-                      requestProductVariables(currentRequestedProductURL, MarketplaceEnum.Amazon), // TODO: add support for Shopify
-                  );
-                  setFetchError(false);
-                } else {
-                  setFetchError(true);
-                }
-              }}
+              onClick={onClickFetch}
               className="my-[6px] mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
           >
             Fetch
