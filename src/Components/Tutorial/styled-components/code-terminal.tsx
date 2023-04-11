@@ -16,16 +16,18 @@ const codeTagPropsStyle = {
 
 export default function Terminal({
   code,
+  label,
   language = 'javascript',
 }: {
   code: string;
+  label: string;
   language?: string;
 }) {
   return (
     <div className="mt-2 rounded-3xl bg-terminal-black px-6 py-5">
       <div className="flex gap-2 text-white">
-        <button className="rounded-xl bg-white py-[4px] px-[2px] text-paragraph-xsmall text-black hover:text-neutral-content-grey">
-          amazon.js
+        <button className="w-fit rounded-xl bg-white py-[4px] px-[10px] text-terminal-file-name text-black hover:text-neutral-content-grey">
+          {label}
         </button>
       </div>
       <SyntaxHighlighter

@@ -9,12 +9,9 @@ export const enum StepEnum {
   Step1 = 'Obtaining Rye API key',
   Step2 = 'Fetch product data',
   Step3 = 'Add product to Rye',
-  Step4 = 'Add product to a user’s cart',
-  Step5 = 'Fetch a user’s cart',
-  Step6 = 'Display cart to user',
-  Step7 = 'Update buyer info',
-  Step8 = 'Show payment form',
-  Step9 = 'Display transaction results',
+  Step4 = 'Manage a cart',
+  Step5 = 'Manage checkout',
+  Step6 = 'Display transaction results',
 }
 
 export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
@@ -37,14 +34,18 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
     description: 'Some products on Amazon and Shopify may not be logged in the Rye inventory. You can use this function to add an external product. This step is optional but can be useful if you want to track inventory and orders within Rye.',
     url: '/add-product'
   },
-  { title: StepEnum.Step4, description: 'test', url: '/add-to-cart' },
-  { title: StepEnum.Step5, description: 'test', url: '/fetch-cart' },
-  { title: StepEnum.Step6, description: 'test', url: '/display-cart' },
-  { title: StepEnum.Step7, description: 'test', url: '/update-info' },
-  { title: StepEnum.Step8, description: 'test', url: '/payment-form' },
   {
-    title: StepEnum.Step9,
-    description: 'test',
+    title: StepEnum.Step4,
+    description: 'Using Rye API, our customers can create and manage their carts with ease. They can add multiple products from multiple different stores, all in one cart. This step demonstrates how we can create a cart, add or remove products to it, and finally get the cart details.',
+    url: '/manage-a-cart'
+  },
+  {
+    title: StepEnum.Step5,
+    description: 'Some products on Amazon and Shopify may not be logged in the Rye inventory. You can use this function to add an external product. This step is optional but can be useful if you want to track inventory and orders within Rye.',
+    url: '/manage-checkout' },
+  {
+    title: StepEnum.Step6,
+    description: 'Displaying transaction results to users after a purchase is important because it confirms the purchase, provides transparency, prevents confusion, and reduces disputes, which leads to a better user experience and fewer problems for both the user and the business.',
     url: '/display-transaction',
   },
 ];

@@ -66,7 +66,7 @@ export default function AddProductToRye() {
               You can use the product ID returned by this mutation to fetch product data.
               You can also do this via the Rye Console.
             </p>
-            <Terminal code={requestProductAmazonCodeSnippet} />
+            <Terminal label="amazon.js" code={requestProductAmazonCodeSnippet} />
           </ListItem>
         </ol>
         <h3 className="mt-[58px] mb-[6px] text-heading-small font-bold font-poppinsBold">See it in action</h3>
@@ -95,7 +95,7 @@ export default function AddProductToRye() {
               copied.
             </p>
         )}
-        {requestProductData && <Terminal code={requestProductDataOutputJSON} language="json" />}
+        {requestProductData && <Terminal label="JSON" code={requestProductDataOutputJSON} language="json" />}
       </section>
   );
 }

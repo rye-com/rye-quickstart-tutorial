@@ -403,3 +403,52 @@ const CheckoutForm = () => {
     </form>
   )
 };`;
+
+
+export const updateBuyerIdentityMutation = `mutation updateCartBuyerIdentity($input: CartBuyerIdentityUpdateInput!) {
+    updateCartBuyerIdentity(input: $input) {
+        id
+    }
+}`;
+
+export const showPaymentForm = `const ryePay = new RyePay();
+const loadSpreedly = () => {
+    ryePay.init({
+      apiKey,
+      numberEl: 'spreedly-number',
+      cvvEl: 'spreedly-cvv',
+      environment: prod,
+    });
+  };
+
+loadSpreedly();`;
+
+export const submitCartMutation = `mutation submitCart($input: CartSubmitInput!) {
+    submitCart(input: $input) {
+        id,
+        stores {
+            status, 
+            requestId
+            store {
+                ... on AmazonStore {
+                    store
+                    cartLines {
+                        quantity,
+                        product {
+                            id
+                        }
+                    }
+                }
+                ... on ShopifyStore {
+                    store
+                    cartLines {
+                        quantity,
+                        variant {
+                            id
+                        }
+                    }
+                }
+            }
+        }
+    }
+}`;

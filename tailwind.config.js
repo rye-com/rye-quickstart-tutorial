@@ -12,6 +12,7 @@ module.exports = {
         'heading-large': ['48px', '52px'],
         'paragraph-small': ['14px', '24px'],
         'paragraph-xsmall': ['14px', '18px'],
+        'terminal-file-name': ['12px', '16px'],
         'paragraph-medium': ['16px', '28px'],
         'heading-small': ['24px', '32px'],
       },
