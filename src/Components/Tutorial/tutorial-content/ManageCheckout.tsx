@@ -1,11 +1,11 @@
-import {LinkType} from '../constants';
+import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import { InlineCodeSnippet } from "../helper-components/InlineCodeSnippet";
+import { showPaymentForm, submitCartMutation, updateBuyerIdentityMutation } from "../code_snippets";
+import { LinkType } from '../constants';
+import { ReactComponent as ManageCheckoutImage } from "../../../assets/manage-checkout.svg";
 import ExternalLink from "../styled-components/external-link";
-import {ArrowTopRightOnSquareIcon} from "@heroicons/react/24/solid";
-import {ReactComponent as ManageCheckoutImage} from "../../../assets/manage-checkout.svg";
 import ListItem from "../styled-components/list-item";
-import {InlineCodeSnippet} from "../helper-components/InlineCodeSnippet";
 import Terminal from "../styled-components/code-terminal";
-import {showPaymentForm, submitCartMutation, updateBuyerIdentityMutation} from "../code_snippets";
 
 export default function ManageCheckout() {
   return (
@@ -30,7 +30,6 @@ export default function ManageCheckout() {
             </p>
             <Terminal language="graphql" label="GraphQL" code={updateBuyerIdentityMutation}/>
           </ListItem>
-
           <ListItem content="Show payment form">
             <p className="text-paragraph-small font-normal mt-[4px] mb-[8px]">
               Show a payment form to the user. It is up to developers to provide required input fields to capture billing information including billing address.
@@ -44,7 +43,6 @@ export default function ManageCheckout() {
             </p>
             <Terminal label="JavaScript" code={showPaymentForm} />
           </ListItem>
-
           <ListItem content="Submit the cart">
             <p className="text-paragraph-small font-normal mt-[4px] mb-[8px]">
               When the user enters their credit card information, use{' '}
