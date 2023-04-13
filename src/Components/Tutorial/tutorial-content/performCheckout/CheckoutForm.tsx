@@ -12,10 +12,6 @@ const emptyCodeSnippet = generateEmptyCodeSnippetForLineNumbers(28);
 export default function CheckoutForm() {
   const [submitCartOutput, setSubmitCartOutput] = useState<string>(emptyCodeSnippet);
 
-  const displaySubmitCartOutput = () => {
-    setSubmitCartOutput(submitCartMutationResponse);
-  }
-
   return (
       <div className="flex flex-row items-start p-0 gap-2">
         <div className="flex flex-col items-start p-6 bg-[#EFEFF5] w-[320px] h-[770px] rounded-[24px] gap-6 mt-2">
@@ -40,7 +36,7 @@ export default function CheckoutForm() {
             <Input value={CheckoutFormConstants.phone} internalLabel="Phone (Optional)"/>
           </div>
           <button
-              onClick={displaySubmitCartOutput}
+              onClick={() => setSubmitCartOutput(submitCartMutationResponse)}
               className="rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
           >
             Submit
