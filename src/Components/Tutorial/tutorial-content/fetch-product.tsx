@@ -80,7 +80,7 @@ export default function FetchProduct() {
           </div>
         </ListItem>
         <ListItem content="Use the item ID in the following function to fetch product info">
-          <Terminal code={fetchSnippet} />
+          <Terminal label="amazon.js" code={fetchSnippet} />
         </ListItem>
         <ListItem content="Run the function to fetch product information, prices, and more.">
           <p className="mb-[4px] font-poppins text-paragraph-small font-normal">
@@ -119,7 +119,7 @@ export default function FetchProduct() {
               copied.
             </p>
           )}
-          {fetchProductData && <Terminal code={prettyJSON} language="json" />}
+          {fetchProductData && <Terminal label="JSON" code={prettyJSON} language="json" />}
         </ListItem>
       </ol>
     </section>

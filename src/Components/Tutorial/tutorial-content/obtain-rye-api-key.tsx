@@ -67,7 +67,7 @@ export default function ObtainRyeApiKey() {
         <p className="mb-[12px] text-paragraph-small font-normal">
           See below for the code snippet to call the Rye API:
         </p>
-        <Terminal code={initClientSnippet} />
+        <Terminal label="JavaScript" code={initClientSnippet} />
       </ListItem>
     </ol>
   );
