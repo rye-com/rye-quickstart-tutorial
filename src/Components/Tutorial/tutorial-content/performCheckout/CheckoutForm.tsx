@@ -43,7 +43,7 @@ export default function CheckoutForm() {
           </button>
         </div>
         <div className="overflow-x-auto min-w-[474px] min-h-[760px]">
-          <Terminal language="graphql" label="JSON" code={submitCartOutput ?? ""}/>
+          <Terminal language="graphql" label="JSON" code={submitCartOutput}/>
         </div>
       </div>
   );

@@ -2,7 +2,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { atomOneDark } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 const lineNumberStyle = {
-  color: '#7E7F98',
+  color: '#7E7F98'
 }
 
 const customStyle = {
