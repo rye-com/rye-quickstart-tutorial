@@ -404,6 +404,9 @@ const CheckoutForm = () => {
   )
 };`;
 
+export const generateEmptyCodeSnippetForLineNumbers = (numLines: number): string => {
+  return "\n".repeat(numLines - 1);
+}
 
 export const updateBuyerIdentityMutation = `mutation updateCartBuyerIdentity($input: CartBuyerIdentityUpdateInput!) {
     updateCartBuyerIdentity(input: $input) {
@@ -452,3 +455,32 @@ export const submitCartMutation = `mutation submitCart($input: CartSubmitInput!)
         }
     }
 }`;
+
+export const submitCartMutationResponse = `{
+    "data": {
+        "submitCart": {
+            "cart": {
+                "id": "71diZsklan3IQnkE0V9pky",
+                "stores": [
+                    {
+                        "status": "COMPLETED",
+                        "requestId": "724041230-gh12-5587-2182",
+                        "store": {
+                            "store": "rye-test-store.myshopify.com",
+                            "cartLines": [
+                                {
+                                    "quantity": 1,
+                                    "variant": {
+                                        "id": "44454219743530"
+                                    }
+                                }
+                            ]
+                        },
+                        "errors": []
+                    }
+                ]
+            },
+            "errors": []
+        }
+    }
+}`
