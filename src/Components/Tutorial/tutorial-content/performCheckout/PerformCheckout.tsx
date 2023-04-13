@@ -72,8 +72,8 @@ export default function PerformCheckout() {
             <InlineCodeSnippet version="v2redText">{CheckoutFormConstants.productId}</InlineCodeSnippet>.
           </p>
           <p className="text-paragraph-small font-normal mt-1 mb-2">
-          Click the "Submit" button to see what response a developer can expect when a cart is successfully checked out!
-        </p>
+            Click the "Submit" button to see what response a developer can expect when a cart is successfully checked out!
+          </p>
           <CheckoutForm/>
         </div>
       </section>
