@@ -9,14 +9,14 @@ import { useRequest } from './utils/fetch';
 import { useDebouncedCallback } from 'use-debounce';
 import {
   amazonProductFetchQuery,
-  createCartMutation,
-  getCartQuery,
   productFetchVariables,
   requestProductQuery
 } from './CodeSnippets/code_snippets';
 import { MarketplaceEnum } from './types';
 import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-intro.svg";
-import {addItemToCartMutation} from "./CodeSnippets/addItemToCartSnippet";
+import { addItemToCartMutation } from "./CodeSnippets/addItemToCartSnippet";
+import { getCartQuery } from "./CodeSnippets/getCartSnippet";
+import { createCartMutation } from "./CodeSnippets/createCartSnippet";
 
 type UrlMapType = {
   [url: string]: TutorialStep;

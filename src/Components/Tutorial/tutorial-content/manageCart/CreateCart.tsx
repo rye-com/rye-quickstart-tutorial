@@ -1,10 +1,7 @@
 import Terminal from "../../styled-components/code-terminal";
-import {
-  createCartInputVariables,
-  createCartMutation,
-} from "../../CodeSnippets/code_snippets";
 import {useContext, useEffect, useState} from "react";
 import {TutorialContext} from "../../constants";
+import {createCartInputVariables, createCartMutation} from "../../CodeSnippets/createCartSnippet";
 
 export default function CreateCart() {
   const context = useContext(TutorialContext);
