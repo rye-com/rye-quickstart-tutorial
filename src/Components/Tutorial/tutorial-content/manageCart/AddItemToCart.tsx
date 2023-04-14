@@ -49,8 +49,8 @@ export default function AddItemToCart() {
           </button>
         </div>
         <div className="flex flex-row gap-2 overflow-hidden">
-          <Terminal language="graphql" label="Query" code={addItemToCartMutation} />
-          <Terminal language="graphql" label="JSON" code={addItemToCartData ? addItemToCartDataJSONOutput: ""} />
+          <Terminal language="graphql" label="Mutation" code={addItemToCartMutation} />
+          <Terminal language="graphql" label="Response" code={addItemToCartData ? addItemToCartDataJSONOutput: ""} />
           {(fetchError || addItemToCartError) && (
               <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
                 There was an issue with the request. Please double check your Rye API key connection

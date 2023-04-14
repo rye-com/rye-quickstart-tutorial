@@ -53,7 +53,7 @@ export default function GetCart() {
         </div>
         <div className="flex flex-row gap-2 overflow-hidden">
           <Terminal language="graphql" label="Query" code={getCartQuery} />
-          <Terminal language="graphql" label="JSON" code={getCartData ? getCartDataJSONOutput: ""} />
+          <Terminal language="graphql" label="Response" code={getCartData ? getCartDataJSONOutput: ""} />
           {(fetchError || getCartError) && (
               <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
                 There was an issue with the request. Please double check your Rye API key connection

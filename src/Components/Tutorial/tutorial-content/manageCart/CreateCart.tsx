@@ -1,6 +1,5 @@
 import Terminal from "../../styled-components/code-terminal";
 import {
-  createCartInput,
   createCartInputVariables,
   createCartMutation,
 } from "../../CodeSnippets/code_snippets";
@@ -43,25 +42,21 @@ export default function CreateCart() {
 
   return (
       <div className="flex flex-row gap-2">
-        <div>
-          <Terminal language="graphql" label="Mutation" code={createCartMutation} />
-          <Terminal language="graphql" label="Input Variables" code={createCartInput} />
-        </div>
-        <div className="overflow-x-auto min-w-max min-h-max">
-          <button
-            className="mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
+
+        <Terminal language="graphql" label="Mutation" code={createCartMutation} />
+        <button
+            className="mx-3 rounded-xl bg-brand-green px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green h-14"
             onClick={onClickFetch}
-          >
-            Create cart
-          </button>
-          <Terminal language="graphql" label="GraphQL" code={createCartData ? createCartDataOutputJSON: ""} />
-          {(fetchError || createCartError) && (
-              <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
-                There was an issue with the request. Please double check your Rye API key connection
-                within the 'Manage Cart - Create a cart' step.
-              </p>
-          )}
-        </div>
+        >
+          Create cart
+        </button>
+        <Terminal language="graphql" label="Response" code={createCartData ? createCartDataOutputJSON: ""} />
+        {(fetchError || createCartError) && (
+            <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
+              There was an issue with the request. Please double check your Rye API key connection
+              within the 'Manage Cart - Create a cart' step.
+            </p>
+        )}
       </div>
   );
 }
