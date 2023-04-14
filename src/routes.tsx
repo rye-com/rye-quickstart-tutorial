@@ -1,12 +1,12 @@
 import './index.css';
-import Tutorial from './Components/Tutorial';
+import Tutorial from './Components/Tutorial/index-new';
 
 import { createBrowserRouter } from 'react-router-dom';
 
 import ObtainRyeApiKey from './Components/Tutorial/tutorial-content/obtain-rye-api-key';
 import FetchProduct from './Components/Tutorial/tutorial-content/fetch-product';
 import AddProductToRye from "./Components/Tutorial/tutorial-content/add-product-to-rye";
-import ManageCart from "./Components/Tutorial/tutorial-content/ManageCart";
+import ManageCart from "./Components/Tutorial/tutorial-content/manageCart/ManageCart";
 import ManageCheckout from "./Components/Tutorial/tutorial-content/ManageCheckout";
 import DisplayTransactions from "./Components/Tutorial/tutorial-content/DisplayTransactions";
 
