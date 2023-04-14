@@ -1,5 +1,5 @@
 import './index.css';
-import Tutorial from './Components/Tutorial';
+import Tutorial from './Components/Tutorial/index-new';
 
 import { createBrowserRouter } from 'react-router-dom';
 
