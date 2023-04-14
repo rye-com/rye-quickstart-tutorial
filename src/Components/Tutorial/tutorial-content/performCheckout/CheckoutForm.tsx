@@ -5,8 +5,8 @@ import Input from "../../styled-components/input";
 import Terminal from "../../styled-components/code-terminal";
 
 // Number of lines should equal the size of the JSON output (for now)
-// TODO: update the Terminal component to be able to do this via providing height
-// instead of an hacky approach like this
+// TODO: update the Terminal component to be able to do this via providing height instead of a hacky approach like this
+// TODO task: https://linear.app/rye/issue/RYE-2186/[tutorial][fix]-clean-up-terminal
 const emptyCodeSnippet = generateEmptyCodeSnippetForLineNumbers(28);
 
 export default function CheckoutForm() {
