@@ -2,7 +2,7 @@ import Terminal from "../../styled-components/code-terminal";
 import {
   getCartInputVariables,
   getCartQuery,
-} from "../../code_snippets";
+} from "../../CodeSnippets/code_snippets";
 import {useContext, useState} from "react";
 import {TutorialContext} from "../../constants";
 import Input from "../../styled-components/input";

@@ -1,6 +1,7 @@
 import type {CreateCartOutput, TutorialStep} from './types';
 import { createContext } from 'react';
 import type { Variables } from 'graphql-request';
+import {MarketplaceEnum} from "./types";
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
@@ -91,7 +92,18 @@ type TutorialContextType = {
     getCartLoading?: boolean;
     getCartError?: boolean;
   };
+  addItemToCart: {
+    addItemToCartCallback?: (key: string, variables: Variables) => void;
+    addItemToCartData?: object | null;
+    addItemToCartLoading?: boolean;
+    addItemToCartError?: boolean;
+  }
 };
+
+export const addItemToCartTestData = {
+  productId: "44346795295022",
+  marketplace: MarketplaceEnum.Shopify,
+}
 
 export const TutorialContext = createContext<TutorialContextType>({
   apiKey: {},
@@ -99,4 +111,5 @@ export const TutorialContext = createContext<TutorialContextType>({
   requestProduct: {},
   createCart: {},
   getCart: {},
+  addItemToCart: {}
 });

@@ -13,9 +13,10 @@ import {
   getCartQuery,
   productFetchVariables,
   requestProductQuery
-} from './code_snippets';
+} from './CodeSnippets/code_snippets';
 import { MarketplaceEnum } from './types';
 import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-intro.svg";
+import {addItemToCartMutation} from "./CodeSnippets/addItemToCartSnippet";
 
 type UrlMapType = {
   [url: string]: TutorialStep;
@@ -83,6 +84,14 @@ export default function Index() {
     error: getCartError,
   } = useRequest<object>(getCartQuery);
 
+  // Add item to cart
+  const {
+    callback: addItemToCartCallback,
+    data: addItemToCartData,
+    loading: addItemToCartLoading,
+    error: addItemToCartError,
+  } = useRequest<object>(addItemToCartMutation);
+
   return (
     <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
@@ -122,6 +131,12 @@ export default function Index() {
             getCartData: getCartData ?? null,
             getCartLoading,
             getCartError: !!getCartError,
+          },
+          addItemToCart: {
+            addItemToCartCallback,
+            addItemToCartData: addItemToCartData ?? null,
+            addItemToCartLoading,
+            addItemToCartError: !!addItemToCartError,
           }
         }}
       >

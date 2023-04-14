@@ -3,7 +3,7 @@ import {
   createCartInput,
   createCartInputVariables,
   createCartMutation,
-} from "../../code_snippets";
+} from "../../CodeSnippets/code_snippets";
 import {useContext, useEffect, useState} from "react";
 import {TutorialContext} from "../../constants";
 

@@ -7,10 +7,10 @@ import ListItem from '../styled-components/list-item';
 import Input from '../styled-components/input';
 import { useContext, useState } from 'react';
 import { TutorialContext } from '../constants';
-import { productFetchVariables } from '../code_snippets';
+import { productFetchVariables } from '../CodeSnippets/code_snippets';
 import { MarketplaceEnum } from '../types';
 import Terminal from '../styled-components/code-terminal';
-import { amazonProductFetchSnippet } from '../code_snippets';
+import { amazonProductFetchSnippet } from '../CodeSnippets/code_snippets';
 
 export default function FetchProduct() {
   const context = useContext(TutorialContext);

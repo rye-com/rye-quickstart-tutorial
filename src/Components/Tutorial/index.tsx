@@ -27,7 +27,7 @@ import {
   amazonPaymentIntentVariables,
   shopifyPaymentIntentQuery,
   amazonPaymentIntentQuery,
-} from './code_snippets';
+} from './CodeSnippets/code_snippets';
 import cloneDeep from 'lodash/cloneDeep';
 import merge from 'lodash/merge';
 import snakeCase from 'lodash/snakeCase';

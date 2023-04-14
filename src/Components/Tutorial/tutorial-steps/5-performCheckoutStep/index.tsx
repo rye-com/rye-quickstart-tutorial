@@ -1,5 +1,5 @@
 import { Card, Timeline } from 'flowbite-react';
-import { checkoutFormCode } from '../../code_snippets';
+import { checkoutFormCode } from '../../CodeSnippets/code_snippets';
 import { StripeCheckout } from '../../primary-components/StripeCheckout';
 import type {
   Store,

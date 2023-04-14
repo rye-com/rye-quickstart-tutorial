@@ -6,6 +6,7 @@ import ListItem from "../../styled-components/list-item";
 import {InlineCodeSnippet} from "../../helper-components/InlineCodeSnippet";
 import CreateCart from "./CreateCart";
 import GetCart from "./GetCart";
+import AddItemToCart from "./AddItemToCart";
 
 export default function ManageCart() {
   return (
@@ -40,6 +41,7 @@ export default function ManageCart() {
               <InlineCodeSnippet version="v2redText">addToCart</InlineCodeSnippet> mutation to add the product to the user's cart.
               This will return a cart ID that can be used to fetch the cart data in the next step.
             </p>
+            <AddItemToCart/>
           </ListItem>
           <ListItem content="Fetch a user’s cart">
             <p className="text-paragraph-small font-normal mt-1 mb-2">
