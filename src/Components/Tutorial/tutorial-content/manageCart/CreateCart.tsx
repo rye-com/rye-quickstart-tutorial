@@ -4,7 +4,6 @@ import {
   createCartInputVariables,
   createCartMutation,
 } from "../../code_snippets";
-import { Button } from "flowbite-react";
 import {useContext, useEffect, useState} from "react";
 import {TutorialContext} from "../../constants";
 
@@ -49,9 +48,12 @@ export default function CreateCart() {
           <Terminal language="graphql" label="Input Variables" code={createCartInput} />
         </div>
         <div className="overflow-x-auto min-w-max min-h-max">
-          <Button
+          <button
+            className="mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
             onClick={onClickFetch}
-          >Create cart</Button>
+          >
+            Create cart
+          </button>
           <Terminal language="graphql" label="GraphQL" code={createCartData ? createCartDataOutputJSON: ""} />
           {(fetchError || createCartError) && (
               <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">

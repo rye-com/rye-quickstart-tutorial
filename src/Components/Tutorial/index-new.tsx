@@ -7,7 +7,13 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useRequest } from './utils/fetch';
 import { useDebouncedCallback } from 'use-debounce';
-import {amazonProductFetchQuery, createCartMutation, productFetchVariables, requestProductQuery} from './code_snippets';
+import {
+  amazonProductFetchQuery,
+  createCartMutation,
+  getCartQuery,
+  productFetchVariables,
+  requestProductQuery
+} from './code_snippets';
 import { MarketplaceEnum } from './types';
 import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-intro.svg";
 
@@ -69,6 +75,14 @@ export default function Index() {
     error: createCartError,
   } = useRequest<CreateCartOutput>(createCartMutation);
 
+  // Get cart
+  const {
+    callback: getCartCallback,
+    data: getCartData,
+    loading: getCartLoading,
+    error: getCartError,
+  } = useRequest<object>(getCartQuery);
+
   return (
     <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
@@ -102,6 +116,12 @@ export default function Index() {
             setCurrentCreateCartID,
             currentCreateCartID,
             createCartError: !!createCartError,
+          },
+          getCart: {
+            getCartCallback,
+            getCartData: getCartData ?? null,
+            getCartLoading,
+            getCartError: !!getCartError,
           }
         }}
       >

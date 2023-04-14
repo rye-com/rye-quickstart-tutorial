@@ -85,6 +85,12 @@ type TutorialContextType = {
     currentCreateCartID?: string;
     createCartError?: boolean;
   };
+  getCart: {
+    getCartCallback?: (key: string, variables: Variables) => void;
+    getCartData?: object | null;
+    getCartLoading?: boolean;
+    getCartError?: boolean;
+  };
 };
 
 export const TutorialContext = createContext<TutorialContextType>({
@@ -92,4 +98,5 @@ export const TutorialContext = createContext<TutorialContextType>({
   fetchProduct: {},
   requestProduct: {},
   createCart: {},
+  getCart: {},
 });

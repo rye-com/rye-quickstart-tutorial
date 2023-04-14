@@ -5,6 +5,7 @@ import { ReactComponent as ManageCartImage } from "../../../../assets/manage-car
 import ListItem from "../../styled-components/list-item";
 import {InlineCodeSnippet} from "../../helper-components/InlineCodeSnippet";
 import CreateCart from "./CreateCart";
+import GetCart from "./GetCart";
 
 export default function ManageCart() {
   return (
@@ -47,8 +48,7 @@ export default function ManageCart() {
               This will include information such as the products in the cart, and their quantities.
               You can also use this query to fetch the available shipping options and tax rates.
             </p>
-          </ListItem>
-          <ListItem content="Display cart to user">
+            <GetCart/>
           </ListItem>
         </ol>
       </section>
