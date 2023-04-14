@@ -1,4 +1,4 @@
-import type { TutorialStep } from './types';
+import type {CreateCartOutput, TutorialStep} from './types';
 import { createContext } from 'react';
 import type { Variables } from 'graphql-request';
 
@@ -77,10 +77,19 @@ type TutorialContextType = {
     currentRequestedProductURL?: string;
     requestProductError?: boolean;
   };
+  createCart: {
+    createCartCallback?: (key: string, variables: Variables) => void;
+    createCartData?: CreateCartOutput | null;
+    createCartLoading?: boolean;
+    setCurrentCreateCartID?: (key: string) => void;
+    currentCreateCartID?: string;
+    createCartError?: boolean;
+  };
 };
 
 export const TutorialContext = createContext<TutorialContextType>({
   apiKey: {},
   fetchProduct: {},
-  requestProduct: {}
+  requestProduct: {},
+  createCart: {},
 });

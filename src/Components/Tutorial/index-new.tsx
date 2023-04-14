@@ -1,5 +1,5 @@
 import TutorialNav from './tutorial-nav';
-import type { TutorialStep } from './types';
+import type {CreateCartOutput, TutorialStep} from './types';
 import { StepEnum, TUTORIAL_STEPS, TutorialContext } from './constants';
 import type { NonEmptyArray } from './constants';
 import { Outlet } from 'react-router-dom';
@@ -7,7 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { useRequest } from './utils/fetch';
 import { useDebouncedCallback } from 'use-debounce';
-import { amazonProductFetchQuery, productFetchVariables, requestProductQuery } from './code_snippets';
+import {amazonProductFetchQuery, createCartMutation, productFetchVariables, requestProductQuery} from './code_snippets';
 import { MarketplaceEnum } from './types';
 import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-intro.svg";
 
@@ -60,6 +60,15 @@ export default function Index() {
       requestProductQuery,
   );
 
+  // Create cart
+  const [currentCreateCartID, setCurrentCreateCartID] = useState('');
+  const {
+    callback: createCartCallback,
+    data: createCartData,
+    loading: createCartLoading,
+    error: createCartError,
+  } = useRequest<CreateCartOutput>(createCartMutation);
+
   return (
     <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
@@ -85,6 +94,14 @@ export default function Index() {
             currentRequestedProductURL,
             setCurrentRequestedProductURL,
             requestProductError: !!requestProductError,
+          },
+          createCart: {
+            createCartCallback,
+            createCartData: createCartData ?? null,
+            createCartLoading,
+            setCurrentCreateCartID,
+            currentCreateCartID,
+            createCartError: !!createCartError,
           }
         }}
       >

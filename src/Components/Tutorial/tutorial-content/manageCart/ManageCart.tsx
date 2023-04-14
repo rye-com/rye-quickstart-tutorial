@@ -4,6 +4,7 @@ import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { ReactComponent as ManageCartImage } from "../../../../assets/manage-cart.svg";
 import ListItem from "../../styled-components/list-item";
 import {InlineCodeSnippet} from "../../helper-components/InlineCodeSnippet";
+import CreateCart from "./CreateCart";
 
 export default function ManageCart() {
   return (
@@ -30,6 +31,7 @@ export default function ManageCart() {
               <InlineCodeSnippet version="v2redText">buyerIdentity</InlineCodeSnippet> and {' '}
               <InlineCodeSnippet version="v2redText">items</InlineCodeSnippet> with initial list of products.
             </p>
+            <CreateCart/>
           </ListItem>
           <ListItem content="Add products to a user’s cart">
             <p className="text-paragraph-small font-normal mt-1 mb-2">
