@@ -1,7 +1,7 @@
-import type {CreateCartOutput, TutorialStep} from './types';
+import type { CreateCartOutput, TutorialStep } from './types';
 import { createContext } from 'react';
 import type { Variables } from 'graphql-request';
-import {MarketplaceEnum} from "./types";
+import { MarketplaceEnum } from  "./types";
 
 export type NonEmptyArray<T> = [T, ...T[]];
 

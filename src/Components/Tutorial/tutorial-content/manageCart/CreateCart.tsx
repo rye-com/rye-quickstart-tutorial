@@ -1,7 +1,7 @@
+import { useContext, useEffect, useState } from "react";
+import { TutorialContext } from "../../constants";
+import { createCartInputVariables, createCartMutation } from "../../CodeSnippets/createCartSnippet";
 import Terminal from "../../styled-components/code-terminal";
-import {useContext, useEffect, useState} from "react";
-import {TutorialContext} from "../../constants";
-import {createCartInputVariables, createCartMutation} from "../../CodeSnippets/createCartSnippet";
 
 export default function CreateCart() {
   const context = useContext(TutorialContext);
@@ -39,7 +39,6 @@ export default function CreateCart() {
 
   return (
       <div className="flex flex-row gap-2">
-
         <Terminal language="graphql" label="Mutation" code={createCartMutation} />
         <button
             className="mx-3 rounded-xl bg-brand-green px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green h-14"

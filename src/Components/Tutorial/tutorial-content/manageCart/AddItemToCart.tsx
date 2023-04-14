@@ -1,8 +1,8 @@
-import Terminal from "../../styled-components/code-terminal";
-import {useContext, useState} from "react";
-import {addItemToCartTestData, TutorialContext} from "../../constants";
+import { useContext, useState } from "react";
+import { addItemToCartInputVariables, addItemToCartMutation } from "../../CodeSnippets/addItemToCartSnippet";
+import { addItemToCartTestData, TutorialContext} from "../../constants";
 import Input from "../../styled-components/input";
-import {addItemToCartInputVariables, addItemToCartMutation} from "../../CodeSnippets/addItemToCartSnippet";
+import Terminal from "../../styled-components/code-terminal";
 
 export default function AddItemToCart() {
   const context = useContext(TutorialContext);

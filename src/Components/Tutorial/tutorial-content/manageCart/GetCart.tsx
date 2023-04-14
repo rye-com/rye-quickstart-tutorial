@@ -1,8 +1,8 @@
-import Terminal from "../../styled-components/code-terminal";
-import {useContext, useState} from "react";
-import {TutorialContext} from "../../constants";
+import { useContext, useState } from "react";
+import { TutorialContext } from "../../constants";
+import { getCartInputVariables, getCartQuery } from "../../CodeSnippets/getCartSnippet";
 import Input from "../../styled-components/input";
-import {getCartInputVariables, getCartQuery} from "../../CodeSnippets/getCartSnippet";
+import Terminal from "../../styled-components/code-terminal";
 
 export default function GetCart() {
   const context = useContext(TutorialContext);
@@ -54,7 +54,7 @@ export default function GetCart() {
           {(fetchError || getCartError) && (
               <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
                 There was an issue with the request. Please double check your Rye API key connection
-                within the 'Manage Cart - Create a cart' step.
+                within the 'Manage Cart - Get cart' step.
               </p>
           )}
         </div>

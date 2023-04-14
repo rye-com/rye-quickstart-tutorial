@@ -1,5 +1,5 @@
 import TutorialNav from './tutorial-nav';
-import type {CreateCartOutput, TutorialStep} from './types';
+import type { CreateCartOutput, TutorialStep } from './types';
 import { StepEnum, TUTORIAL_STEPS, TutorialContext } from './constants';
 import type { NonEmptyArray } from './constants';
 import { Outlet } from 'react-router-dom';
