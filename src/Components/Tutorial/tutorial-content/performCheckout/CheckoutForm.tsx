@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { CheckoutFormConstants } from "../../constants";
-import { generateEmptyCodeSnippetForLineNumbers, submitCartMutationResponse } from "../../code_snippets";
 import Input from "../../styled-components/input";
 import Terminal from "../../styled-components/code-terminal";
+import { generateEmptyCodeSnippetForLineNumbers, submitCartMutationResponse } from "../../CodeSnippets/code_snippets";
 
 // Number of lines should equal the size of the JSON output (for now)
 // TODO: update the Terminal component to be able to do this via providing height instead of a hacky approach like this

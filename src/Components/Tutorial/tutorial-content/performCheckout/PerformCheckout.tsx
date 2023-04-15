@@ -1,6 +1,6 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { InlineCodeSnippet } from "../../helper-components/InlineCodeSnippet";
-import { showPaymentForm, submitCartMutation, updateBuyerIdentityMutation } from "../../code_snippets";
+import { showPaymentForm, submitCartMutation, updateBuyerIdentityMutation } from "../../CodeSnippets/code_snippets";
 import { CheckoutFormConstants, LinkType } from '../../constants';
 import { ReactComponent as ManageCheckoutImage } from "../../../../assets/manage-checkout.svg";
 import ExternalLink from "../../styled-components/external-link";
