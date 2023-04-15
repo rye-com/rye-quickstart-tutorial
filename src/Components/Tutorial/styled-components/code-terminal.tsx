@@ -24,7 +24,7 @@ export default function Terminal({
   language?: string;
 }) {
   return (
-    <div className="mt-2 rounded-3xl bg-terminal-black px-6 py-5 max-h-[900px] overflow-auto w-full">
+    <div className="mt-2 rounded-3xl bg-terminal-black px-6 py-5 overflow-auto w-full h-full">
       <div className="flex gap-2 text-white">
         <button className="w-fit rounded-xl bg-white py-[4px] px-[10px] text-terminal-file-name text-black hover:text-neutral-content-grey">
           {label}

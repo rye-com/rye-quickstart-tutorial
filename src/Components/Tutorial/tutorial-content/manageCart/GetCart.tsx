@@ -48,16 +48,16 @@ export default function GetCart() {
             Fetch
           </button>
         </div>
-        <div className="flex flex-row gap-2 overflow-hidden">
+        <div className="flex flex-row gap-2 overflow-hidden h-[700px]">
           <Terminal language="graphql" label="Query" code={getCartQuery} />
           <Terminal language="graphql" label="Response" code={getCartData ? getCartDataJSONOutput: ""} />
-          {(fetchError || getCartError) && (
-              <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
-                There was an issue with the request. Please double check your Rye API key connection
-                within the 'Manage Cart - Get cart' step.
-              </p>
-          )}
         </div>
+        {(fetchError || getCartError) && (
+            <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
+              There was an issue with the request. Please double check your Rye API key connection
+              within the 'Manage Cart - Get cart' step.
+            </p>
+        )}
       </div>
   );
 }

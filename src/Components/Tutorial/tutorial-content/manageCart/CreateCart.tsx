@@ -38,17 +38,21 @@ export default function CreateCart() {
   }, [createCartData])
 
   return (
-      <div className="flex flex-row gap-2">
-        <Terminal language="graphql" label="Mutation" code={createCartMutation} />
-        <button
-            className="mx-3 rounded-xl bg-brand-green px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green h-14"
-            onClick={onClickFetch}
-        >
-          Create cart
-        </button>
-        <Terminal language="graphql" label="Response" code={createCartData ? createCartDataOutputJSON: ""} />
+      <div>
+        <div className="flex flex-row gap-2 h-[400px]">
+          <div>
+            <Terminal language="graphql" label="Mutation" code={createCartMutation} />
+            <button
+                className="mx-3 rounded-xl bg-brand-green px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green h-14 relative top-[-80px] left-[10px]"
+                onClick={onClickFetch}
+            >
+              Create cart
+            </button>
+          </div>
+          <Terminal language="graphql" label="Response" code={createCartData ? createCartDataOutputJSON: ""} />
+        </div>
         {(fetchError || createCartError) && (
-            <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
+            <p className="my-3 text-paragraph-small font-normal text-alerts-danger">
               There was an issue with the request. Please double check your Rye API key connection
               within the 'Manage Cart - Create a cart' step.
             </p>

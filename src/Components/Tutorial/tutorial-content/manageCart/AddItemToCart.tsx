@@ -48,16 +48,16 @@ export default function AddItemToCart() {
             Add to cart
           </button>
         </div>
-        <div className="flex flex-row gap-2 overflow-hidden">
+        <div className="flex flex-row gap-2 overflow-hidden h-[700px]">
           <Terminal language="graphql" label="Mutation" code={addItemToCartMutation} />
           <Terminal language="graphql" label="Response" code={addItemToCartData ? addItemToCartDataJSONOutput: ""} />
-          {(fetchError || addItemToCartError) && (
-              <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
-                There was an issue with the request. Please double check your Rye API key connection
-                within the 'Manage Cart - Add an item to cart' step.
-              </p>
-          )}
         </div>
+        {(fetchError || addItemToCartError) && (
+            <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
+              There was an issue with the request. Please double check your Rye API key connection
+              within the 'Manage Cart - Add an item to cart' step.
+            </p>
+        )}
       </div>
   );
 }

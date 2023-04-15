@@ -404,11 +404,6 @@ const CheckoutForm = () => {
   )
 };`;
 
-// TODO: remove this hacky method once the Terminal is refactored
-export const generateEmptyCodeSnippetForLineNumbers = (numLines: number): string => {
-  return "\n".repeat(numLines - 1);
-}
-
 export const updateBuyerIdentityMutation = `mutation updateCartBuyerIdentity($input: CartBuyerIdentityUpdateInput!) {
     updateCartBuyerIdentity(input: $input) {
         id

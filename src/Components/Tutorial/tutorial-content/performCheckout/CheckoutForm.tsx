@@ -2,15 +2,10 @@ import { useState } from "react";
 import { CheckoutFormConstants } from "../../constants";
 import Input from "../../styled-components/input";
 import Terminal from "../../styled-components/code-terminal";
-import { generateEmptyCodeSnippetForLineNumbers, submitCartMutationResponse } from "../../CodeSnippets/code_snippets";
-
-// Number of lines should equal the size of the JSON output (for now)
-// TODO: update the Terminal component to be able to do this via providing height instead of a hacky approach like this
-// TODO task: https://linear.app/rye/issue/RYE-2186/[tutorial][fix]-clean-up-terminal
-const emptyCodeSnippet = generateEmptyCodeSnippetForLineNumbers(28);
+import { submitCartMutationResponse } from "../../CodeSnippets/code_snippets";
 
 export default function CheckoutForm() {
-  const [submitCartOutput, setSubmitCartOutput] = useState<string>(emptyCodeSnippet);
+  const [submitCartOutput, setSubmitCartOutput] = useState<string>("");
 
   return (
       <div className="flex flex-row items-start gap-2">
@@ -42,7 +37,7 @@ export default function CheckoutForm() {
             Submit
           </button>
         </div>
-        <div className="overflow-x-auto min-w-[474px] min-h-[760px]">
+        <div className="min-w-[474px] w-full h-[770px]">
           <Terminal language="graphql" label="Response" code={submitCartOutput}/>
         </div>
       </div>
