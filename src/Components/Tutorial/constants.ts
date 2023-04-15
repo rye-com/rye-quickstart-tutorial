@@ -11,7 +11,7 @@ export const enum StepEnum {
   Step2 = 'Fetch product data',
   Step3 = 'Add product to Rye',
   Step4 = 'Manage a cart',
-  Step5 = 'Manage checkout',
+  Step5 = 'Perform checkout',
   Step6 = 'Display transaction results',
 }
 
@@ -43,7 +43,7 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
   {
     title: StepEnum.Step5,
     description: 'Some products on Amazon and Shopify may not be logged in the Rye inventory. You can use this function to add an external product. This step is optional but can be useful if you want to track inventory and orders within Rye.',
-    url: '/manage-checkout' },
+    url: '/perform-checkout' },
   {
     title: StepEnum.Step6,
     description: 'Displaying transaction results to users after a purchase is important because it confirms the purchase, provides transparency, prevents confusion, and reduces disputes, which leads to a better user experience and fewer problems for both the user and the business.',
@@ -113,3 +113,15 @@ export const TutorialContext = createContext<TutorialContextType>({
   getCart: {},
   addItemToCart: {}
 });
+
+export const CheckoutFormConstants = {
+  productId: "44454219743530",
+  emailId: "johndoe@example.com",
+  firstName: "John",
+  lastName: "Doe",
+  streetAddress: "123 Main St",
+  city: "New York",
+  zipCode: "12345",
+  state: "NY",
+  phone: "(123) 123-1234",
+}

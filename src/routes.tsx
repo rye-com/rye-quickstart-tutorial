@@ -7,7 +7,7 @@ import ObtainRyeApiKey from './Components/Tutorial/tutorial-content/obtain-rye-a
 import FetchProduct from './Components/Tutorial/tutorial-content/fetch-product';
 import AddProductToRye from "./Components/Tutorial/tutorial-content/add-product-to-rye";
 import ManageCart from "./Components/Tutorial/tutorial-content/manageCart/ManageCart";
-import ManageCheckout from "./Components/Tutorial/tutorial-content/ManageCheckout";
+import PerformCheckout from "./Components/Tutorial/tutorial-content/performCheckout/PerformCheckout";
 import DisplayTransactions from "./Components/Tutorial/tutorial-content/DisplayTransactions";
 
 //App is wrapper component. Children components are rendered in place of <Outline />
@@ -41,8 +41,8 @@ const router = createBrowserRouter([
         element: <ManageCart />,
       },
       {
-        path: 'manage-checkout',
-        element: <ManageCheckout />,
+        path: 'perform-checkout',
+        element: <PerformCheckout />,
       },
       {
         path: 'display-transaction',
