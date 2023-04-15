@@ -1,4 +1,4 @@
-import {MarketplaceEnum} from "../types";
+import { MarketplaceEnum } from "../types";
 
 export const addItemToCartMutation = `mutation ($input: CartItemsAddInput!) {
     addCartItems(input: $input) {

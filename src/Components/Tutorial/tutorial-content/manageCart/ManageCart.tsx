@@ -1,12 +1,12 @@
-import ExternalLink from "../../styled-components/external-link";
-import { LinkType } from "../../constants";
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import { InlineCodeSnippet } from "../../helper-components/InlineCodeSnippet";
+import { LinkType } from "../../constants";
 import { ReactComponent as ManageCartImage } from "../../../../assets/manage-cart.svg";
-import ListItem from "../../styled-components/list-item";
-import {InlineCodeSnippet} from "../../helper-components/InlineCodeSnippet";
-import CreateCart from "./CreateCart";
-import GetCart from "./GetCart";
 import AddItemToCart from "./AddItemToCart";
+import CreateCart from "./CreateCart";
+import ExternalLink from "../../styled-components/external-link";
+import GetCart from "./GetCart";
+import ListItem from "../../styled-components/list-item";
 
 export default function ManageCart() {
   return (

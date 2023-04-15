@@ -100,8 +100,10 @@ type TutorialContextType = {
   }
 };
 
+const sampleProductId = "44346795295022";
+
 export const addItemToCartTestData = {
-  productId: "44346795295022",
+  productId: sampleProductId,
   marketplace: MarketplaceEnum.Shopify,
 }
 
@@ -115,7 +117,7 @@ export const TutorialContext = createContext<TutorialContextType>({
 });
 
 export const CheckoutFormConstants = {
-  productId: "44454219743530",
+  productId: sampleProductId,
   emailId: "johndoe@example.com",
   firstName: "John",
   lastName: "Doe",
