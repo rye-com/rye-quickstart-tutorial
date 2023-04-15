@@ -1,13 +1,14 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
-import { InlineCodeSnippet } from "../helper-components/InlineCodeSnippet";
-import { showPaymentForm, submitCartMutation, updateBuyerIdentityMutation } from "../code_snippets";
-import { LinkType } from '../constants';
-import { ReactComponent as ManageCheckoutImage } from "../../../assets/manage-checkout.svg";
-import ExternalLink from "../styled-components/external-link";
-import ListItem from "../styled-components/list-item";
-import Terminal from "../styled-components/code-terminal";
+import { InlineCodeSnippet } from "../../helper-components/InlineCodeSnippet";
+import { showPaymentForm, submitCartMutation, updateBuyerIdentityMutation } from "../../code_snippets";
+import { CheckoutFormConstants, LinkType } from '../../constants';
+import { ReactComponent as ManageCheckoutImage } from "../../../../assets/manage-checkout.svg";
+import ExternalLink from "../../styled-components/external-link";
+import ListItem from "../../styled-components/list-item";
+import Terminal from "../../styled-components/code-terminal";
+import CheckoutForm from "./CheckoutForm";
 
-export default function ManageCheckout() {
+export default function PerformCheckout() {
   return (
       <section>
         <div className="mb-3 flex font-poppinsBold">
@@ -63,6 +64,18 @@ export default function ManageCheckout() {
             <Terminal language="graphql" label="GraphQL" code={submitCartMutation} />
           </ListItem>
         </ol>
+        <div>
+          <h3 className="mb-6 text-heading-small font-bold font-poppinsBold">See it in action</h3>
+          <p className="text-paragraph-small font-normal mt-1 mb-2">
+            Here's an example of how you can use our APIs and tools to create a payment form.
+            Here we try to checkout an existing cart which contains a product {' '}
+            <InlineCodeSnippet version="v2redText">{CheckoutFormConstants.productId}</InlineCodeSnippet>.
+          </p>
+          <p className="text-paragraph-small font-normal mt-1 mb-2">
+            Click the "Submit" button to see what response a developer can expect when a cart is successfully checked out!
+          </p>
+          <CheckoutForm/>
+        </div>
       </section>
   );
 }
