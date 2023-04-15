@@ -35,7 +35,7 @@ export default function CreateCart() {
     if (setCurrentCreateCartID && createCartData) {
       setCurrentCreateCartID(createCartData?.createCart?.cart?.id ?? "");
     }
-  }, [createCartData])
+  }, [createCartData, setCurrentCreateCartID])
 
   return (
       <div>
