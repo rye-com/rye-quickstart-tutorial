@@ -33,7 +33,7 @@ export default function CreateCart() {
 
   useEffect(() => {
     if (setCurrentCreateCartID && createCartData) {
-      setCurrentCreateCartID(createCartData?.createCart?.cart?.id ?? "");
+      setCurrentCreateCartID(createCartData.createCart.cart.id);
     }
   }, [createCartData, setCurrentCreateCartID])
 
