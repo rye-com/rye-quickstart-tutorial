@@ -1,4 +1,5 @@
 import type { Address } from '../../../types/api-data/Address';
+import { SubmitCartSampleRequestId } from "../constants";
 
 const indent = (code: string) => {
   const split = code.split('\n');
@@ -460,7 +461,7 @@ export const submitCartMutationResponse = `{
                 "stores": [
                     {
                         "status": "COMPLETED",
-                        "requestId": "724041230-gh12-5587-2182",
+                        "requestId": ${SubmitCartSampleRequestId},
                         "store": {
                             "store": "rye-test-store.myshopify.com",
                             "cartLines": [

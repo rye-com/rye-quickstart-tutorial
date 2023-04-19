@@ -11,7 +11,7 @@ import CheckoutForm from "./CheckoutForm";
 export default function PerformCheckout() {
   return (
       <section>
-        <div className="mb-3 flex font-poppinsBold">
+        <div className="mb-3 flex">
           <h2 className="mr-2 text-heading-small font-bold">Example</h2>
           <ExternalLink
               href="https://console.rye.com"
@@ -21,8 +21,8 @@ export default function PerformCheckout() {
           />
         </div>
         <ManageCheckoutImage className="mb-[50px]"/>
-        <h3 className="mb-6 text-heading-small font-bold font-poppinsBold">How it works</h3>
-        <ol className="list-inside list-decimal text-paragraph-medium font-semibold font-poppinsSemiBold">
+        <h3 className="mb-6 text-heading-small font-bold">How it works</h3>
+        <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
           <ListItem content="Update buyer info">
             <p className="text-paragraph-small font-normal mt-1 mb-2">
               Update buyer identity information if it was not provided during cart creation via{' '}
@@ -65,7 +65,7 @@ export default function PerformCheckout() {
           </ListItem>
         </ol>
         <div>
-          <h3 className="mb-6 text-heading-small font-bold font-poppinsBold">See it in action</h3>
+          <h3 className="mb-6 text-heading-small font-bold">See it in action</h3>
           <p className="text-paragraph-small font-normal mt-1 mb-2">
             Here's an example of how you can use our APIs and tools to create a payment form.
             Here we try to checkout an existing cart which contains a product {' '}

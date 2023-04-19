@@ -11,7 +11,7 @@ import ListItem from "../../styled-components/list-item";
 export default function ManageCart() {
   return (
       <section>
-        <div className="mb-3 flex font-poppinsBold">
+        <div className="mb-3 flex">
           <h2 className="mr-2 text-heading-small font-bold">Example</h2>
           <ExternalLink
               href="https://console.rye.com"
@@ -21,8 +21,8 @@ export default function ManageCart() {
           />
         </div>
         <ManageCartImage className="mb-[50px]"/>
-        <h3 className="mb-6 text-heading-small font-bold font-poppinsBold">How it works</h3>
-        <ol className="list-inside list-decimal text-paragraph-medium font-semibold font-poppinsSemiBold">
+        <h3 className="mb-6 text-heading-small font-bold">How it works</h3>
+        <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
           <ListItem content="Create a cart ">
             <p className="text-paragraph-small font-normal mt-1">
               Use{' '}

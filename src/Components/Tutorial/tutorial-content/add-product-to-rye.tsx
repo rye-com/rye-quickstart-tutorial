@@ -41,8 +41,8 @@ export default function AddProductToRye() {
 
   return (
       <section>
-        <h3 className="mb-[24px] text-heading-small font-bold font-poppinsBold">How it works</h3>
-        <ol className="list-inside list-decimal text-paragraph-medium font-semibold font-poppinsSemiBold">
+        <h3 className="mb-[24px] text-heading-small font-bold">How it works</h3>
+        <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
           <ListItem content="Copy the URL from an Amazon or Shopify product page">
             <div className="flex w-3/4 items-center mt-[4px]">
               <Input
@@ -69,8 +69,8 @@ export default function AddProductToRye() {
             <Terminal label="amazon.js" code={requestProductAmazonCodeSnippet} />
           </ListItem>
         </ol>
-        <h3 className="mt-[58px] mb-[6px] text-heading-small font-bold font-poppinsBold">See it in action</h3>
-        <p className="text-paragraph-small font-normal mb-[24px]">
+        <h3 className="mt-[58px] mb-[6px] text-heading-small font-bold">See it in action</h3>
+        <p className="text-paragraph-small font-normal mb-3">
           Try inputting any product URL from Amazon or Shopify and see a product ID get returned.
         </p>
         <div className="flex">
