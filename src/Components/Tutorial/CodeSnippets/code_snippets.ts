@@ -1,5 +1,5 @@
 import type { Address } from '../../../types/api-data/Address';
-import {SubmitCartSampleRequestId} from "../constants";
+import { SubmitCartSampleRequestId } from "../constants";
 
 const indent = (code: string) => {
   const split = code.split('\n');
