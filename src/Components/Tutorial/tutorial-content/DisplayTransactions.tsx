@@ -14,7 +14,7 @@ export default function DisplayTransactions() {
 
   return (
       <section>
-        <div className="mb-3 flex font-poppinsBold">
+        <div className="mb-3 flex font-bold">
           <h2 className="mr-2 text-heading-small font-bold">Example</h2>
           <ExternalLink
               href="https://console.rye.com"
@@ -24,8 +24,8 @@ export default function DisplayTransactions() {
           />
         </div>
         <DisplayTransactionsImage className="mb-[50px]"/>
-        <h3 className="mb-6 text-heading-small font-bold font-poppinsBold">How it works</h3>
-        <p className="text-paragraph-small font-normal my-3 font-semibold">
+        <h3 className="mb-6 text-heading-small font-bold">How it works</h3>
+        <p className="text-paragraph-small mt-1 mb-6">
           Use the cart data from the previous step to display the status of the transaction to the user.
           If the status is{' '}
           <InlineCodeSnippet version="v2redText">COMPLETED</InlineCodeSnippet>
@@ -36,9 +36,9 @@ export default function DisplayTransactions() {
           <InlineCodeSnippet version="v2redText">FAILED</InlineCodeSnippet>, some unknown error occurred and developers
           should contact rye support to handle this case.
         </p>
-        <ol className="list-inside list-decimal text-paragraph-medium font-semibold font-poppinsSemiBold">
+        <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
           <ListItem content="View transaction status">
-            <p className="text-paragraph-small font-normal mt-1 mb-2">
+            <p className="text-paragraph-small font-normal mt-1 mb-6">
               From the previous step, we can see that the response we receive on submitting our cart gives us a{' '}
               <InlineCodeSnippet version="v2redText">cart.stores[idx].status</InlineCodeSnippet> with a{' '}
               <InlineCodeSnippet version="v2redText">COMPLETED</InlineCodeSnippet> value, indicating that the order
