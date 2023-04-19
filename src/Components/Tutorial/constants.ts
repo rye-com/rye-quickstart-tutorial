@@ -1,6 +1,7 @@
-import type { TutorialStep } from './types';
+import type { CreateCartOutput, TutorialStep } from './types';
 import { createContext } from 'react';
 import type { Variables } from 'graphql-request';
+import { MarketplaceEnum } from  "./types";
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
@@ -77,16 +78,46 @@ type TutorialContextType = {
     currentRequestedProductURL?: string;
     requestProductError?: boolean;
   };
+  createCart: {
+    createCartCallback?: (key: string, variables: Variables) => void;
+    createCartData?: CreateCartOutput | null;
+    createCartLoading?: boolean;
+    setCurrentCreateCartID?: (key: string) => void;
+    currentCreateCartID?: string;
+    createCartError?: boolean;
+  };
+  getCart: {
+    getCartCallback?: (key: string, variables: Variables) => void;
+    getCartData?: object | null;
+    getCartLoading?: boolean;
+    getCartError?: boolean;
+  };
+  addItemToCart: {
+    addItemToCartCallback?: (key: string, variables: Variables) => void;
+    addItemToCartData?: object | null;
+    addItemToCartLoading?: boolean;
+    addItemToCartError?: boolean;
+  }
 };
+
+const sampleProductId = "44346795295022";
+
+export const addItemToCartTestData = {
+  productId: sampleProductId,
+  marketplace: MarketplaceEnum.Shopify,
+}
 
 export const TutorialContext = createContext<TutorialContextType>({
   apiKey: {},
   fetchProduct: {},
-  requestProduct: {}
+  requestProduct: {},
+  createCart: {},
+  getCart: {},
+  addItemToCart: {}
 });
 
 export const CheckoutFormConstants = {
-  productId: "44454219743530",
+  productId: sampleProductId,
   emailId: "johndoe@example.com",
   firstName: "John",
   lastName: "Doe",

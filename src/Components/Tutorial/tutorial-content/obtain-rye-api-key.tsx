@@ -9,7 +9,7 @@ import { useContext } from 'react';
 import { TutorialContext } from '../constants';
 import { Spinner } from 'flowbite-react';
 import Terminal from '../styled-components/code-terminal';
-import { initializeClientSnippet } from '../code_snippets';
+import { initializeClientSnippet } from '../CodeSnippets/code_snippets';
 
 export default function ObtainRyeApiKey() {
   const context = useContext(TutorialContext);

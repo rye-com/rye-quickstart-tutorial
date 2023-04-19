@@ -1,4 +1,4 @@
-import type { Address } from '../../types/api-data/Address';
+import type { Address } from '../../../types/api-data/Address';
 
 const indent = (code: string) => {
   const split = code.split('\n');
@@ -403,11 +403,6 @@ const CheckoutForm = () => {
     </form>
   )
 };`;
-
-// TODO: remove this hacky method once the Terminal is refactored
-export const generateEmptyCodeSnippetForLineNumbers = (numLines: number): string => {
-  return "\n".repeat(numLines - 1);
-}
 
 export const updateBuyerIdentityMutation = `mutation updateCartBuyerIdentity($input: CartBuyerIdentityUpdateInput!) {
     updateCartBuyerIdentity(input: $input) {

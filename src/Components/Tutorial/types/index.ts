@@ -77,3 +77,11 @@ export type TutorialStep = {
   description: string;
   url: string;
 };
+
+export type CreateCartOutput = {
+  createCart: {
+    cart: {
+      id: string;
+    }
+  }
+}

@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { getNextRandomProduct } from "../utils/getNextRandomProduct";
 import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
 import { TutorialContext } from '../constants';
-import { requestProductSnippet, requestProductVariables } from '../code_snippets';
+import { requestProductSnippet, requestProductVariables } from '../CodeSnippets/code_snippets';
 import { MarketplaceEnum } from '../types';
 import Input from '../styled-components/input';
 import ListItem from '../styled-components/list-item';
