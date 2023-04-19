@@ -42,7 +42,7 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
   },
   {
     title: StepEnum.Step5,
-    description: 'Some products on Amazon and Shopify may not be logged in the Rye inventory. You can use this function to add an external product. This step is optional but can be useful if you want to track inventory and orders within Rye.',
+    description: 'Checkout your cart! This step walks you through the process of how a user can submit their cart for checkout by including the buyer identity details, payment information, and shipping details.',
     url: '/perform-checkout' },
   {
     title: StepEnum.Step6,
