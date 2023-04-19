@@ -127,3 +127,5 @@ export const CheckoutFormConstants = {
   state: "NY",
   phone: "(123) 123-1234",
 }
+
+export const SubmitCartSampleRequestId = '724041230-gh12-5587-2182';
