@@ -1,6 +1,6 @@
 import TutorialNav from './tutorial-nav';
 import type { CreateCartOutput, TutorialStep } from './types';
-import { StepEnum, TUTORIAL_STEPS, TutorialContext } from './constants';
+import { API_KEY, StepEnum, TUTORIAL_STEPS, TutorialContext } from './constants';
 import type { NonEmptyArray } from './constants';
 import { Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
@@ -37,7 +37,7 @@ export default function Index() {
   const step = urlMap[location.pathname] || urlMap['/start'] || TUTORIAL_STEPS[0];
 
   //API key related logic
-  const [currentApiKey, setCurrentApiKey] = useState(''); //will set default from localStorage
+  const [currentApiKey, setCurrentApiKey] = useState(localStorage.getItem(API_KEY) ?? ''); //will set default from localStorage
   const { callback, data, loading } = useRequest(amazonProductFetchQuery);
   const debouncedApiKeyCheck = useDebouncedCallback(callback, 500);
   function setApiKey(key: string) {

@@ -1,11 +1,12 @@
 import RyeApiKeyV2 from '../../../assets/rye-key-v2.png';
 import ListItem from '../styled-components/list-item';
 import ExternalLink from '../styled-components/external-link';
-import { LinkType } from '../constants';
+import { API_KEY, LinkType } from '../constants';
 import { ArrowTopRightOnSquareIcon, CheckIcon } from '@heroicons/react/24/solid';
 import Input from '../styled-components/input';
 import { KeyIcon } from '@heroicons/react/24/outline';
 import { useContext } from 'react';
+import type { ChangeEvent } from 'react';
 import { TutorialContext } from '../constants';
 import { Spinner } from 'flowbite-react';
 import Terminal from '../styled-components/code-terminal';
@@ -17,6 +18,13 @@ export default function ObtainRyeApiKey() {
     apiKey: { setApiKey, currentApiKey, isApiKeyValid, apiKeyCheckIsLoading },
   } = context;
   const initClientSnippet = initializeClientSnippet(currentApiKey || '<RYE_API_KEY>');
+
+  const onApiKeyChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (setApiKey) {
+      setApiKey(e.target.value);
+      localStorage.setItem(API_KEY, e.target.value)
+    }
+  }
 
   return (
     <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
@@ -49,9 +57,7 @@ export default function ObtainRyeApiKey() {
           <div className="w-3/4">
             <Input
               startEnhancer={KeyIcon}
-              onChange={(e) => {
-                setApiKey && setApiKey(e.target.value);
-              }}
+              onChange={onApiKeyChange}
               value={currentApiKey}
             />
           </div>

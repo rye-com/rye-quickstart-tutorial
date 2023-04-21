@@ -5,6 +5,8 @@ import { MarketplaceEnum } from  "./types";
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
+export const API_KEY = "api-key";
+
 export const enum StepEnum {
   Step0 = 'Getting started',
   Step1 = 'Obtaining Rye API key',
