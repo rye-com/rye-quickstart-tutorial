@@ -61,7 +61,7 @@ export default function ObtainRyeApiKey() {
               value={currentApiKey}
             />
           </div>
-          {isApiKeyValid && (
+          {(currentApiKey || isApiKeyValid) && (
             <p className="ml-[10px] flex items-center text-alerts-success">
               <CheckIcon className="h-[20px] w-[20px]" /> CONNECTED
             </p>
