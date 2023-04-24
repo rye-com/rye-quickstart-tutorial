@@ -17,6 +17,7 @@ import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-int
 import { addItemToCartMutation } from "./CodeSnippets/addItemToCartSnippet";
 import { getCartQuery } from "./CodeSnippets/getCartSnippet";
 import { createCartMutation } from "./CodeSnippets/createCartSnippet";
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 type UrlMapType = {
   [url: string]: TutorialStep;
@@ -37,7 +38,7 @@ export default function Index() {
   const step = urlMap[location.pathname] || urlMap['/start'] || TUTORIAL_STEPS[0];
 
   //API key related logic
-  const [currentApiKey, setCurrentApiKey] = useState(''); //will set default from localStorage
+  const [currentApiKey, setCurrentApiKey] = useLocalStorage('apiKey', ''); //will set default from localStorage
   const { callback, data, loading } = useRequest(amazonProductFetchQuery);
   const debouncedApiKeyCheck = useDebouncedCallback(callback, 500);
   function setApiKey(key: string) {
