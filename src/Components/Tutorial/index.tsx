@@ -38,7 +38,7 @@ export default function Index() {
   const step = urlMap[location.pathname] || urlMap['/start'] || TUTORIAL_STEPS[0];
 
   //API key related logic
-  const [currentApiKey, setCurrentApiKey] = useLocalStorage('apiKey', ''); //will set default from localStorage
+  const [currentApiKey, setCurrentApiKey] = useLocalStorage('apiKey', '');
   const { callback, data, loading } = useRequest(amazonProductFetchQuery);
   const debouncedApiKeyCheck = useDebouncedCallback(callback, 500);
   function setApiKey(key: string) {
@@ -47,7 +47,7 @@ export default function Index() {
   }
 
   // Fetch Product
-  const [currentFetchedProductId, setCurrentFetchedProductId] = useState(''); //will set default from localStorage
+  const [currentFetchedProductId, setCurrentFetchedProductId] = useLocalStorage('productId', '');
   const {
     callback: fetchProductCallback,
     data: fetchProductData,
