@@ -10,7 +10,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import {
   amazonProductFetchQuery,
   productFetchVariables,
-  requestProductQuery
+  requestProductQuery, shopifyProductFetchQuery
 } from './CodeSnippets/code_snippets';
 import { MarketplaceEnum } from './types';
 import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-intro.svg";
@@ -46,7 +46,7 @@ export default function Index() {
     debouncedApiKeyCheck(key, productFetchVariables('B073K14CVB', MarketplaceEnum.Amazon));
   }
 
-  // Fetch Product
+  // Fetch Amazon Product
   const [currentFetchedProductId, setCurrentFetchedProductId] = useLocalStorage('productId', '');
   const {
     callback: fetchProductCallback,
@@ -54,7 +54,18 @@ export default function Index() {
     loading: fetchProductLoading,
     error: fetchProductError,
   } = useRequest<object>(
-    amazonProductFetchQuery, //update query based on eventual dropdown value
+    amazonProductFetchQuery,
+  );
+
+  // Fetch Shopify Product
+  const [currentFetchedShopifyProductId, setCurrentFetchedShopifyProductId] = useLocalStorage('productId', '');
+  const {
+    callback: fetchShopifyProductCallback,
+    data: fetchShopifyProductData,
+    loading: fetchShopifyProductLoading,
+    error: fetchShopifyProductError,
+  } = useRequest<object>(
+      shopifyProductFetchQuery,
   );
 
   // Request Product
@@ -110,6 +121,14 @@ export default function Index() {
             currentFetchedProductId,
             setCurrentFetchedProductId,
             fetchProductError: !!fetchProductError,
+          },
+          fetchShopifyProduct: {
+            fetchShopifyProductData,
+            fetchShopifyProductCallback,
+            fetchShopifyProductLoading,
+            currentFetchedShopifyProductId,
+            setCurrentFetchedShopifyProductId,
+            fetchShopifyProductError: !!fetchShopifyProductError,
           },
           requestProduct: {
             requestProductCallback,

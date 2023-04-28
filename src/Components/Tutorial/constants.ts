@@ -70,6 +70,14 @@ type TutorialContextType = {
     currentFetchedProductId?: string;
     fetchProductError?: boolean;
   };
+  fetchShopifyProduct: {
+    fetchShopifyProductCallback?: (key: string, variables: Variables) => void;
+    fetchShopifyProductData?: object | null;
+    fetchShopifyProductLoading?: boolean;
+    setCurrentFetchedShopifyProductId?: (key: string) => void;
+    currentFetchedShopifyProductId?: string;
+    fetchShopifyProductError?: boolean;
+  };
   requestProduct: {
     requestProductCallback?: (key: string, variables: Variables) => void;
     requestProductData?: object | null;
@@ -110,6 +118,7 @@ export const addItemToCartTestData = {
 export const TutorialContext = createContext<TutorialContextType>({
   apiKey: {},
   fetchProduct: {},
+  fetchShopifyProduct: {},
   requestProduct: {},
   createCart: {},
   getCart: {},
