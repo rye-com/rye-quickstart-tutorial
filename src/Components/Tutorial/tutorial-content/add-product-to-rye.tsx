@@ -29,9 +29,12 @@ export default function AddProductToRye() {
 
   const onClickFetch = () => {
     if (requestProductCallback && currentApiKey && currentRequestedProductURL) {
+      const marketplace = currentRequestedProductURL?.includes(MarketplaceEnum.Amazon.toLowerCase()) ?
+          MarketplaceEnum.Amazon : MarketplaceEnum.Shopify;
+
       requestProductCallback(
           currentApiKey,
-          requestProductVariables(currentRequestedProductURL, MarketplaceEnum.Amazon), // TODO: add support for Shopify
+          requestProductVariables(currentRequestedProductURL, marketplace),
       );
       setFetchError(false);
     } else {
