@@ -134,9 +134,9 @@ export default function FetchProduct() {
             <div className="flex text-black">
               <Dropdown
                   className="rounded-xl bg-white px-3"
-                  label={marketplace.charAt(0) + marketplace.slice(1).toLowerCase()}
+                  label={marketplace.toLowerCase()}
                   color={"light"}
-                  style={{ color: "black", height: "4rem", borderRadius: "1rem" }}
+                  style={{ color: "black", height: "4rem", borderRadius: "1rem", textTransform: "capitalize" }}
               >
                 <Dropdown.Item onClick={() => setMarketplace(MarketplaceEnum.Shopify)}>
                   Shopify
