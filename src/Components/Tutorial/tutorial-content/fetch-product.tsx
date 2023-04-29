@@ -16,12 +16,12 @@ import Terminal from '../styled-components/code-terminal';
 export default function FetchProduct() {
   const context = useContext(TutorialContext);
   const {
-    fetchProduct: {
-      fetchProductCallback,
-      fetchProductData,
-      setCurrentFetchedProductId,
-      currentFetchedProductId,
-      fetchProductError,
+    fetchAmazonProduct: {
+      fetchAmazonProductCallback,
+      fetchAmazonProductData,
+      setCurrentFetchedAmazonProductId,
+      currentFetchedAmazonProductId,
+      fetchAmazonProductError,
     },
     fetchShopifyProduct: {
       fetchShopifyProductCallback,
@@ -37,26 +37,26 @@ export default function FetchProduct() {
   const [marketplace, setMarketplace] = useState(MarketplaceEnum.Amazon);
   const fetchSnippet = amazonProductFetchSnippet('B08KHY1PKR');
   const prettyJSON = JSON.stringify(marketplace === MarketplaceEnum.Amazon ?
-      fetchProductData : fetchShopifyProductData, null, 2);
+      fetchAmazonProductData : fetchShopifyProductData, null, 2);
 
-  const productData = (marketplace === MarketplaceEnum.Amazon ? fetchProductData : fetchShopifyProductData);
-  const productError = (marketplace === MarketplaceEnum.Amazon ? fetchProductError : fetchShopifyProductError);
+  const productData = (marketplace === MarketplaceEnum.Amazon ? fetchAmazonProductData : fetchShopifyProductData);
+  const productError = (marketplace === MarketplaceEnum.Amazon ? fetchAmazonProductError : fetchShopifyProductError);
 
   const onProductIdChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (marketplace === MarketplaceEnum.Amazon) {
-      setCurrentFetchedProductId && setCurrentFetchedProductId(e.target.value);
+      setCurrentFetchedAmazonProductId && setCurrentFetchedAmazonProductId(e.target.value);
     } else {
       setCurrentFetchedShopifyProductId && setCurrentFetchedShopifyProductId(e.target.value);
     }
   }
 
   const onClickFetch = () => {
-    if (fetchShopifyProductCallback && fetchProductCallback &&
-        currentFetchedProductId && currentFetchedShopifyProductId && currentApiKey) {
+    if (fetchShopifyProductCallback && fetchAmazonProductCallback &&
+        currentFetchedAmazonProductId && currentFetchedShopifyProductId && currentApiKey) {
       if (marketplace === MarketplaceEnum.Amazon) {
-        fetchProductCallback(
+        fetchAmazonProductCallback(
             currentApiKey,
-            productFetchVariables(currentFetchedProductId, MarketplaceEnum.Amazon),
+            productFetchVariables(currentFetchedAmazonProductId, MarketplaceEnum.Amazon),
         );
       } else {
         fetchShopifyProductCallback(
@@ -150,7 +150,7 @@ export default function FetchProduct() {
             <Input
               onChange={onProductIdChange}
               internalLabel="Product ID"
-              value={marketplace === MarketplaceEnum.Amazon ? currentFetchedProductId : currentFetchedShopifyProductId}
+              value={marketplace === MarketplaceEnum.Amazon ? currentFetchedAmazonProductId : currentFetchedShopifyProductId}
             />
             <button
               onClick={onClickFetch}

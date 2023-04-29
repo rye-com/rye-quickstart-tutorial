@@ -47,12 +47,12 @@ export default function Index() {
   }
 
   // Fetch Amazon Product
-  const [currentFetchedProductId, setCurrentFetchedProductId] = useLocalStorage('productId', '');
+  const [currentFetchedAmazonProductId, setCurrentFetchedAmazonProductId] = useLocalStorage('productId', '');
   const {
-    callback: fetchProductCallback,
-    data: fetchProductData,
-    loading: fetchProductLoading,
-    error: fetchProductError,
+    callback: fetchAmazonProductCallback,
+    data: fetchAmazonProductData,
+    loading: fetchAmazonProductLoading,
+    error: fetchAmazonProductError,
   } = useRequest<object>(
     amazonProductFetchQuery,
   );
@@ -114,13 +114,13 @@ export default function Index() {
             apiKeyCheckIsLoading: loading,
             isApiKeyValid: !!data,
           },
-          fetchProduct: {
-            fetchProductCallback,
-            fetchProductData,
-            fetchProductLoading,
-            currentFetchedProductId,
-            setCurrentFetchedProductId,
-            fetchProductError: !!fetchProductError,
+          fetchAmazonProduct: {
+            fetchAmazonProductCallback,
+            fetchAmazonProductData,
+            fetchAmazonProductLoading,
+            currentFetchedAmazonProductId,
+            setCurrentFetchedAmazonProductId,
+            fetchAmazonProductError: !!fetchAmazonProductError,
           },
           fetchShopifyProduct: {
             fetchShopifyProductData,
