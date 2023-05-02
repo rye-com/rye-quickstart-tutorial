@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { TutorialContext } from "../../constants";
 import { createCartInputVariables, createCartMutation } from "../../CodeSnippets/createCartSnippet";
+import TerminalTab from "../../styled-components/code-terminal-tab";
 import Terminal from "../../styled-components/code-terminal";
 
 export default function CreateCart() {
@@ -41,7 +42,10 @@ export default function CreateCart() {
       <div>
         <div className="flex flex-row gap-2 h-[400px]">
           <div>
-            <Terminal language="graphql" label="Mutation" code={createCartMutation} />
+            <Terminal>
+
+              <TerminalTab language="graphql" label="Mutation" code={createCartMutation} />
+            </Terminal>
             <button
                 className="mx-3 rounded-xl bg-brand-green px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green h-14 relative top-[-80px] left-[10px]"
                 onClick={onClickFetch}
@@ -49,7 +53,9 @@ export default function CreateCart() {
               Create cart
             </button>
           </div>
-          <Terminal language="graphql" label="Response" code={createCartData ? createCartDataOutputJSON: ""} />
+          <Terminal>
+            <TerminalTab language="graphql" label="Response" code={createCartData ? createCartDataOutputJSON: ""} />
+          </Terminal>
         </div>
         {(fetchError || createCartError) && (
             <p className="my-3 text-paragraph-small font-normal text-alerts-danger">

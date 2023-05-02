@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { CheckoutFormConstants } from "../../constants";
 import Input from "../../styled-components/input";
-import Terminal from "../../styled-components/code-terminal";
+import TerminalTab from "../../styled-components/code-terminal-tab";
 import { submitCartMutationResponse } from "../../CodeSnippets/code_snippets";
+import Terminal from "../../styled-components/code-terminal";
 
 export default function CheckoutForm() {
   const [submitCartOutput, setSubmitCartOutput] = useState<string>("");
@@ -38,7 +39,9 @@ export default function CheckoutForm() {
           </button>
         </div>
         <div className="min-w-[474px] w-full h-[770px]">
-          <Terminal language="graphql" label="Response" code={submitCartOutput}/>
+          <Terminal>
+            <TerminalTab language="graphql" label="Response" code={submitCartOutput}/>
+          </Terminal>
         </div>
       </div>
   );

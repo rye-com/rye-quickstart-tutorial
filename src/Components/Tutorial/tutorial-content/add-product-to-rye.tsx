@@ -6,6 +6,7 @@ import { requestProductSnippet, requestProductVariables } from '../CodeSnippets/
 import { MarketplaceEnum } from '../types';
 import Input from '../styled-components/input';
 import ListItem from '../styled-components/list-item';
+import TerminalTab from '../styled-components/code-terminal-tab';
 import Terminal from '../styled-components/code-terminal';
 
 // TODO: add support for Shopify products
@@ -69,7 +70,9 @@ export default function AddProductToRye() {
               You can use the product ID returned by this mutation to fetch product data.
               You can also do this via the Rye Console.
             </p>
-            <Terminal label="amazon.js" code={requestProductAmazonCodeSnippet} />
+            <Terminal>
+              <TerminalTab label="amazon.js" code={requestProductAmazonCodeSnippet} />
+            </Terminal>
           </ListItem>
         </ol>
         <h3 className="mt-[58px] mb-[6px] text-heading-small font-bold">See it in action</h3>
@@ -98,7 +101,7 @@ export default function AddProductToRye() {
               copied.
             </p>
         )}
-        {requestProductData && <Terminal label="JSON" code={requestProductDataOutputJSON} language="json" />}
+        {requestProductData && <Terminal><TerminalTab label="JSON" code={requestProductDataOutputJSON} language="json" /></Terminal>}
       </section>
   );
 }

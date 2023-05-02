@@ -5,8 +5,9 @@ import { CheckoutFormConstants, LinkType } from '../../constants';
 import { ReactComponent as ManageCheckoutImage } from "../../../../assets/manage-checkout.svg";
 import ExternalLink from "../../styled-components/external-link";
 import ListItem from "../../styled-components/list-item";
-import Terminal from "../../styled-components/code-terminal";
+import TerminalTab from "../../styled-components/code-terminal-tab";
 import CheckoutForm from "./CheckoutForm";
+import Terminal from "../../styled-components/code-terminal";
 
 export default function PerformCheckout() {
   return (
@@ -29,7 +30,9 @@ export default function PerformCheckout() {
               <InlineCodeSnippet version="v2redText">updateCartBuyerIdentity</InlineCodeSnippet> mutation.
               This mutation stores shipping information such as customer’s name, address, phone, etc.
             </p>
-            <Terminal language="graphql" label="GraphQL" code={updateBuyerIdentityMutation}/>
+            <Terminal>
+              <TerminalTab language="graphql" label="GraphQL" code={updateBuyerIdentityMutation}/>
+            </Terminal>
           </ListItem>
           <ListItem content="Show payment form">
             <p className="text-paragraph-small font-normal mt-1 mb-2">
@@ -42,7 +45,9 @@ export default function PerformCheckout() {
               <InlineCodeSnippet version="v2redText">spreedly-number</InlineCodeSnippet> and{' '}
               <InlineCodeSnippet version="v2redText">spreedly-cvv</InlineCodeSnippet> ids that will be used to render iFrames.
             </p>
-            <Terminal label="JavaScript" code={showPaymentForm} />
+            <Terminal>
+              <TerminalTab label="JavaScript" code={showPaymentForm} />
+            </Terminal>
           </ListItem>
           <ListItem content="Submit the cart">
             <p className="text-paragraph-small font-normal mt-1 mb-2">
@@ -61,7 +66,9 @@ export default function PerformCheckout() {
               <InlineCodeSnippet version="v2redText">submitCart</InlineCodeSnippet> mutation directly to submit the user's cart.
               But in this case they are responsible for getting the Spreedly token that is required for this mutation.
             </p>
-            <Terminal language="graphql" label="GraphQL" code={submitCartMutation} />
+            <Terminal>
+              <TerminalTab language="graphql" label="GraphQL" code={submitCartMutation} />
+            </Terminal>
           </ListItem>
         </ol>
         <div>
