@@ -17,6 +17,7 @@ import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-int
 import { addItemToCartMutation } from "./CodeSnippets/addItemToCartSnippet";
 import { getCartQuery } from "./CodeSnippets/getCartSnippet";
 import { createCartMutation } from "./CodeSnippets/createCartSnippet";
+import { updateBuyerIdentityMutation } from "./CodeSnippets/updateBuyerIdentitySnippet";
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 type UrlMapType = {
@@ -93,6 +94,14 @@ export default function Index() {
     error: addItemToCartError,
   } = useRequest<object>(addItemToCartMutation);
 
+  // Update buyer identity 
+  const {
+    callback: updateBuyerIdentityCallback,
+    data: updateBuyerIdentityData,
+    loading: updateBuyerIdentityLoading,
+    error: updateBuyerIdentityError,
+  } = useRequest<object>(updateBuyerIdentityMutation);
+
   return (
     <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
@@ -138,7 +147,13 @@ export default function Index() {
             addItemToCartData: addItemToCartData ?? null,
             addItemToCartLoading,
             addItemToCartError: !!addItemToCartError,
-          }
+          },
+          updateBuyerIdentity: {
+            updateBuyerIdentityCallback,
+            updateBuyerIdentityData: updateBuyerIdentityData ?? null,
+            updateBuyerIdentityLoading,
+            updateBuyerIdentityError: !!updateBuyerIdentityError,
+          },
         }}
       >
         <TutorialNav currentStep={step} />
