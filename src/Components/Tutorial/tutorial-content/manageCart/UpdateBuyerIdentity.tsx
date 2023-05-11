@@ -23,7 +23,7 @@ export default function UpdateBuyerIdentity() {
   const updateBuyerIdentityDataOutputJSON = JSON.stringify(updateBuyerIdentityData, null, 2);
 
   const onClickFetch = () => {
-    if (updateBuyerIdentityCallback && currentApiKey) {
+    if (updateBuyerIdentityCallback && currentApiKey && cartId) {
       updateBuyerIdentityCallback(
           currentApiKey,
           updateBuyerIdentityInputVariables({
