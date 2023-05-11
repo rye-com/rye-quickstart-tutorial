@@ -43,7 +43,6 @@ export default function CreateCart() {
         <div className="flex flex-row gap-2 h-[400px]">
           <div>
             <Terminal>
-
               <TerminalTab language="graphql" label="Mutation" code={createCartMutation} />
             </Terminal>
             <button

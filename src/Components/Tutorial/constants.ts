@@ -97,7 +97,13 @@ type TutorialContextType = {
     addItemToCartData?: object | null;
     addItemToCartLoading?: boolean;
     addItemToCartError?: boolean;
-  }
+  },
+  updateBuyerIdentity: {
+    updateBuyerIdentityCallback?: (key: string, variables: Variables) => void;
+    updateBuyerIdentityData?: object | null;
+    updateBuyerIdentityLoading?: boolean;
+    updateBuyerIdentityError?: boolean;
+  },
 };
 
 const sampleProductId = "44346795295022";
@@ -113,7 +119,8 @@ export const TutorialContext = createContext<TutorialContextType>({
   requestProduct: {},
   createCart: {},
   getCart: {},
-  addItemToCart: {}
+  addItemToCart: {},
+  updateBuyerIdentity: {},
 });
 
 export const CheckoutFormConstants = {
@@ -122,10 +129,11 @@ export const CheckoutFormConstants = {
   firstName: "John",
   lastName: "Doe",
   streetAddress: "123 Main St",
-  city: "New York",
+  city: "New York City",
   zipCode: "12345",
   state: "NY",
   phone: "(123) 123-1234",
+  countryCode: "US",
 }
 
 export const SubmitCartSampleRequestId = '724041230-gh12-5587-2182';

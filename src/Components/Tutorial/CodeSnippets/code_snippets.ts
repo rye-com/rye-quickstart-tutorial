@@ -405,10 +405,124 @@ const CheckoutForm = () => {
   )
 };`;
 
-export const updateBuyerIdentityMutation = `mutation updateCartBuyerIdentity($input: CartBuyerIdentityUpdateInput!) {
-    updateCartBuyerIdentity(input: $input) {
-        id
+export const updateBuyerIdentityMutation = `mutation ($input: CartBuyerIdentityUpdateInput!) {
+  updateCartBuyerIdentity(input: $input) {
+    cart {
+      id
+      stores {
+        ... on AmazonStore {
+          store
+          offer {
+            subtotal {
+              value
+              currency
+              displayValue
+            }
+            margin {
+              value
+              currency
+              displayValue
+            }
+            notAvailableIds
+            shippingMethods {
+              id
+              label
+              taxes {
+                value
+                currency
+                displayValue
+              }
+              total {
+                value
+                currency
+                displayValue
+              }
+            }
+            selectedShippingMethod {
+              id
+              label
+            }
+            errors {
+              code
+              message
+              details {
+                productIds
+              }
+            }
+          }
+          errors {
+            message
+            code
+            details {
+              productIds
+            }
+          }
+          requestId
+          isSubmitted
+        }
+        ... on ShopifyStore {
+          store
+          offer {
+            subtotal {
+              value
+              currency
+              displayValue
+            }
+            margin {
+              value
+              currency
+              displayValue
+            }
+            notAvailableIds
+            shippingMethods {
+              id
+              label
+              price {
+                value
+                currency
+                displayValue
+              }
+              taxes {
+                value
+                currency
+                displayValue
+              }
+              total {
+                value
+                currency
+                displayValue
+              }
+            }
+            selectedShippingMethod {
+              id
+              label
+            }
+            errors {
+              code
+              message
+              details {
+                variantIds
+              }
+            }
+          }
+          errors {
+            message
+            code
+            details {
+              variantIds
+            }
+          }
+          requestId
+          isSubmitted
+          shipsToCountries
+        }
+      }
     }
+    errors {
+      message
+      code
+    }
+  }
 }`;
 
 export const showPaymentForm = `const ryePay = new RyePay();
