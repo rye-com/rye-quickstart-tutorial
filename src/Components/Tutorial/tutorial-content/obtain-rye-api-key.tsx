@@ -8,8 +8,9 @@ import { KeyIcon } from '@heroicons/react/24/outline';
 import { useContext } from 'react';
 import { TutorialContext } from '../constants';
 import { Spinner } from 'flowbite-react';
-import Terminal from '../styled-components/code-terminal';
+import TerminalTab from '../styled-components/code-terminal-tab';
 import { initializeClientSnippet } from '../CodeSnippets/code_snippets';
+import Terminal from '../styled-components/code-terminal';
 
 export default function ObtainRyeApiKey() {
   const context = useContext(TutorialContext);
@@ -67,7 +68,9 @@ export default function ObtainRyeApiKey() {
         <p className="mb-[12px] text-paragraph-small font-normal">
           See below for the code snippet to call the Rye API:
         </p>
-        <Terminal label="JavaScript" code={initClientSnippet} />
+        <Terminal>
+          <TerminalTab label="JavaScript" code={initClientSnippet} />
+        </Terminal>
       </ListItem>
     </ol>
   );

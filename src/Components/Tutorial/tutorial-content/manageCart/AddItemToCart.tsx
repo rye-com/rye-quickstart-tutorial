@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { addItemToCartInputVariables, addItemToCartMutation } from "../../CodeSnippets/addItemToCartSnippet";
 import { addItemToCartTestData, TutorialContext} from "../../constants";
 import Input from "../../styled-components/input";
+import TerminalTab from "../../styled-components/code-terminal-tab";
 import Terminal from "../../styled-components/code-terminal";
 
 export default function AddItemToCart() {
@@ -49,8 +50,12 @@ export default function AddItemToCart() {
           </button>
         </div>
         <div className="flex flex-row gap-2 overflow-hidden h-[700px]">
-          <Terminal language="graphql" label="Mutation" code={addItemToCartMutation} />
-          <Terminal language="graphql" label="Response" code={addItemToCartData ? addItemToCartDataJSONOutput: ""} />
+          <Terminal>
+            <TerminalTab language="graphql" label="Mutation" code={addItemToCartMutation} />
+          </Terminal>
+          <Terminal>
+            <TerminalTab language="graphql" label="Response" code={addItemToCartData ? addItemToCartDataJSONOutput: ""} />
+          </Terminal>
         </div>
         {(fetchError || addItemToCartError) && (
             <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">

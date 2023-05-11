@@ -9,8 +9,9 @@ import { useContext, useState } from 'react';
 import { TutorialContext } from '../constants';
 import { productFetchVariables } from '../CodeSnippets/code_snippets';
 import { MarketplaceEnum } from '../types';
+import TerminalTab from '../styled-components/code-terminal-tab';
+import { amazonProductFetchSnippet, shopifyProductFetchSnippet } from '../CodeSnippets/code_snippets';
 import Terminal from '../styled-components/code-terminal';
-import { amazonProductFetchSnippet } from '../CodeSnippets/code_snippets';
 
 export default function FetchProduct() {
   const context = useContext(TutorialContext);
@@ -25,8 +26,16 @@ export default function FetchProduct() {
     apiKey: { currentApiKey },
   } = context;
   const [fetchError, setFetchError] = useState(false);
-  const fetchSnippet = amazonProductFetchSnippet('B08KHY1PKR');
+  const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Amazon);
+  const amazonProductId = 'B08KHY1PKR';
+  const shopifyProductId = '7074033139917';
+  const amazonFetchSnippet = amazonProductFetchSnippet(amazonProductId);
+  const shopifyFetchSnippet = shopifyProductFetchSnippet(shopifyProductId);
   const prettyJSON = JSON.stringify(fetchProductData, null, 2);
+
+  const isAmazonId = (id: string | undefined) => !id ? true : /\D/.test(id); // Amazon IDs contain characters
+  const selectedProductId = selectedMarketplace === MarketplaceEnum.Amazon ? amazonProductId : shopifyProductId;
+
 
   return (
     <section>
@@ -63,15 +72,12 @@ export default function FetchProduct() {
           </p>
           <div className="flex w-3/4 items-center">
             <Input
-              onChange={(e) => {
-                console.log(e);
-              }}
-              value="B08KHY1PKR"
+              value={selectedProductId}
               internalLabel="Sample product ID"
             />
             <button
               onClick={() => {
-                navigator.clipboard.writeText('B08KHY1PKR');
+                navigator.clipboard.writeText(selectedProductId);
               }}
               className="mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
             >
@@ -80,7 +86,10 @@ export default function FetchProduct() {
           </div>
         </ListItem>
         <ListItem content="Use the item ID in the following function to fetch product info">
-          <Terminal label="amazon.js" code={fetchSnippet} />
+          <Terminal onTabChange={(tabIndex) => tabIndex === 0 ? setSelectedMarketplace(MarketplaceEnum.Amazon) : setSelectedMarketplace(MarketplaceEnum.Shopify)}>
+            <TerminalTab label="amazon.js" code={amazonFetchSnippet} selected={selectedMarketplace === MarketplaceEnum.Amazon}/>
+            <TerminalTab label="shopify.js" code={shopifyFetchSnippet} selected={selectedMarketplace === MarketplaceEnum.Shopify} />
+          </Terminal>
         </ListItem>
         <ListItem content="Run the function to fetch product information, prices, and more.">
           <p className="mb-[4px] font-poppins text-paragraph-small font-normal">
@@ -91,6 +100,7 @@ export default function FetchProduct() {
             <Input
               onChange={(e) => {
                 setCurrentFetchedProductId && setCurrentFetchedProductId(e.target.value);
+                setSelectedMarketplace(isAmazonId(e.target.value) ? MarketplaceEnum.Amazon : MarketplaceEnum.Shopify);
               }}
               internalLabel="Product ID"
               value={currentFetchedProductId}
@@ -100,7 +110,7 @@ export default function FetchProduct() {
                 if (fetchProductCallback && currentApiKey && currentFetchedProductId) {
                   fetchProductCallback(
                     currentApiKey,
-                    productFetchVariables(currentFetchedProductId, MarketplaceEnum.Amazon),
+                    productFetchVariables(currentFetchedProductId, selectedMarketplace),
                   );
                   setFetchError(false);
                 } else {
@@ -119,7 +129,7 @@ export default function FetchProduct() {
               copied.
             </p>
           )}
-          {fetchProductData && <Terminal label="JSON" code={prettyJSON} language="json" />}
+          {fetchProductData && <Terminal><TerminalTab label="JSON" code={prettyJSON} language="json" /></Terminal>}
         </ListItem>
       </ol>
     </section>

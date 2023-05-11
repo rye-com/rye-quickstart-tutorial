@@ -7,6 +7,7 @@ import CreateCart from "./CreateCart";
 import ExternalLink from "../../styled-components/external-link";
 import GetCart from "./GetCart";
 import ListItem from "../../styled-components/list-item";
+import UpdateBuyerIdentity from "./UpdateBuyerIdentity";
 
 export default function ManageCart() {
   return (
@@ -51,6 +52,14 @@ export default function ManageCart() {
               You can also use this query to fetch the available shipping options and tax rates.
             </p>
             <GetCart/>
+          </ListItem>
+          <ListItem content="Update buyer info to fetch Shipping options">
+            <p className="text-paragraph-small font-normal mt-1 mb-2">
+              Update buyer identity information if it was not provided during cart creation via{' '}
+              <InlineCodeSnippet version="v2redText">updateCartBuyerIdentity</InlineCodeSnippet> mutation.
+              This mutation stores shipping information such as customer’s name, address, phone, etc. This information is required to fetch shipping options.
+            </p>
+            <UpdateBuyerIdentity/>
           </ListItem>
         </ol>
       </section>

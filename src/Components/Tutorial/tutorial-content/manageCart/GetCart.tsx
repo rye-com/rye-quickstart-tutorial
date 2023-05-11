@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { TutorialContext } from "../../constants";
 import { getCartInputVariables, getCartQuery } from "../../CodeSnippets/getCartSnippet";
 import Input from "../../styled-components/input";
+import TerminalTab from "../../styled-components/code-terminal-tab";
 import Terminal from "../../styled-components/code-terminal";
 
 export default function GetCart() {
@@ -49,8 +50,12 @@ export default function GetCart() {
           </button>
         </div>
         <div className="flex flex-row gap-2 overflow-hidden h-[700px]">
-          <Terminal language="graphql" label="Query" code={getCartQuery} />
-          <Terminal language="graphql" label="Response" code={getCartData ? getCartDataJSONOutput: ""} />
+          <Terminal>
+            <TerminalTab language="graphql" label="Query" code={getCartQuery} />
+          </Terminal>
+          <Terminal>
+            <TerminalTab language="graphql" label="Response" code={getCartData ? getCartDataJSONOutput: ""} />
+          </Terminal>
         </div>
         {(fetchError || getCartError) && (
             <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">

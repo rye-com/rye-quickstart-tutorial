@@ -7,6 +7,7 @@ import { getOrderStatusQuery, getOrderStatusQueryOutput } from "../CodeSnippets/
 import { submitCartMutationResponse } from "../CodeSnippets/code_snippets";
 import ExternalLink from "../styled-components/external-link";
 import ListItem from "../styled-components/list-item";
+import TerminalTab from "../styled-components/code-terminal-tab";
 import Terminal from "../styled-components/code-terminal";
 
 export default function DisplayTransactions() {
@@ -44,7 +45,9 @@ export default function DisplayTransactions() {
               <InlineCodeSnippet version="v2redText">COMPLETED</InlineCodeSnippet> value, indicating that the order
               has been placed correctly.
             </p>
-            <Terminal language="graphql" label="GraphQL" code={submitCartMutationResponse}/>
+            <Terminal>
+              <TerminalTab language="graphql" label="GraphQL" code={submitCartMutationResponse}/>
+            </Terminal>
           </ListItem>
           <ListItem content="Get order status">
             <p className="text-paragraph-small font-normal mt-1 mb-2">
@@ -55,7 +58,9 @@ export default function DisplayTransactions() {
             </p>
             <div className="flex flex-row gap-2 h-[475px] grid grid-cols-2">
               <div>
-                <Terminal language="graphql" label="Query" code={getOrderStatusQuery} />
+                <Terminal>
+                  <TerminalTab language="graphql" label="Query" code={getOrderStatusQuery} />
+                </Terminal>
                 <button
                     className="mx-3 rounded-xl bg-brand-green px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green h-14 relative top-[-80px] left-[10px]"
                     onClick={() => setOrderStatusOutput(getOrderStatusQueryOutput)}
@@ -63,7 +68,9 @@ export default function DisplayTransactions() {
                   Get order status
                 </button>
               </div>
-              <Terminal language="json" label="Response" code={orderStatusOutput} />
+              <Terminal>
+                <TerminalTab language="json" label="Response" code={orderStatusOutput} />
+              </Terminal>
             </div>
           </ListItem>
         </ol>

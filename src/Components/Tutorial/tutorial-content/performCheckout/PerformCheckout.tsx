@@ -1,12 +1,13 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { InlineCodeSnippet } from "../../helper-components/InlineCodeSnippet";
-import { showPaymentForm, submitCartMutation, updateBuyerIdentityMutation } from "../../CodeSnippets/code_snippets";
+import { showPaymentForm, submitCartMutation } from "../../CodeSnippets/code_snippets";
 import { CheckoutFormConstants, LinkType } from '../../constants';
 import { ReactComponent as ManageCheckoutImage } from "../../../../assets/manage-checkout.svg";
 import ExternalLink from "../../styled-components/external-link";
 import ListItem from "../../styled-components/list-item";
-import Terminal from "../../styled-components/code-terminal";
+import TerminalTab from "../../styled-components/code-terminal-tab";
 import CheckoutForm from "./CheckoutForm";
+import Terminal from "../../styled-components/code-terminal";
 
 export default function PerformCheckout() {
   return (
@@ -23,14 +24,6 @@ export default function PerformCheckout() {
         <ManageCheckoutImage className="mb-[50px]"/>
         <h3 className="mb-6 text-heading-small font-bold">How it works</h3>
         <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
-          <ListItem content="Update buyer info">
-            <p className="text-paragraph-small font-normal mt-1 mb-2">
-              Update buyer identity information if it was not provided during cart creation via{' '}
-              <InlineCodeSnippet version="v2redText">updateCartBuyerIdentity</InlineCodeSnippet> mutation.
-              This mutation stores shipping information such as customer’s name, address, phone, etc.
-            </p>
-            <Terminal language="graphql" label="GraphQL" code={updateBuyerIdentityMutation}/>
-          </ListItem>
           <ListItem content="Show payment form">
             <p className="text-paragraph-small font-normal mt-1 mb-2">
               Show a payment form to the user. It is up to developers to provide required input fields to capture billing information including billing address.
@@ -42,7 +35,9 @@ export default function PerformCheckout() {
               <InlineCodeSnippet version="v2redText">spreedly-number</InlineCodeSnippet> and{' '}
               <InlineCodeSnippet version="v2redText">spreedly-cvv</InlineCodeSnippet> ids that will be used to render iFrames.
             </p>
-            <Terminal label="JavaScript" code={showPaymentForm} />
+            <Terminal>
+              <TerminalTab label="JavaScript" code={showPaymentForm} />
+            </Terminal>
           </ListItem>
           <ListItem content="Submit the cart">
             <p className="text-paragraph-small font-normal mt-1 mb-2">
@@ -61,7 +56,9 @@ export default function PerformCheckout() {
               <InlineCodeSnippet version="v2redText">submitCart</InlineCodeSnippet> mutation directly to submit the user's cart.
               But in this case they are responsible for getting the Spreedly token that is required for this mutation.
             </p>
-            <Terminal language="graphql" label="GraphQL" code={submitCartMutation} />
+            <Terminal>
+              <TerminalTab language="graphql" label="GraphQL" code={submitCartMutation} />
+            </Terminal>
           </ListItem>
         </ol>
         <div>
