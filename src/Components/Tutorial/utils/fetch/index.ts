@@ -7,17 +7,21 @@ const IP_JSON_URL = `https://api.ipify.org/?format=json`;
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
 
+let ipAddressCache= '';
+
 const makeGQLRequest = async <T>(
   query: string,
   variables: Variables, // using generic TVars for this causes a weird type error with client.request call
   apiKey: string,
 ): Promise<T> => {
-  const ipJson = await fetch(IP_JSON_URL);
-  const ipObj = await ipJson.json();
-
+  if (ipAddressCache === '') {
+    const ipJson = await fetch(IP_JSON_URL);
+    const ipObj = await ipJson.json();
+    ipAddressCache = ipObj.ip;
+  }
   const headers = {
     Authorization: 'Basic ' + window.btoa(apiKey + ':'),
-    [RYE_SHOPPER_IP_HEADER_KEY]: ipObj.ip,
+    [RYE_SHOPPER_IP_HEADER_KEY]: ipAddressCache,
   };
   return gqlClient.request<T>(query, variables, headers);
 };
