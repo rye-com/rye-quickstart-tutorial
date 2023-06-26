@@ -27,7 +27,7 @@ export default function AddProductToRye() {
     apiKey: { currentApiKey },
   } = context;
   const [fetchError, setFetchError] = useState(false);
-  const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Amazon);
+  const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Shopify);
   const selectedProductUrl = selectedMarketplace === MarketplaceEnum.Amazon ? amazonProduct.productURL : shopifyProduct.productURL;
   const requestProductDataOutputJSON = JSON.stringify(requestProductData, null, 2);
 
