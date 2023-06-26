@@ -13,7 +13,7 @@ export default function CheckoutForm() {
         <div className="flex flex-col items-start p-6 bg-choice-active w-[320px] h-[770px] rounded-[24px] gap-6 mt-2">
           <div className="flex flex-col items-start gap-2 w-[272px] h-[100px]">
             <h4 className="paragraph-xsmall font-semibold font-poppinsSemiBold">Products</h4>
-            <Input value={CheckoutFormConstants.productId} internalLabel="Product ID"/>
+            <Input value={CheckoutFormConstants.variantId} internalLabel="Variant ID"/>
           </div>
           <div className="flex flex-col items-start gap-2 w-[272px] h-[100px]">
             <h4 className="paragraph-xsmall font-semibold font-poppinsSemiBold">Contact info</h4>

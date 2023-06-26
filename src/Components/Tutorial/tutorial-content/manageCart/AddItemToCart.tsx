@@ -40,7 +40,7 @@ export default function AddItemToCart() {
         <div className="flex w-3/4 items-center mt-[4px]">
           <Input
               value={addItemToCartTestData.productId}
-              internalLabel="Product ID"
+              internalLabel="Variant ID"
           />
           <button
               onClick={onClickFetch}
