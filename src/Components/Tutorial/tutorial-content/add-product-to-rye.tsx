@@ -1,10 +1,10 @@
-import { useContext, useState } from 'react';
-import { getNextRandomProduct } from "../utils/getNextRandomProduct";
-import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
-import { TutorialContext } from '../constants';
-import { requestProductSnippet, requestProductVariables } from '../CodeSnippets/code_snippets';
-import { MarketplaceEnum } from '../types';
-import { Spinner } from 'flowbite-react';
+import {useContext, useState} from 'react';
+import {getNextRandomProduct} from "../utils/getNextRandomProduct";
+import {InlineCodeSnippet} from '../helper-components/InlineCodeSnippet';
+import {TutorialContext} from '../constants';
+import {requestProductSnippet, requestProductVariables} from '../CodeSnippets/code_snippets';
+import {MarketplaceEnum} from '../types';
+import {Spinner} from 'flowbite-react';
 import Input from '../styled-components/input';
 import ListItem from '../styled-components/list-item';
 import TerminalTab from '../styled-components/code-terminal-tab';
@@ -31,6 +31,7 @@ export default function AddProductToRye() {
   const [fetchError, setFetchError] = useState(false);
   const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Shopify);
   const selectedProductUrl = selectedMarketplace === MarketplaceEnum.Amazon ? amazonProduct.productURL : shopifyProduct.productURL;
+  const marketplace = selectedMarketplace.charAt(0).toUpperCase() + selectedMarketplace.slice(1).toLowerCase();
   const requestProductDataOutputJSON = JSON.stringify(requestProductData, null, 2);
 
   const onClickFetch = () => {
@@ -90,7 +91,7 @@ export default function AddProductToRye() {
               onChange={(e) => {
                 setCurrentRequestedProductURL && setCurrentRequestedProductURL(e.target.value);
               }}
-              internalLabel="Product URL"
+              internalLabel={`${marketplace} product URL`}
               value={currentRequestedProductURL}
           />
           <button
