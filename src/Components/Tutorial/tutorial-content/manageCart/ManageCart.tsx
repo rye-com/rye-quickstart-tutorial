@@ -1,10 +1,7 @@
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { InlineCodeSnippet } from "../../helper-components/InlineCodeSnippet";
-import { LinkType } from "../../constants";
 import { ReactComponent as ManageCartImage } from "../../../../assets/manage-cart.svg";
 import AddItemToCart from "./AddItemToCart";
 import CreateCart from "./CreateCart";
-import ExternalLink from "../../styled-components/external-link";
 import GetCart from "./GetCart";
 import ListItem from "../../styled-components/list-item";
 import UpdateBuyerIdentity from "./UpdateBuyerIdentity";
@@ -12,15 +9,16 @@ import UpdateBuyerIdentity from "./UpdateBuyerIdentity";
 export default function ManageCart() {
   return (
       <section>
-        <div className="mb-3 flex">
-          <h2 className="mr-2 text-heading-small font-bold">Example</h2>
-          <ExternalLink
-              href="https://console.rye.com"
-              text="See it live"
-              type={LinkType.Pill}
-              startEnhancer={ArrowTopRightOnSquareIcon}
-          />
-        </div>
+        {/*TODO: Update this once demo.rye.com uses Cart API*/}
+        {/*<div className="mb-3 flex">*/}
+        {/*  <h2 className="mr-2 text-heading-small font-bold">Example</h2>*/}
+        {/*  <ExternalLink*/}
+        {/*      href={RyeCapProductCheckoutUrl}*/}
+        {/*      text="See it live"*/}
+        {/*      type={LinkType.Pill}*/}
+        {/*      startEnhancer={ArrowTopRightOnSquareIcon}*/}
+        {/*  />*/}
+        {/*</div>*/}
         <ManageCartImage className="mb-[50px]"/>
         <h3 className="mb-6 text-heading-small font-bold">How it works</h3>
         <ol className="list-inside list-decimal text-paragraph-medium font-semibold">

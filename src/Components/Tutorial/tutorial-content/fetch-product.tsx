@@ -1,5 +1,5 @@
 import ExternalLink from '../styled-components/external-link';
-import { LinkType } from '../constants';
+import { LinkType, RyeCapProductStoreUrl } from '../constants';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 import FetchProductScreenV2 from '../../../assets/fetch-product-v2.png';
 import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
@@ -42,7 +42,7 @@ export default function FetchProduct() {
       <div className="mb-[12px] flex">
         <h2 className="mr-[8px] text-heading-small font-bold">Example</h2>
         <ExternalLink
-          href="https://console.rye.com"
+          href={RyeCapProductStoreUrl}
           text="See it live"
           type={LinkType.Pill}
           startEnhancer={ArrowTopRightOnSquareIcon}

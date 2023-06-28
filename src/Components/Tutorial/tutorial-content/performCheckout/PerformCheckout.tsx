@@ -1,7 +1,7 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { InlineCodeSnippet } from "../../helper-components/InlineCodeSnippet";
 import { showPaymentForm, submitCartMutation } from "../../CodeSnippets/code_snippets";
-import { CheckoutFormConstants, LinkType } from '../../constants';
+import { CheckoutFormConstants, LinkType, RyeCapProductCheckoutUrl } from '../../constants';
 import { ReactComponent as ManageCheckoutImage } from "../../../../assets/manage-checkout.svg";
 import ExternalLink from "../../styled-components/external-link";
 import ListItem from "../../styled-components/list-item";
@@ -15,7 +15,7 @@ export default function PerformCheckout() {
         <div className="mb-3 flex">
           <h2 className="mr-2 text-heading-small font-bold">Example</h2>
           <ExternalLink
-              href="https://console.rye.com"
+              href={RyeCapProductCheckoutUrl}
               text="See it live"
               type={LinkType.Pill}
               startEnhancer={ArrowTopRightOnSquareIcon}

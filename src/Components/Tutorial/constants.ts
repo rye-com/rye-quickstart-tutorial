@@ -137,3 +137,7 @@ export const CheckoutFormConstants = {
 }
 
 export const SubmitCartSampleRequestId = '724041230-gh12-5587-2182';
+
+export const RyeCapProductStoreUrl = "https://demo.rye.com/product/7074033139917";
+
+export const RyeCapProductCheckoutUrl = "https://demo.rye.com/product/7074033139917?modal=checkout&variantId=41160207204557";
