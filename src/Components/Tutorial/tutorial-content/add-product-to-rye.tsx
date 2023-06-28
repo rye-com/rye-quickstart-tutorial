@@ -93,9 +93,9 @@ export default function AddProductToRye() {
           />
           <button
               onClick={onClickFetch}
-              className="my-[6px] mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
+              className="mx-3 rounded-xl bg-brand-green py-[14px] px-[36px] hover:bg-brand-hover-green active:bg-brand-active-green whitespace-nowrap"
           >
-            Fetch
+            Add to Rye
           </button>
         </div>
         {(fetchError || requestProductError) && (
