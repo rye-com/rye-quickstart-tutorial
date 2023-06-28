@@ -12,6 +12,7 @@ import { MarketplaceEnum } from '../types';
 import TerminalTab from '../styled-components/code-terminal-tab';
 import { amazonProductFetchSnippet, shopifyProductFetchSnippet } from '../CodeSnippets/code_snippets';
 import Terminal from '../styled-components/code-terminal';
+import { Spinner } from 'flowbite-react';
 
 export default function FetchProduct() {
   const context = useContext(TutorialContext);
@@ -19,6 +20,7 @@ export default function FetchProduct() {
     fetchProduct: {
       fetchProductCallback,
       fetchProductData,
+      fetchProductLoading,
       setCurrentFetchedProductId,
       currentFetchedProductId,
       fetchProductError,
@@ -35,7 +37,6 @@ export default function FetchProduct() {
 
   const isAmazonId = (id: string | undefined) => !id ? true : /\D/.test(id); // Amazon IDs contain characters
   const selectedProductId = selectedMarketplace === MarketplaceEnum.Amazon ? amazonProductId : shopifyProductId;
-
 
   return (
     <section>
@@ -119,7 +120,7 @@ export default function FetchProduct() {
               }}
               className="my-[6px] mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
             >
-              Fetch
+              {fetchProductLoading ? <Spinner/> : "Fetch"}
             </button>
           </div>
           {(fetchError || fetchProductError) && (

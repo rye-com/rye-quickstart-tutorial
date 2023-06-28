@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { CheckoutFormConstants, TutorialContext } from "../../constants";
 import { updateBuyerIdentityInputVariables } from "../../CodeSnippets/updateBuyerIdentitySnippet";
 import { updateBuyerIdentityMutation } from "../../CodeSnippets/code_snippets";
+import { Spinner } from "flowbite-react";
 import TerminalTab from "../../styled-components/code-terminal-tab";
 import Terminal from "../../styled-components/code-terminal";
 
@@ -15,6 +16,7 @@ export default function UpdateBuyerIdentity() {
       updateBuyerIdentityCallback,
       updateBuyerIdentityError,
       updateBuyerIdentityData,
+      updateBuyerIdentityLoading,
     },
     apiKey: { currentApiKey },
   } = context;
@@ -59,7 +61,7 @@ export default function UpdateBuyerIdentity() {
                 className="mx-3 rounded-xl bg-brand-green px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green h-14 relative top-[-80px] left-[10px]"
                 onClick={onClickFetch}
             >
-              Fetch shipping options
+              {updateBuyerIdentityLoading ? <Spinner/> : "Fetch shipping options"}
             </button>
           </div>
           <Terminal>

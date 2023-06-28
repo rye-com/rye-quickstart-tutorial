@@ -106,7 +106,7 @@ type TutorialContextType = {
   },
 };
 
-const sampleProductVariantId = "43901119398123";
+const sampleProductVariantId = "41160207204557";
 
 export const addItemToCartTestData = {
   productId: sampleProductVariantId,

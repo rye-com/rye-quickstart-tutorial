@@ -4,6 +4,7 @@ import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
 import { TutorialContext } from '../constants';
 import { requestProductSnippet, requestProductVariables } from '../CodeSnippets/code_snippets';
 import { MarketplaceEnum } from '../types';
+import { Spinner } from 'flowbite-react';
 import Input from '../styled-components/input';
 import ListItem from '../styled-components/list-item';
 import TerminalTab from '../styled-components/code-terminal-tab';
@@ -22,6 +23,7 @@ export default function AddProductToRye() {
       requestProductData,
       requestProductError,
       currentRequestedProductURL,
+      requestProductLoading,
       setCurrentRequestedProductURL,
     },
     apiKey: { currentApiKey },
@@ -95,7 +97,7 @@ export default function AddProductToRye() {
               onClick={onClickFetch}
               className="mx-3 rounded-xl bg-brand-green py-[14px] px-[36px] hover:bg-brand-hover-green active:bg-brand-active-green whitespace-nowrap"
           >
-            Add to Rye
+            {requestProductLoading ? <Spinner/> : "Add to Rye"}
           </button>
         </div>
         {(fetchError || requestProductError) && (

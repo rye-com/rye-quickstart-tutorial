@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { addItemToCartInputVariables, addItemToCartMutation } from "../../CodeSnippets/addItemToCartSnippet";
 import { addItemToCartTestData, TutorialContext} from "../../constants";
+import { Spinner } from "flowbite-react";
 import Input from "../../styled-components/input";
 import TerminalTab from "../../styled-components/code-terminal-tab";
 import Terminal from "../../styled-components/code-terminal";
@@ -14,7 +15,8 @@ export default function AddItemToCart() {
     addItemToCart: {
       addItemToCartCallback,
       addItemToCartData,
-      addItemToCartError
+      addItemToCartError,
+      addItemToCartLoading,
     },
     apiKey: { currentApiKey },
   } = context;
@@ -46,7 +48,7 @@ export default function AddItemToCart() {
               onClick={onClickFetch}
               className="mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green w-fit whitespace-nowrap"
           >
-            Add to cart
+            {addItemToCartLoading ? <Spinner/> : "Add to cart"}
           </button>
         </div>
         <div className="flex flex-row gap-2 overflow-hidden h-[700px]">
