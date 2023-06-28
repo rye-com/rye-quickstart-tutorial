@@ -73,9 +73,9 @@ export default function AddProductToRye() {
               You can use the product ID returned by this mutation to fetch product data.
               You can also do this via the Rye Console.
             </p>
-            <Terminal onTabChange={(tabIndex) => tabIndex === 0 ? setSelectedMarketplace(MarketplaceEnum.Amazon) : setSelectedMarketplace(MarketplaceEnum.Shopify)}>
-              <TerminalTab label="amazon.js" code={requestProductAmazonCodeSnippet} selected={selectedMarketplace === MarketplaceEnum.Amazon}/>
+            <Terminal onTabChange={(tabIndex) => tabIndex === 0 ? setSelectedMarketplace(MarketplaceEnum.Shopify) : setSelectedMarketplace(MarketplaceEnum.Amazon)}>
               <TerminalTab label="shopify.js" code={requestProductShopifyCodeSnippet} selected={selectedMarketplace === MarketplaceEnum.Shopify}/>
+              <TerminalTab label="amazon.js" code={requestProductAmazonCodeSnippet} selected={selectedMarketplace === MarketplaceEnum.Amazon}/>
             </Terminal>
           </ListItem>
         </ol>

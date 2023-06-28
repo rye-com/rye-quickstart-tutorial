@@ -26,7 +26,7 @@ export default function FetchProduct() {
     apiKey: { currentApiKey },
   } = context;
   const [fetchError, setFetchError] = useState(false);
-  const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Amazon);
+  const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Shopify);
   const amazonProductId = 'B08KHY1PKR';
   const shopifyProductId = '7074033139917';
   const amazonFetchSnippet = amazonProductFetchSnippet(amazonProductId);
@@ -86,9 +86,9 @@ export default function FetchProduct() {
           </div>
         </ListItem>
         <ListItem content="Use the item ID in the following function to fetch product info">
-          <Terminal onTabChange={(tabIndex) => tabIndex === 0 ? setSelectedMarketplace(MarketplaceEnum.Amazon) : setSelectedMarketplace(MarketplaceEnum.Shopify)}>
-            <TerminalTab label="amazon.js" code={amazonFetchSnippet} selected={selectedMarketplace === MarketplaceEnum.Amazon}/>
+          <Terminal onTabChange={(tabIndex) => tabIndex === 0 ? setSelectedMarketplace(MarketplaceEnum.Shopify) : setSelectedMarketplace(MarketplaceEnum.Amazon)}>
             <TerminalTab label="shopify.js" code={shopifyFetchSnippet} selected={selectedMarketplace === MarketplaceEnum.Shopify} />
+            <TerminalTab label="amazon.js" code={amazonFetchSnippet} selected={selectedMarketplace === MarketplaceEnum.Amazon}/>
           </Terminal>
         </ListItem>
         <ListItem content="Run the function to fetch product information, prices, and more.">
