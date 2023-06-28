@@ -1,10 +1,10 @@
-import {useContext, useState} from 'react';
-import {getNextRandomProduct} from "../utils/getNextRandomProduct";
-import {InlineCodeSnippet} from '../helper-components/InlineCodeSnippet';
-import {TutorialContext} from '../constants';
-import {requestProductSnippet, requestProductVariables} from '../CodeSnippets/code_snippets';
-import {MarketplaceEnum} from '../types';
-import {Spinner} from 'flowbite-react';
+import { useContext, useState } from 'react';
+import { getNextRandomProduct } from "../utils/getNextRandomProduct";
+import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
+import { TutorialContext } from '../constants';
+import { requestProductSnippet, requestProductVariables } from '../CodeSnippets/code_snippets';
+import { MarketplaceEnum } from '../types';
+import { Spinner } from 'flowbite-react';
 import Input from '../styled-components/input';
 import ListItem from '../styled-components/list-item';
 import TerminalTab from '../styled-components/code-terminal-tab';
