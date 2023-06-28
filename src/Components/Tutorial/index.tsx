@@ -10,7 +10,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import {
   amazonProductFetchQuery,
   productFetchVariables,
-  requestProductQuery
+  requestProductQuery, shopifyProductFetchQuery
 } from './CodeSnippets/code_snippets';
 import { MarketplaceEnum } from './types';
 import { ReactComponent as GettingStartedImage } from "../../assets/tutorial-intro.svg";
@@ -55,7 +55,7 @@ export default function Index() {
     loading: fetchProductLoading,
     error: fetchProductError,
   } = useRequest<object>(
-    amazonProductFetchQuery, //update query based on eventual dropdown value
+    shopifyProductFetchQuery, //update query based on eventual dropdown value
   );
 
   // Request Product
