@@ -38,13 +38,13 @@ export default function ObtainRyeApiKey() {
       />
       <ListItem
         styleOverrides={{ paragraph: 'inline-block mb-[12px]' }}
-        content="Under Account → Access and Security, view and copy your API key"
+        content="Under Account → Access and Security, view and copy your API key header"
       >
         <img src={RyeApiKeyV2} alt="API Key" />
       </ListItem>
       <ListItem
         styleOverrides={{ paragraph: 'inline-block mb-[12px]' }}
-        content="Enter your Rye API key"
+        content="Enter your Rye API key header"
       >
         <div className="flex">
           <div className="w-3/4">
@@ -64,7 +64,7 @@ export default function ObtainRyeApiKey() {
           {apiKeyCheckIsLoading && <Spinner className="mt-[12px] ml-[10px]" />}
         </div>
       </ListItem>
-      <ListItem content="Now you can use your API key to access the Rye API throughout the tutorial">
+      <ListItem content="Now you can use your API key header to access the Rye API throughout the tutorial">
         <p className="mb-[12px] text-paragraph-small font-normal">
           See below for the code snippet to call the Rye API:
         </p>

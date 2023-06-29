@@ -7,7 +7,7 @@ export type NonEmptyArray<T> = [T, ...T[]];
 
 export const enum StepEnum {
   Step0 = 'Getting started',
-  Step1 = 'Obtaining Rye API key',
+  Step1 = 'Obtaining Rye API key header',
   Step2 = 'Add product to Rye',
   Step3 = 'Fetch product data',
   Step4 = 'Manage a cart',
@@ -21,7 +21,7 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
     url: '/start' },
   {
     title: StepEnum.Step1,
-    description: 'To make requests to the Rye GraphQL API, you will need to get an API access key',
+    description: 'To make requests to the Rye GraphQL API, you will need to get an API access key header',
     url: '/get-key',
   },
   {

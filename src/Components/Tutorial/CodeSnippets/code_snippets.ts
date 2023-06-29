@@ -30,14 +30,10 @@ await ${fnName}();`;
 
 export const initializeClientSnippet = (RYE_API_TOKEN: string) =>
   `import { GraphQLClient, gql } from 'graphql-request'
-const API_KEY = '${RYE_API_TOKEN}'
 
 const endpoint = 'https://graphql.api.rye.com/v1/query'
 const client = new GraphQLClient(endpoint)
-const headers = {
-  'Authorization': 'Basic ' + 
-    Buffer.from(API_KEY + ':').toString('base64'),
-}`;
+const headers = ${RYE_API_TOKEN}`;
 
 export const requestProductQuery = `mutation RequestProductByURL(
   $input: RequestProductByURLInput!

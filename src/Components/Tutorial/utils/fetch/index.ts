@@ -20,9 +20,9 @@ const makeGQLRequest = async <T>(
     ipAddressCache = ipObj.ip;
   }
   const headers = {
-    Authorization: 'Basic ' + window.btoa(apiKey + ':'),
+    ...JSON.parse(apiKey),
     [RYE_SHOPPER_IP_HEADER_KEY]: ipAddressCache,
-  };
+  }
   return gqlClient.request<T>(query, variables, headers);
 };
 
