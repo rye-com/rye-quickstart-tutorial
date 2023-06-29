@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { TutorialContext } from "../../constants";
 import { getCartInputVariables, getCartQuery } from "../../CodeSnippets/getCartSnippet";
+import { Spinner } from "flowbite-react";
 import Input from "../../styled-components/input";
 import TerminalTab from "../../styled-components/code-terminal-tab";
 import Terminal from "../../styled-components/code-terminal";
@@ -15,6 +16,7 @@ export default function GetCart() {
       getCartCallback,
       getCartData,
       getCartError,
+      getCartLoading,
     },
     apiKey: { currentApiKey },
   } = context;
@@ -46,7 +48,7 @@ export default function GetCart() {
               onClick={onClickFetch}
               className="mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
           >
-            Fetch
+            {getCartLoading ? <Spinner/> : "Fetch"}
           </button>
         </div>
         <div className="flex flex-row gap-2 overflow-hidden h-[700px]">

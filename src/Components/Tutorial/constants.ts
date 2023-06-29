@@ -8,8 +8,8 @@ export type NonEmptyArray<T> = [T, ...T[]];
 export const enum StepEnum {
   Step0 = 'Getting started',
   Step1 = 'Obtaining Rye API key',
-  Step2 = 'Fetch product data',
-  Step3 = 'Add product to Rye',
+  Step2 = 'Add product to Rye',
+  Step3 = 'Fetch product data',
   Step4 = 'Manage a cart',
   Step5 = 'Perform checkout',
   Step6 = 'Display transaction results',
@@ -26,14 +26,14 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
   },
   {
     title: StepEnum.Step2,
-    description:
-      'Fetch product data in realtime with Rye’s API. This allows you to showcase products and display accurate, up-to-date information, and users to make informed purchasing decisions.',
-    url: '/product-data',
+    description: 'Some products on Amazon and Shopify may not be logged in the Rye inventory. You can use this function to add an external product. This step is optional but can be useful if you want to track inventory and orders within Rye.',
+    url: '/add-product'
   },
   {
     title: StepEnum.Step3,
-    description: 'Some products on Amazon and Shopify may not be logged in the Rye inventory. You can use this function to add an external product. This step is optional but can be useful if you want to track inventory and orders within Rye.',
-    url: '/add-product'
+    description:
+      'Fetch product data in realtime with Rye’s API. This allows you to showcase products and display accurate, up-to-date information, and users to make informed purchasing decisions.',
+    url: '/product-data',
   },
   {
     title: StepEnum.Step4,
@@ -106,7 +106,7 @@ type TutorialContextType = {
   },
 };
 
-const sampleProductVariantId = "43901119398123";
+const sampleProductVariantId = "41160207204557";
 
 export const addItemToCartTestData = {
   productId: sampleProductVariantId,
@@ -137,3 +137,7 @@ export const CheckoutFormConstants = {
 }
 
 export const SubmitCartSampleRequestId = '724041230-gh12-5587-2182';
+
+export const RyeCapProductStoreUrl = "https://demo.rye.com/product/7074033139917";
+
+export const RyeCapProductCheckoutUrl = "https://demo.rye.com/product/7074033139917?modal=checkout&variantId=41160207204557";

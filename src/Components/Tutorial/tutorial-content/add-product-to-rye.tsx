@@ -4,6 +4,7 @@ import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
 import { TutorialContext } from '../constants';
 import { requestProductSnippet, requestProductVariables } from '../CodeSnippets/code_snippets';
 import { MarketplaceEnum } from '../types';
+import { Spinner } from 'flowbite-react';
 import Input from '../styled-components/input';
 import ListItem from '../styled-components/list-item';
 import TerminalTab from '../styled-components/code-terminal-tab';
@@ -22,6 +23,7 @@ export default function AddProductToRye() {
       requestProductData,
       requestProductError,
       currentRequestedProductURL,
+      requestProductLoading,
       setCurrentRequestedProductURL,
     },
     apiKey: { currentApiKey },
@@ -29,6 +31,7 @@ export default function AddProductToRye() {
   const [fetchError, setFetchError] = useState(false);
   const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Shopify);
   const selectedProductUrl = selectedMarketplace === MarketplaceEnum.Amazon ? amazonProduct.productURL : shopifyProduct.productURL;
+  const marketplace = selectedMarketplace.charAt(0).toUpperCase() + selectedMarketplace.slice(1).toLowerCase();
   const requestProductDataOutputJSON = JSON.stringify(requestProductData, null, 2);
 
   const onClickFetch = () => {
@@ -73,9 +76,9 @@ export default function AddProductToRye() {
               You can use the product ID returned by this mutation to fetch product data.
               You can also do this via the Rye Console.
             </p>
-            <Terminal onTabChange={(tabIndex) => tabIndex === 0 ? setSelectedMarketplace(MarketplaceEnum.Amazon) : setSelectedMarketplace(MarketplaceEnum.Shopify)}>
-              <TerminalTab label="amazon.js" code={requestProductAmazonCodeSnippet} selected={selectedMarketplace === MarketplaceEnum.Amazon}/>
+            <Terminal onTabChange={(tabIndex) => tabIndex === 0 ? setSelectedMarketplace(MarketplaceEnum.Shopify) : setSelectedMarketplace(MarketplaceEnum.Amazon)}>
               <TerminalTab label="shopify.js" code={requestProductShopifyCodeSnippet} selected={selectedMarketplace === MarketplaceEnum.Shopify}/>
+              <TerminalTab label="amazon.js" code={requestProductAmazonCodeSnippet} selected={selectedMarketplace === MarketplaceEnum.Amazon}/>
             </Terminal>
           </ListItem>
         </ol>
@@ -88,14 +91,14 @@ export default function AddProductToRye() {
               onChange={(e) => {
                 setCurrentRequestedProductURL && setCurrentRequestedProductURL(e.target.value);
               }}
-              internalLabel="Product URL"
+              internalLabel={`${marketplace} product URL`}
               value={currentRequestedProductURL}
           />
           <button
               onClick={onClickFetch}
-              className="my-[6px] mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
+              className="mx-3 rounded-xl bg-brand-green py-[14px] px-[36px] hover:bg-brand-hover-green active:bg-brand-active-green whitespace-nowrap"
           >
-            Fetch
+            {requestProductLoading ? <Spinner/> : "Add to Rye"}
           </button>
         </div>
         {(fetchError || requestProductError) && (

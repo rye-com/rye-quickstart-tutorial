@@ -16,13 +16,16 @@ const indent = (code: string) => {
 };
 
 const formatQueryCode = (fnName: string, query: string, variables: object) => {
-  return `function ${fnName}() {
+  return `async function ${fnName}() {
   const variables = ${indent(JSON.stringify(variables, null, 2))};
+  
   const query = gql\`${indent(query)}\`;
+  
   const data = await client.request(query, variables, headers)
   console.log(JSON.stringify(data, undefined, 2))
 }
-${fnName}();`;
+
+await ${fnName}();`;
 };
 
 export const initializeClientSnippet = (RYE_API_TOKEN: string) =>

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { TutorialContext } from "../../constants";
 import { createCartInputVariables, createCartMutation } from "../../CodeSnippets/createCartSnippet";
+import { Spinner } from "flowbite-react";
 import TerminalTab from "../../styled-components/code-terminal-tab";
 import Terminal from "../../styled-components/code-terminal";
 
@@ -12,6 +13,7 @@ export default function CreateCart() {
       createCartError,
       createCartData,
       setCurrentCreateCartID,
+      createCartLoading,
     },
     apiKey: { currentApiKey },
   } = context;
@@ -49,7 +51,7 @@ export default function CreateCart() {
                 className="mx-3 rounded-xl bg-brand-green px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green h-14 relative top-[-80px] left-[10px]"
                 onClick={onClickFetch}
             >
-              Create cart
+              {createCartLoading ? <Spinner/> : "Create cart"}
             </button>
           </div>
           <Terminal>

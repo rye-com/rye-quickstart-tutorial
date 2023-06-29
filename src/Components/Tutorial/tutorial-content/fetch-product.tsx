@@ -1,5 +1,5 @@
 import ExternalLink from '../styled-components/external-link';
-import { LinkType } from '../constants';
+import { LinkType, RyeCapProductStoreUrl } from '../constants';
 import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 import FetchProductScreenV2 from '../../../assets/fetch-product-v2.png';
 import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
@@ -12,6 +12,7 @@ import { MarketplaceEnum } from '../types';
 import TerminalTab from '../styled-components/code-terminal-tab';
 import { amazonProductFetchSnippet, shopifyProductFetchSnippet } from '../CodeSnippets/code_snippets';
 import Terminal from '../styled-components/code-terminal';
+import { Spinner } from 'flowbite-react';
 
 export default function FetchProduct() {
   const context = useContext(TutorialContext);
@@ -19,6 +20,7 @@ export default function FetchProduct() {
     fetchProduct: {
       fetchProductCallback,
       fetchProductData,
+      fetchProductLoading,
       setCurrentFetchedProductId,
       currentFetchedProductId,
       fetchProductError,
@@ -26,7 +28,7 @@ export default function FetchProduct() {
     apiKey: { currentApiKey },
   } = context;
   const [fetchError, setFetchError] = useState(false);
-  const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Amazon);
+  const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Shopify);
   const amazonProductId = 'B08KHY1PKR';
   const shopifyProductId = '7074033139917';
   const amazonFetchSnippet = amazonProductFetchSnippet(amazonProductId);
@@ -36,13 +38,12 @@ export default function FetchProduct() {
   const isAmazonId = (id: string | undefined) => !id ? true : /\D/.test(id); // Amazon IDs contain characters
   const selectedProductId = selectedMarketplace === MarketplaceEnum.Amazon ? amazonProductId : shopifyProductId;
 
-
   return (
     <section>
       <div className="mb-[12px] flex">
         <h2 className="mr-[8px] text-heading-small font-bold">Example</h2>
         <ExternalLink
-          href="https://console.rye.com"
+          href={RyeCapProductStoreUrl}
           text="See it live"
           type={LinkType.Pill}
           startEnhancer={ArrowTopRightOnSquareIcon}
@@ -86,9 +87,9 @@ export default function FetchProduct() {
           </div>
         </ListItem>
         <ListItem content="Use the item ID in the following function to fetch product info">
-          <Terminal onTabChange={(tabIndex) => tabIndex === 0 ? setSelectedMarketplace(MarketplaceEnum.Amazon) : setSelectedMarketplace(MarketplaceEnum.Shopify)}>
-            <TerminalTab label="amazon.js" code={amazonFetchSnippet} selected={selectedMarketplace === MarketplaceEnum.Amazon}/>
+          <Terminal onTabChange={(tabIndex) => tabIndex === 0 ? setSelectedMarketplace(MarketplaceEnum.Shopify) : setSelectedMarketplace(MarketplaceEnum.Amazon)}>
             <TerminalTab label="shopify.js" code={shopifyFetchSnippet} selected={selectedMarketplace === MarketplaceEnum.Shopify} />
+            <TerminalTab label="amazon.js" code={amazonFetchSnippet} selected={selectedMarketplace === MarketplaceEnum.Amazon}/>
           </Terminal>
         </ListItem>
         <ListItem content="Run the function to fetch product information, prices, and more.">
@@ -119,7 +120,7 @@ export default function FetchProduct() {
               }}
               className="my-[6px] mx-3 rounded-xl bg-brand-green py-[14px] px-[24px] hover:bg-brand-hover-green active:bg-brand-active-green"
             >
-              Fetch
+              {fetchProductLoading ? <Spinner/> : "Fetch"}
             </button>
           </div>
           {(fetchError || fetchProductError) && (
