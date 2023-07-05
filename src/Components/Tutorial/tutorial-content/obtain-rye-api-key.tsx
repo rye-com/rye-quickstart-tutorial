@@ -1,4 +1,3 @@
-import RyeApiKeyV2 from '../../../assets/rye-key-v2.png';
 import ListItem from '../styled-components/list-item';
 import ExternalLink from '../styled-components/external-link';
 import { LinkType } from '../constants';
@@ -11,6 +10,7 @@ import { Spinner } from 'flowbite-react';
 import TerminalTab from '../styled-components/code-terminal-tab';
 import { initializeClientSnippet } from '../CodeSnippets/code_snippets';
 import Terminal from '../styled-components/code-terminal';
+import { ReactComponent as RyeApiKeyHeader } from "../../../assets/rye-api-key-header.svg";
 
 export default function ObtainRyeApiKey() {
   const context = useContext(TutorialContext);
@@ -40,7 +40,7 @@ export default function ObtainRyeApiKey() {
         styleOverrides={{ paragraph: 'inline-block mb-[12px]' }}
         content="Under Account → Access and Security, view and copy your API key header"
       >
-        <img src={RyeApiKeyV2} alt="API Key" />
+        <RyeApiKeyHeader />
       </ListItem>
       <ListItem
         styleOverrides={{ paragraph: 'inline-block mb-[12px]' }}
