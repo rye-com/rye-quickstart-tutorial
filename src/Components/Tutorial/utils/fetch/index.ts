@@ -2,10 +2,12 @@ import { useState } from 'react';
 import type { Variables } from 'graphql-request';
 import { GraphQLClient } from 'graphql-request';
 
-const RYE_SHOPPER_IP_HEADER_KEY = 'x-rye-shopper-ip';
+const RYE_SHOPPER_IP_HEADER_KEY = 'rye-shopper-ip';
 const IP_JSON_URL = `https://api.ipify.org/?format=json`;
 
 const gqlClient = new GraphQLClient('https://graphql.api.rye.com/v1/query');
+
+const EMPTY_CLIENT_IP = '<< Insert IP address here >>';
 
 let ipAddressCache= '';
 
@@ -14,14 +16,12 @@ const makeGQLRequest = async <T>(
   variables: Variables, // using generic TVars for this causes a weird type error with client.request call
   apiKey: string,
 ): Promise<T> => {
-  if (ipAddressCache === '') {
+  const headers = JSON.parse(apiKey);
+  if (ipAddressCache === '' || headers?.[RYE_SHOPPER_IP_HEADER_KEY] === EMPTY_CLIENT_IP) {
     const ipJson = await fetch(IP_JSON_URL);
     const ipObj = await ipJson.json();
     ipAddressCache = ipObj.ip;
-  }
-  const headers = {
-    ...JSON.parse(apiKey),
-    [RYE_SHOPPER_IP_HEADER_KEY]: ipAddressCache,
+    headers[RYE_SHOPPER_IP_HEADER_KEY] = ipAddressCache;
   }
   return gqlClient.request<T>(query, variables, headers);
 };
