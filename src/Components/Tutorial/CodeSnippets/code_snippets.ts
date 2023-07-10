@@ -28,12 +28,12 @@ const formatQueryCode = (fnName: string, query: string, variables: object) => {
 await ${fnName}();`;
 };
 
-export const initializeClientSnippet = (RYE_API_TOKEN: string) =>
+export const initializeClientSnippet = (RYE_API_KEY_HEADER: string) =>
   `import { GraphQLClient, gql } from 'graphql-request'
 
 const endpoint = 'https://graphql.api.rye.com/v1/query'
 const client = new GraphQLClient(endpoint)
-const headers = ${RYE_API_TOKEN}`;
+const headers = ${RYE_API_KEY_HEADER}`;
 
 export const requestProductQuery = `mutation RequestProductByURL(
   $input: RequestProductByURLInput!
