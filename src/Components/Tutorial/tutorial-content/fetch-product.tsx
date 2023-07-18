@@ -25,7 +25,7 @@ export default function FetchProduct() {
       currentFetchedProductId,
       fetchProductError,
     },
-    apiKey: { currentApiKey },
+    authHeaders: { currentAuthHeaders },
   } = context;
   const [fetchError, setFetchError] = useState(false);
   const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Shopify);
@@ -108,9 +108,9 @@ export default function FetchProduct() {
             />
             <button
               onClick={() => {
-                if (fetchProductCallback && currentApiKey && currentFetchedProductId) {
+                if (fetchProductCallback && currentAuthHeaders && currentFetchedProductId) {
                   fetchProductCallback(
-                    currentApiKey,
+                    currentAuthHeaders,
                     productFetchVariables(currentFetchedProductId, selectedMarketplace),
                   );
                   setFetchError(false);

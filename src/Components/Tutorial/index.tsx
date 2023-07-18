@@ -38,13 +38,13 @@ export default function Index() {
   const location = useLocation();
   const step = urlMap[location.pathname] || urlMap['/start'] || TUTORIAL_STEPS[0];
 
-  //API key related logic
-  const [currentApiKey, setCurrentApiKey] = useLocalStorage('apiKey', '');
+  // Auth headers related logic
+  const [currentAuthHeaders, setCurrentAuthHeaders] = useLocalStorage('authHeaders', '');
   const { callback, data, loading } = useRequest(amazonProductFetchQuery);
-  const debouncedApiKeyCheck = useDebouncedCallback(callback, 500);
-  function setApiKey(key: string) {
-    setCurrentApiKey(key);
-    debouncedApiKeyCheck(key, productFetchVariables('B073K14CVB', MarketplaceEnum.Amazon));
+  const debouncedAuthHeadersCheck = useDebouncedCallback(callback, 500);
+  function setAuthHeaders(key: string) {
+    setCurrentAuthHeaders(key);
+    debouncedAuthHeadersCheck(key, productFetchVariables('B073K14CVB', MarketplaceEnum.Amazon));
   }
 
   // Fetch Product
@@ -106,11 +106,11 @@ export default function Index() {
     <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
         value={{
-          apiKey: {
-            setApiKey,
-            currentApiKey,
-            apiKeyCheckIsLoading: loading,
-            isApiKeyValid: !!data,
+          authHeaders: {
+            setAuthHeaders,
+            currentAuthHeaders,
+            authHeadersCheckIsLoading: loading,
+            isAuthHeadersValid: !!data,
           },
           fetchProduct: {
             fetchProductCallback,

@@ -15,16 +15,16 @@ export default function CreateCart() {
       setCurrentCreateCartID,
       createCartLoading,
     },
-    apiKey: { currentApiKey },
+    authHeaders: { currentAuthHeaders },
   } = context;
 
   const [fetchError, setFetchError] = useState(false);
   const createCartDataOutputJSON = JSON.stringify(createCartData, null, 2);
 
   const onClickFetch = () => {
-    if (createCartCallback && currentApiKey) {
+    if (createCartCallback && currentAuthHeaders) {
       createCartCallback(
-          currentApiKey,
+          currentAuthHeaders,
           createCartInputVariables(),
       );
 

@@ -19,7 +19,7 @@ export default function AddItemToCart() {
       addItemToCartError,
       addItemToCartLoading,
     },
-    apiKey: { currentApiKey },
+    authHeaders: { currentAuthHeaders },
   } = context;
 
   const [fetchError, setFetchError] = useState(false);
@@ -29,9 +29,9 @@ export default function AddItemToCart() {
   const addItemToCartDataJSONOutput = JSON.stringify(addItemToCartData, null, 2);
 
   const onClickFetch = () => {
-    if (addItemToCartCallback && currentApiKey && currentCreateCartID) {
+    if (addItemToCartCallback && currentAuthHeaders && currentCreateCartID) {
       addItemToCartCallback(
-          currentApiKey,
+          currentAuthHeaders,
           addItemToCartInputVariables(currentCreateCartID, productId, marketplace),
       );
 

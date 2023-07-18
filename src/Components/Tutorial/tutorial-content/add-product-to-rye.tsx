@@ -26,7 +26,7 @@ export default function AddProductToRye() {
       requestProductLoading,
       setCurrentRequestedProductURL,
     },
-    apiKey: { currentApiKey },
+    authHeaders: { currentAuthHeaders },
   } = context;
   const [fetchError, setFetchError] = useState(false);
   const [selectedMarketplace, setSelectedMarketplace] = useState<MarketplaceEnum>(MarketplaceEnum.Shopify);
@@ -35,12 +35,12 @@ export default function AddProductToRye() {
   const requestProductDataOutputJSON = JSON.stringify(requestProductData, null, 2);
 
   const onClickFetch = () => {
-    if (requestProductCallback && currentApiKey && currentRequestedProductURL) {
+    if (requestProductCallback && currentAuthHeaders && currentRequestedProductURL) {
       const marketplace = currentRequestedProductURL?.includes(MarketplaceEnum.Amazon.toLowerCase()) ?
           MarketplaceEnum.Amazon : MarketplaceEnum.Shopify;
 
       requestProductCallback(
-          currentApiKey,
+          currentAuthHeaders,
           requestProductVariables(currentRequestedProductURL, marketplace),
       );
       setFetchError(false);

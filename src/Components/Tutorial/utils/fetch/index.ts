@@ -14,9 +14,9 @@ let ipAddressCache= '';
 const makeGQLRequest = async <T>(
   query: string,
   variables: Variables, // using generic TVars for this causes a weird type error with client.request call
-  apiKey: string,
+  authHeaders: string,
 ): Promise<T> => {
-  const headers = JSON.parse(apiKey);
+  const headers = JSON.parse(authHeaders);
   if (ipAddressCache === '' || headers?.[RYE_SHOPPER_IP_HEADER_KEY] === EMPTY_CLIENT_IP) {
     const ipJson = await fetch(IP_JSON_URL);
     const ipObj = await ipJson.json();
@@ -31,13 +31,13 @@ export const useRequest = <T>(graphQLQuery: string) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown | null>(null);
 
-  function callback(key: string, variables: Variables) {
+  function callback(authHeaders: string, variables: Variables) {
     let ignore = false;
     const request = async () => {
       setLoading(true);
       try {
         setError(null);
-        const response = await makeGQLRequest<T>(graphQLQuery, variables, key);
+        const response = await makeGQLRequest<T>(graphQLQuery, variables, authHeaders);
         if (!ignore) setData(response);
       } catch (err: unknown) {
         setError(err);

@@ -10,14 +10,14 @@ import { Spinner } from 'flowbite-react';
 import TerminalTab from '../styled-components/code-terminal-tab';
 import { initializeClientSnippet } from '../CodeSnippets/code_snippets';
 import Terminal from '../styled-components/code-terminal';
-import { ReactComponent as RyeApiKeyHeader } from "../../../assets/rye-api-key-header.svg";
+import { ReactComponent as RyeApiAuthHeaders } from "../../../assets/rye-api-auth-headers.svg";
 
-export default function ObtainRyeApiKey() {
+export default function ObtainRyeApiAuthHeaders() {
   const context = useContext(TutorialContext);
   const {
-    apiKey: { setApiKey, currentApiKey, isApiKeyValid, apiKeyCheckIsLoading },
+    authHeaders: { setAuthHeaders, currentAuthHeaders, isAuthHeadersValid, authHeadersCheckIsLoading },
   } = context;
-  const initClientSnippet = initializeClientSnippet(currentApiKey || '<RYE_API_KEY>');
+  const initClientSnippet = initializeClientSnippet(currentAuthHeaders || '<RYE_API_AUTH_HEADERS>');
 
   return (
     <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
@@ -38,33 +38,33 @@ export default function ObtainRyeApiKey() {
       />
       <ListItem
         styleOverrides={{ paragraph: 'inline-block mb-[12px]' }}
-        content="Under Account → Access and Security, view and copy your API key header"
+        content="Under Account → Access and Security, view and copy your API auth headers"
       >
-        <RyeApiKeyHeader />
+        <RyeApiAuthHeaders />
       </ListItem>
       <ListItem
         styleOverrides={{ paragraph: 'inline-block mb-[12px]' }}
-        content="Enter your Rye API key header"
+        content="Enter your Rye API auth headers"
       >
         <div className="flex">
           <div className="w-3/4">
             <Input
               startEnhancer={KeyIcon}
               onChange={(e) => {
-                setApiKey && setApiKey(e.target.value);
+                setAuthHeaders && setAuthHeaders(e.target.value);
               }}
-              value={currentApiKey}
+              value={currentAuthHeaders}
             />
           </div>
-          {isApiKeyValid && (
+          {isAuthHeadersValid && (
             <p className="ml-[10px] flex items-center text-alerts-success">
               <CheckIcon className="h-[20px] w-[20px]" /> CONNECTED
             </p>
           )}
-          {apiKeyCheckIsLoading && <Spinner className="mt-[12px] ml-[10px]" />}
+          {authHeadersCheckIsLoading && <Spinner className="mt-[12px] ml-[10px]" />}
         </div>
       </ListItem>
-      <ListItem content="Now you can use your API key header to access the Rye API throughout the tutorial">
+      <ListItem content="Now you can use your API auth headers to access the Rye API throughout the tutorial">
         <p className="mb-[12px] text-paragraph-small font-normal">
           See below for the code snippet to call the Rye API:
         </p>
