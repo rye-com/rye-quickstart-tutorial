@@ -18,16 +18,16 @@ export default function GetCart() {
       getCartError,
       getCartLoading,
     },
-    apiKey: { currentApiKey },
+    authHeaders: { currentAuthHeaders },
   } = context;
 
   const [fetchError, setFetchError] = useState(false);
   const getCartDataJSONOutput = JSON.stringify(getCartData, null, 2);
 
   const onClickFetch = () => {
-    if (getCartCallback && currentApiKey && currentCreateCartID) {
+    if (getCartCallback && currentAuthHeaders && currentCreateCartID) {
       getCartCallback(
-          currentApiKey,
+          currentAuthHeaders,
           getCartInputVariables(currentCreateCartID),
       );
 

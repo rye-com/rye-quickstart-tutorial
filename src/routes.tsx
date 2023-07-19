@@ -1,9 +1,9 @@
 import './index.css';
 import Tutorial from './Components/Tutorial';
 
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
-import ObtainRyeApiKey from './Components/Tutorial/tutorial-content/obtain-rye-api-key';
+import ObtainRyeApiAuthHeaders from './Components/Tutorial/tutorial-content/ObtainRyeApiAuthHeaders';
 import FetchProduct from './Components/Tutorial/tutorial-content/fetch-product';
 import AddProductToRye from "./Components/Tutorial/tutorial-content/add-product-to-rye";
 import ManageCart from "./Components/Tutorial/tutorial-content/manageCart/ManageCart";
@@ -26,7 +26,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'get-key',
-        element: <ObtainRyeApiKey />,
+        element: <Navigate to="/get-auth-headers"/>,
+      },
+      {
+        path: 'get-auth-headers',
+        element: <ObtainRyeApiAuthHeaders />,
       },
       {
         path: 'product-data',

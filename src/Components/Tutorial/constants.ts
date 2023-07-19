@@ -7,7 +7,7 @@ export type NonEmptyArray<T> = [T, ...T[]];
 
 export const enum StepEnum {
   Step0 = 'Getting started',
-  Step1 = 'Obtaining Rye API key',
+  Step1 = 'Obtaining Rye API auth headers',
   Step2 = 'Add product to Rye',
   Step3 = 'Fetch product data',
   Step4 = 'Manage a cart',
@@ -21,8 +21,8 @@ export const TUTORIAL_STEPS: NonEmptyArray<TutorialStep> = [
     url: '/start' },
   {
     title: StepEnum.Step1,
-    description: 'To make requests to the Rye GraphQL API, you will need to get an API access key',
-    url: '/get-key',
+    description: 'To make requests to the Rye GraphQL API, you will need to get API auth headers',
+    url: '/get-auth-headers',
   },
   {
     title: StepEnum.Step2,
@@ -56,11 +56,11 @@ export const enum LinkType {
 }
 
 type TutorialContextType = {
-  apiKey: {
-    setApiKey?: (key: string) => void;
-    currentApiKey?: string;
-    apiKeyCheckIsLoading?: boolean;
-    isApiKeyValid?: boolean;
+  authHeaders: {
+    setAuthHeaders?: (key: string) => void;
+    currentAuthHeaders?: string;
+    authHeadersCheckIsLoading?: boolean;
+    isAuthHeadersValid?: boolean;
   };
   fetchProduct: {
     fetchProductCallback?: (key: string, variables: Variables) => void;
@@ -114,7 +114,7 @@ export const addItemToCartTestData = {
 }
 
 export const TutorialContext = createContext<TutorialContextType>({
-  apiKey: {},
+  authHeaders: {},
   fetchProduct: {},
   requestProduct: {},
   createCart: {},

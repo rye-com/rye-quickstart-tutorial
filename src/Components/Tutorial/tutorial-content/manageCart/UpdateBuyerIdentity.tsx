@@ -18,16 +18,16 @@ export default function UpdateBuyerIdentity() {
       updateBuyerIdentityData,
       updateBuyerIdentityLoading,
     },
-    apiKey: { currentApiKey },
+    authHeaders: { currentAuthHeaders },
   } = context;
 
   const [fetchError, setFetchError] = useState(false);
   const updateBuyerIdentityDataOutputJSON = JSON.stringify(updateBuyerIdentityData, null, 2);
 
   const onClickFetch = () => {
-    if (updateBuyerIdentityCallback && currentApiKey && currentCreateCartID) {
+    if (updateBuyerIdentityCallback && currentAuthHeaders && currentCreateCartID) {
       updateBuyerIdentityCallback(
-          currentApiKey,
+          currentAuthHeaders,
           updateBuyerIdentityInputVariables({
             address: {
               "address1": CheckoutFormConstants.streetAddress,
