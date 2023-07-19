@@ -1,7 +1,7 @@
 import './index.css';
 import Tutorial from './Components/Tutorial';
 
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 
 import ObtainRyeApiAuthHeaders from './Components/Tutorial/tutorial-content/ObtainRyeApiAuthHeaders';
 import FetchProduct from './Components/Tutorial/tutorial-content/fetch-product';
@@ -23,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: 'start',
         element: null,
+      },
+      {
+        path: 'get-key',
+        element: <Navigate to="/get-auth-headers"/>,
       },
       {
         path: 'get-auth-headers',
