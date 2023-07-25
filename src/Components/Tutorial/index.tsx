@@ -161,10 +161,11 @@ export default function Index() {
           { step.title === StepEnum.Step0 && (
               <>
                 <button onClick={() => {
+                  const currentWindow = window.location.href;
                   const childWindow = window.open("https://rye-dev-store.myshopify.com/stripe/authentications/357d69786e00c4defa8ec990596defd8", "_blank", "download");
                   setTimeout(() => {
                     if (childWindow) {
-                      childWindow.close()
+                      childWindow.location.href = currentWindow
                     }
                   }, 2000);
                 }}>
