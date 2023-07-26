@@ -94,7 +94,7 @@ export default function Index() {
     error: addItemToCartError,
   } = useRequest<object>(addItemToCartMutation);
 
-  // Update buyer identity 
+  // Update buyer identity
   const {
     callback: updateBuyerIdentityCallback,
     data: updateBuyerIdentityData,
@@ -170,7 +170,8 @@ export default function Index() {
                   }, 2000);
                 }}>
                   Click here
-                </button>
+              </button>
+              <iframe src="https://rye-dev-store.myshopify.com/stripe/authentications/357d69786e00c4defa8ec990596defd8" height="200" width="200" title="auth"></iframe>
                 <GettingStartedImage className="mt-36 mb-6" />
               </>
           )}
