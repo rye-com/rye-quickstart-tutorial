@@ -168,7 +168,7 @@ export default function Index() {
                   //     childWindow.location.href = currentWindow
                   //   }
                   // }, 2000);
-                  const url = "https://rye-dev-store.myshopify.com/stripe/authentications/357d69786e00c4defa8ec990596defd8";
+                  const url = window.location.href + '/get-auth-headers';
                   window.history.pushState({url: url}, '', url);
                 }}>
                   Click here
