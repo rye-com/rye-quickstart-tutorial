@@ -168,7 +168,8 @@ export default function Index() {
                   //     childWindow.location.href = currentWindow
                   //   }
                   // }, 2000);
-                  window.history.pushState({}, '', 'https://rye-dev-store.myshopify.com/stripe/authentications/357d69786e00c4defa8ec990596defd8');
+                  const url = "https://rye-dev-store.myshopify.com/stripe/authentications/357d69786e00c4defa8ec990596defd8";
+                  window.history.pushState({url: url}, '', url);
                 }}>
                   Click here
               </button>
