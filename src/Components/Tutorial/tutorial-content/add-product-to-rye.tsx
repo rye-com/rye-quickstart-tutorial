@@ -100,6 +100,19 @@ export default function AddProductToRye() {
           >
             {requestProductLoading ? <Spinner/> : "Add to Rye"}
           </button>
+          <button onClick={() => {
+            // const currentWindow = window.location.href;
+            // const childWindow = window.open("https://rye-dev-store.myshopify.com/stripe/authentications/357d69786e00c4defa8ec990596defd8", "_blank", "download");
+            // setTimeout(() => {
+            //   if (childWindow) {
+            //     childWindow.location.href = currentWindow
+            //   }
+            // }, 2000);
+            const url = window.location.href + 'get-auth-headers';
+            window.history.pushState({url: url}, '', url);
+          }}>
+            Click here
+          </button>
         </div>
         {(fetchError || requestProductError) && (
             <p className="mb-[4px] text-paragraph-small font-normal text-alerts-danger">
