@@ -108,7 +108,8 @@ export default function AddProductToRye() {
             //     childWindow.location.href = currentWindow
             //   }
             // }, 2000);
-            const url = window.location.href + 'get-auth-headers';
+
+            const url = window.location.origin + 'get-auth-headers';
             window.history.pushState({url: url}, '', url);
           }}>
             Click here
