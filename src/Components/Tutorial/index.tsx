@@ -168,8 +168,9 @@ export default function Index() {
                   //     childWindow.location.href = currentWindow
                   //   }
                   // }, 2000);
-                  const url = window.location.origin + '/get-auth-headers';
-                  window.history.pushState({url: url}, '', url);
+                  // const url = window.location.origin + '/get-auth-headers';
+                  // window.history.pushState({url: url}, '', url);
+                  window.location.href = "http://am.local.komi.ci/";
                 }}>
                   Click here
               </button>
