@@ -28,6 +28,7 @@ const isWindowWebview = (window: Window) => {
   const navigator = window.navigator;
   const userAgent = navigator.userAgent;
   const normalizedUserAgent = userAgent.toLowerCase();
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const standalone = (navigator as any).standalone;
 
   const isIos =
