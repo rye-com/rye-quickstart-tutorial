@@ -168,7 +168,7 @@ export default function Index() {
                   //     childWindow.location.href = currentWindow
                   //   }
                   // }, 2000);
-                  const url = window.location.origin + 'get-auth-headers';
+                  const url = window.location.origin + '/get-auth-headers';
                   window.history.pushState({url: url}, '', url);
                 }}>
                   Click here
