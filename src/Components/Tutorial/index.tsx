@@ -24,6 +24,28 @@ type UrlMapType = {
   [url: string]: TutorialStep;
 };
 
+const isWindowWebview = (window: Window) => {
+  const navigator = window.navigator;
+  const userAgent = navigator.userAgent;
+  const normalizedUserAgent = userAgent.toLowerCase();
+  const standalone = (navigator as any).standalone;
+
+  const isIos =
+      /ip(ad|hone|od)/.test(normalizedUserAgent) ||
+      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isAndroid = /android/.test(normalizedUserAgent);
+  const isSafari = /safari/.test(normalizedUserAgent);
+
+
+  return (isAndroid && /; wv\)/.test(normalizedUserAgent)) || (isIos && !standalone && !isSafari);
+};
+
+const isInstagram = (window: Window) => {
+  const navigator = window.navigator;
+  const ua = navigator.userAgent || navigator.vendor;
+  return (ua.indexOf('Instagram') > -1);
+}
+
 function createUrlToTutorialMap(steps: NonEmptyArray<TutorialStep>): UrlMapType {
   const urlMap: UrlMapType = {};
   steps.forEach((step) => {
@@ -172,7 +194,10 @@ export default function Index() {
                   // window.history.pushState({url: url}, '', url);
                   window.location.href = "http://am.local.komi.ci/";
                 }}>
-                  Click here
+                  {isWindowWebview(window) ? "Open in mobile" : "Open in browser"}
+
+                  {isInstagram(window) ? "On instagram": "Not on instagram"}
+
               </button>
               <iframe src="https://rye-dev-store.myshopify.com/stripe/authentications/357d69786e00c4defa8ec990596defd8" height="200" width="200" title="auth"></iframe>
                 <GettingStartedImage className="mt-36 mb-6" />
