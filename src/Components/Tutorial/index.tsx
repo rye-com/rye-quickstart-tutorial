@@ -19,34 +19,10 @@ import { getCartQuery } from "./CodeSnippets/getCartSnippet";
 import { createCartMutation } from "./CodeSnippets/createCartSnippet";
 import { updateBuyerIdentityMutation } from "./CodeSnippets/updateBuyerIdentitySnippet";
 import useLocalStorage from '../../hooks/useLocalStorage';
-import { WebView } from 'react-native-webview';
 
 type UrlMapType = {
   [url: string]: TutorialStep;
 };
-
-const isWindowWebview = (window: Window) => {
-  const navigator = window.navigator;
-  const userAgent = navigator.userAgent;
-  const normalizedUserAgent = userAgent.toLowerCase();
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const standalone = (navigator as any).standalone;
-
-  const isIos =
-      /ip(ad|hone|od)/.test(normalizedUserAgent) ||
-      (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  const isAndroid = /android/.test(normalizedUserAgent);
-  const isSafari = /safari/.test(normalizedUserAgent);
-
-
-  return (isAndroid && /; wv\)/.test(normalizedUserAgent)) || (isIos && !standalone && !isSafari);
-};
-
-const isInstagram = (window: Window) => {
-  const navigator = window.navigator;
-  const ua = navigator.userAgent || navigator.vendor;
-  return (ua.indexOf('Instagram') > -1);
-}
 
 function createUrlToTutorialMap(steps: NonEmptyArray<TutorialStep>): UrlMapType {
   const urlMap: UrlMapType = {};
