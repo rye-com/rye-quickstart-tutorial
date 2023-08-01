@@ -19,6 +19,7 @@ import { getCartQuery } from "./CodeSnippets/getCartSnippet";
 import { createCartMutation } from "./CodeSnippets/createCartSnippet";
 import { updateBuyerIdentityMutation } from "./CodeSnippets/updateBuyerIdentitySnippet";
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { WebView } from 'react-native-webview';
 
 type UrlMapType = {
   [url: string]: TutorialStep;
@@ -125,6 +126,11 @@ export default function Index() {
     error: updateBuyerIdentityError,
   } = useRequest<object>(updateBuyerIdentityMutation);
 
+  const onCopyText = () => {
+    const copiedUrl = `https://am.ngrok.app/order/MW0pr3QtJBoVd9Wn4uFM`;
+    navigator.clipboard.writeText(copiedUrl);
+  };
+
   return (
     <div className="grid grid-cols-[300px_1fr_1fr_1fr] gap-x-[48px] font-poppins">
       <TutorialContext.Provider
@@ -183,22 +189,8 @@ export default function Index() {
         <section className="col-span-3 col-start-2 h-full min-h-screen bg-ghost-white pl-[142px] pr-[142px] pt-5">
           { step.title === StepEnum.Step0 && (
               <>
-                <button onClick={() => {
-                  // const currentWindow = window.location.href;
-                  // const childWindow = window.open("https://rye-dev-store.myshopify.com/stripe/authentications/357d69786e00c4defa8ec990596defd8", "_blank", "download");
-                  // setTimeout(() => {
-                  //   if (childWindow) {
-                  //     childWindow.location.href = currentWindow
-                  //   }
-                  // }, 2000);
-                  // const url = window.location.origin + '/get-auth-headers';
-                  // window.history.pushState({url: url}, '', url);
-                  window.location.href = "http://am.local.komi.ci/";
-                }}>
-                  {isWindowWebview(window) ? "Open in mobile" : "Open in browser"}
-
-                  {isInstagram(window) ? "On instagram": "Not on instagram"}
-
+                <button onClick={onCopyText}>
+                  Click here
               </button>
               <iframe src="https://rye-dev-store.myshopify.com/stripe/authentications/357d69786e00c4defa8ec990596defd8" height="200" width="200" title="auth"></iframe>
                 <GettingStartedImage className="mt-36 mb-6" />
