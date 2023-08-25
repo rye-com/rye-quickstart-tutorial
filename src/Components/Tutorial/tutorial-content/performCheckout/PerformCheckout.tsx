@@ -1,9 +1,7 @@
-import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { InlineCodeSnippet } from "../../helper-components/InlineCodeSnippet";
 import { showPaymentForm, submitCartMutation } from "../../CodeSnippets/code_snippets";
-import { CheckoutFormConstants, LinkType, RyeCapProductCheckoutUrl } from '../../constants';
+import { CheckoutFormConstants } from '../../constants';
 import { ReactComponent as ManageCheckoutImage } from "../../../../assets/manage-checkout.svg";
-import ExternalLink from "../../styled-components/external-link";
 import ListItem from "../../styled-components/list-item";
 import TerminalTab from "../../styled-components/code-terminal-tab";
 import CheckoutForm from "./CheckoutForm";
@@ -14,12 +12,6 @@ export default function PerformCheckout() {
       <section>
         <div className="mb-3 flex">
           <h2 className="mr-2 text-heading-small font-bold">Example</h2>
-          <ExternalLink
-              href={RyeCapProductCheckoutUrl}
-              text="See it live"
-              type={LinkType.Pill}
-              startEnhancer={ArrowTopRightOnSquareIcon}
-          />
         </div>
         <ManageCheckoutImage className="mb-[50px]"/>
         <h3 className="mb-6 text-heading-small font-bold">How it works</h3>
