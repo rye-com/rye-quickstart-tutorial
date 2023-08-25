@@ -37,9 +37,6 @@ export default function FetchProduct() {
 
   return (
     <section>
-      <div className="mb-[12px] flex">
-        <h2 className="mr-[8px] text-heading-small font-bold">Example</h2>
-      </div>
       <img className="mb-[12px]" src={FetchProductScreenV2} alt="API Key" />
       <p className="mb-[48px]">
         In a product page, we can use the{' '}

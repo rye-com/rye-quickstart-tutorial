@@ -10,9 +10,6 @@ import Terminal from "../../styled-components/code-terminal";
 export default function PerformCheckout() {
   return (
       <section>
-        <div className="mb-3 flex">
-          <h2 className="mr-2 text-heading-small font-bold">Example</h2>
-        </div>
         <ManageCheckoutImage className="mb-[50px]"/>
         <h3 className="mb-6 text-heading-small font-bold">How it works</h3>
         <ol className="list-inside list-decimal text-paragraph-medium font-semibold">
