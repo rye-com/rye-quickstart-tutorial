@@ -1,6 +1,3 @@
-import ExternalLink from '../styled-components/external-link';
-import { LinkType, RyeCapProductStoreUrl } from '../constants';
-import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
 import FetchProductScreenV2 from '../../../assets/fetch-product-v2.png';
 import { InlineCodeSnippet } from '../helper-components/InlineCodeSnippet';
 import ListItem from '../styled-components/list-item';
@@ -40,15 +37,6 @@ export default function FetchProduct() {
 
   return (
     <section>
-      <div className="mb-[12px] flex">
-        <h2 className="mr-[8px] text-heading-small font-bold">Example</h2>
-        <ExternalLink
-          href={RyeCapProductStoreUrl}
-          text="See it live"
-          type={LinkType.Pill}
-          startEnhancer={ArrowTopRightOnSquareIcon}
-        />
-      </div>
       <img className="mb-[12px]" src={FetchProductScreenV2} alt="API Key" />
       <p className="mb-[48px]">
         In a product page, we can use the{' '}
