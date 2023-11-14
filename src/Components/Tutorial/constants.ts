@@ -132,7 +132,7 @@ export const CheckoutFormConstants = {
   city: "Queens",
   zipCode: "11354",
   state: "NY",
-  phone: "(123) 123-1234",
+  phone: "+1415490424",
   countryCode: "US",
 }
 
